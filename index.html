@@ -26,6 +26,13 @@ body{
   margin:0 calc(-1*clamp(14px,2.2vw,36px)) 22px;
   border-bottom:1px solid #e8e5de;
 }
+.reportlink{
+  flex:none;font-size:13px;font-weight:600;color:#d85a30;text-decoration:none;
+  padding:7px 14px;border:1px solid #f0c9b0;border-radius:8px;background:#fdf3ee;white-space:nowrap;
+}
+.reportlink:hover{background:#f8e6dc}
+body.dark .reportlink{color:#f0a070;background:#33291f;border-color:#5a3f2c}
+body.dark .reportlink:hover{background:#3f3121}
 .topbar h1{
   display:flex;flex-direction:column;gap:1px;
   flex:1;line-height:1.15;
@@ -591,6 +598,7 @@ body.dark .reset-btn:hover{background:#373c47}
       <span class="brand-jp">花火祭ナビ</span>
       <span class="brand-en">hanabinavi</span>
     </h1>
+    <a class="reportlink" href="report.html">📊 分析レポート →</a>
   </div>
 
   <!-- ========== TRIP ========== -->

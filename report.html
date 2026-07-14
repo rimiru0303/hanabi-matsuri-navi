@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>花火祭ナビ｜分析レポート</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Hiragino Sans','Noto Sans JP','PingFang TC',sans-serif;
+  background:#f7f6f3;
+  color:#1a1916;
+  line-height:1.6;
+  font-size:14px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{width:100%;margin:0 auto;padding:0 clamp(14px,2.2vw,36px) 32px}
+
+/* ── Header：白底、細邊線 ── */
+.topbar{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  background:#fff;
+  padding:18px clamp(14px,2.2vw,36px);
+  margin:0 calc(-1*clamp(14px,2.2vw,36px)) 22px;
+  border-bottom:1px solid #e8e5de;
+}
+.topbar h1{
+  display:flex;flex-direction:column;gap:1px;
+  flex:1;line-height:1.15;
+}
+.topbar h1 .brand-jp{
+  font-size:22px;font-weight:700;
+  color:#1a1916;letter-spacing:.01em;
+}
+.topbar h1 .brand-en{
+  font-size:11px;font-weight:500;
+  color:#a8a69c;letter-spacing:.16em;
+  text-transform:lowercase;
+}
+.topbar h1 .dot-f{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#d85a30;margin:0 1px 2px;vertical-align:middle;
+}
+.topbar h1 .dot-w{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#378add;margin:0 1px 2px;vertical-align:middle;
+}
+
+.tabpanel{display:none}.tabpanel.active{display:block}
+
+/* ── chips：膠囊，方向A標誌 ── */
+.chip{
+  font-size:12.5px;padding:5px 15px;border-radius:20px;
+  border:1px solid #d0cdc4;background:#fff;
+  cursor:pointer;color:#555;transition:.15s;white-space:nowrap;
+}
+.chip:hover{background:#f0ede8;border-color:#bbb8b0}
+.chip.on{background:#1a1916;border-color:#1a1916;color:#fff}
+.chip.on.cf{background:#d85a30;border-color:#d85a30}
+.chip.on.cw{background:#378add;border-color:#378add}
+.chip:focus-visible,.fsel:focus-visible,.nb:focus-visible,.reset-btn:focus-visible,
+.mselbtn:focus-visible,.mselpop input:focus-visible,.lnk:focus-visible,.elink:focus-visible,
+.tripfld input:focus-visible,.fld input:focus-visible,.fld select:focus-visible{
+  outline:2px solid rgba(55,138,221,.65);outline-offset:2px;
+}
+.fsearch{
+  font-size:12.5px;padding:5px 12px;border-radius:20px;
+  border:1px solid #d0cdc4;background-color:#fff;color:#444;
+  width:148px;-webkit-appearance:none;appearance:none;
+}
+.fsearch::placeholder{color:#aaa}
+body.dark .fsearch{background-color:#2f333d;border-color:#434956;color:#d6d3ca}
+.copylink{
+  font-size:12px;padding:5px 12px;border-radius:20px;
+  border:1px solid #d0cdc4;background:#fff;color:#555;cursor:pointer;
+  white-space:nowrap;transition:.12s;
+}
+.copylink:hover{background:#f4f2ed;border-color:#bdb9af}
+.copylink.done{background:#e6f4ea;border-color:#9ed3b0;color:#2e7d4f}
+body.dark .copylink{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .copylink:hover{background:#373c47}
+body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
+.fsel{
+  font-size:12.5px;padding:5px 28px 5px 12px;border-radius:20px;
+  border:1px solid #d0cdc4;background-color:#fff;
+  color:#444;cursor:pointer;text-align:left;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 11px center;
+}
+
+/* ── Filter bar ── */
+.fbar{
+  display:flex;flex-direction:column;gap:9px;
+  background:#fff;
+  border:1px solid #e8e5de;border-radius:14px;
+  padding:12px 16px;margin-bottom:14px;
+}
+.fbar-row{display:flex;align-items:center;gap:14px;min-height:32px;flex-wrap:wrap;row-gap:9px}
+.fgrp{display:flex;align-items:center;gap:6px}
+.fgrp .lbl{
+  font-size:11px;color:#6b6860;margin-right:2px;
+  letter-spacing:.04em;white-space:nowrap;
+}
+.sep{width:1px;height:16px;background:#e8e5de}
+.fsec{display:flex;align-items:center;gap:12px;flex-wrap:wrap;row-gap:9px}
+.fsec+.fsec{margin-left:10px}
+.seclbl{font-size:12px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.seclbl.cf{color:#d85a30}
+.seclbl.cw{color:#378add}
+.msel{position:relative;display:inline-block}
+.mselbtn{white-space:nowrap}
+.mselpop{display:none;position:fixed;z-index:60;background:#fff;border:1px solid #d0cdc4;border-radius:10px;padding:5px;box-shadow:0 6px 22px rgba(0,0,0,.12);min-width:96px}
+.mselpop.open{display:block}
+.mselpop label{display:flex;align-items:center;gap:7px;padding:5px 9px;font-size:12.5px;color:#444;border-radius:6px;cursor:pointer;white-space:nowrap}
+.mselpop label:hover{background:#f0ede8}
+.mselpop input{accent-color:#378add;cursor:pointer}
+.cnt{font-size:11px;color:#8a877e;margin-left:auto}
+
+/* ── Map wrapper ── */
+.svgwrap{
+  border:1px solid #e8e5de;border-radius:12px;
+  overflow:hidden;background:#faf9f6;
+  position:relative;cursor:grab;
+}
+.svgwrap:active{cursor:grabbing}
+.mapsvg{width:100%;height:100%;display:block}
+.pref-path{transition:fill .15s,stroke .15s;cursor:pointer}
+.pref-path:hover{fill:#d8dde4}
+.mk{cursor:pointer}
+.mkanim{animation:mkpop .26s ease both}
+.mkclus{cursor:pointer}
+.mkclus text{pointer-events:none;font-weight:600;text-anchor:middle;dominant-baseline:central}
+@keyframes mkpop{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){.mkanim{animation:none}}
+.reset-btn{
+  position:absolute;top:10px;right:10px;
+  padding:4px 12px;font-size:11px;
+  background:#fff;border:1px solid #ccc9c0;
+  border-radius:20px;cursor:pointer;display:none;
+  z-index:10;color:#555;
+}
+.reset-btn:hover{background:#f7f5f0}
+
+/* ── Trip toggle ── */
+.tripsw{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;color:#555;cursor:pointer;user-select:none;
+}
+.tripsw .sw{
+  position:relative;width:40px;height:21px;
+  background:#d8d4cc;border-radius:11px;transition:background .2s;flex:none;
+}
+.tripsw .sw::after{
+  content:'';position:absolute;top:2.5px;left:2.5px;
+  width:16px;height:16px;background:#fff;border-radius:50%;
+  transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+.tripsw.on .sw{background:#378add}
+.tripsw.on .sw::after{transform:translateX(19px)}
+.tripdiv{width:1px;align-self:stretch;background:#e8e5de;margin:0 4px}
+.tripfld{display:inline-flex;align-items:center;gap:6px}
+.tripfld input[type=date]{
+  font-size:12.5px;padding:5px 10px;
+  border:1px solid #d0cdc4;border-radius:20px;color:#333;
+  background:#fff;
+}
+.rowbreak{flex-basis:100%;height:0;margin:0}
+.triprow{display:flex;align-items:center;gap:10px;min-height:30px}
+
+/* ── Tooltip ── */
+.tip{
+  position:absolute;background:#fff;
+  border:1px solid #d8d4cc;border-radius:10px;
+  padding:8px 12px;font-size:12px;
+  pointer-events:none;z-index:30;display:none;
+  max-width:210px;box-shadow:0 4px 16px rgba(0,0,0,.1);
+}
+.tip-n{font-weight:600;margin-bottom:2px;color:#1a1916}
+.tip-s{color:#888;font-size:11px}
+
+/* ── Legend ── */
+.leg{display:flex;gap:14px;align-items:center}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:#6f6c64}
+.ls{width:8px;height:8px;border-radius:50%}
+
+/* ── Explorer layout ── */
+.emain{display:flex;gap:16px;height:clamp(420px,calc(100vh - 280px),720px)}
+
+/* Calendar */
+.cal{width:clamp(244px,20vw,320px);flex-shrink:0;display:flex;flex-direction:column;gap:7px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between}
+.cal-ttl{font-size:15px;font-weight:600;color:#1a1916;letter-spacing:.01em}
+.nb{
+  background:#fff;border:1px solid #d0cdc4;border-radius:20px;
+  width:28px;height:28px;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  color:#666;transition:.12s;
+}
+.nb:hover{background:#f0ede8}
+.dow{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  text-align:center;font-size:11px;color:#7d7a71;padding-bottom:4px;
+}
+.dow span:first-child{color:#d85a30}
+.dow span:last-child{color:#378add}
+.cgrid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  grid-auto-rows:minmax(34px,auto);gap:3px;
+}
+.dc{
+  border-radius:7px;padding:3px 1px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer;border:1.2px solid transparent;
+}
+.dc:hover:not(.emp){background:#f0ede8}
+.dc.sel{background:#fde8e0;border-color:#d85a30}
+.dc.emp{pointer-events:none}
+.dc.dim{opacity:.3}
+.dc.trange{background:#e6f1fc}
+.dc.trange.sel{background:#fde8e0}
+.dc.trange.dim{opacity:.6;background:#eef6fd}
+.dn{font-size:12px;line-height:1.3;color:#3a3935}
+.dc.sel .dn{color:#c94e25;font-weight:700}
+.dc.sun .dn{color:#d85a30}
+.dc.sat .dn{color:#378add}
+.dots{display:flex;gap:2px;height:5px}
+.dot{width:4px;height:4px;border-radius:50%}
+
+.mapw{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ibar{
+  flex-shrink:0;font-size:12px;color:#6b6860;
+  padding:7px 14px;background:#fff;
+  border:1px solid #e8e5de;border-radius:20px;
+  min-height:32px;display:flex;align-items:center;gap:8px;
+}
+
+/* ── Event list ── */
+.elist{
+  margin-top:12px;background:#fff;
+  border:1px solid #e8e5de;border-radius:14px;
+  max-height:200px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:#cfccc3 #f4f2ed;
+}
+.elist::-webkit-scrollbar{width:10px}
+.elist::-webkit-scrollbar-track{background:#f4f2ed;border-radius:0 14px 14px 0}
+.elist::-webkit-scrollbar-thumb{background:#cfccc3;border-radius:5px;border:2px solid #f4f2ed}
+.elist::-webkit-scrollbar-thumb:hover{background:#b8b4aa}
+.elist-h{
+  font-size:11px;font-weight:600;color:#6b6860;
+  padding:9px 16px;border-bottom:1px solid #f0ede8;
+  position:sticky;top:0;background:#fff;z-index:2;
+  letter-spacing:.04em;
+}
+.erow{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 16px;border-bottom:1px solid #f7f5f0;
+  font-size:13px;cursor:pointer;transition:.1s;
+}
+.erow:hover{background:#faf8f4}
+.ebadge{
+  font-size:10px;padding:2px 9px;border-radius:20px;
+  color:#fff;flex-shrink:0;font-weight:600;letter-spacing:.03em;white-space:nowrap;
+}
+.ebadge.f{background:#d85a30}
+.ebadge.w{background:#378add}
+.ename{font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1a1916}
+.emeta{font-size:11px;color:#8a877e;flex-shrink:0;white-space:nowrap}
+.elink{color:#378add;text-decoration:none;font-size:11px;flex-shrink:0}
+.elink:hover{text-decoration:underline}
+.empty-l{padding:24px;text-align:center;color:#9a978d;font-size:12px}
+
+/* ── Analytics（隱藏，僅保留月曆tab） ── */
+#tab-analytics{display:none!important}
+
+/* ── KPI cards ── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi{
+  background:#fff;border:1px solid #e8e5de;
+  border-radius:12px;padding:16px 18px;
+}
+.kpi .label{font-size:11px;color:#aaa9a0;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.kpi .val{font-size:28px;font-weight:500;letter-spacing:-.03em;color:#1a1916}
+.kpi .sub{font-size:11px;color:#c0bdb5;margin-top:3px}
+.kpi.coral .val{color:#d85a30}
+.kpi.blue .val{color:#378add}
+
+/* ── Cards ── */
+.card{
+  background:#fff;border:1px solid #e8e5de;
+  border-radius:12px;padding:18px 20px;margin-bottom:14px;
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+
+h2.sec{
+  font-size:13.5px;font-weight:600;
+  margin:4px 0 3px;
+  display:flex;align-items:center;gap:8px;color:#1a1916;
+}
+h2.sec .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:5px;
+  background:#1a1916;color:#fff;font-size:10px;flex-shrink:0;
+}
+.anote{font-size:11.5px;color:#888;margin-bottom:12px;line-height:1.5}
+svg.chart{display:block;width:100%;overflow:visible}
+
+.insight{
+  background:#fdf9f5;
+  border-left:2px solid #d85a30;
+  border-radius:0 8px 8px 0;
+  padding:10px 14px;margin:12px 0;
+  font-size:12.5px;color:#555;line-height:1.65;
+}
+.insight b{color:#1a1916}
+.insight.blue{background:#f3f8fd;border-left-color:#378add}
+
+.reco{background:#fff;border:1px solid #e8e5de;border-radius:12px;padding:18px 20px;margin-top:8px}
+.reco li{font-size:12.5px;color:#555;margin:8px 0;padding-left:4px;line-height:1.65}
+.reco li b{color:#1a1916}
+
+/* ── Trip ── */
+.setup{
+  background:#fff;border:1px solid #e8e5de;border-radius:12px;
+  padding:14px 18px;margin-bottom:14px;
+  display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;
+}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld .lb{font-size:11px;color:#6b6860;letter-spacing:.04em}
+.fld input[type=date],.fld select{
+  font-size:13.5px;padding:6px 12px;
+  border:1px solid #d0cdc4;border-radius:20px;
+  background:#fff;color:#1a1916;
+}
+.chips{display:flex;gap:5px}
+.summary{
+  font-size:13.5px;color:#555;
+  padding:11px 17px;
+  background:#fff;border:1px solid #e8e5de;
+  border-radius:14px;margin-bottom:14px;
+}
+.summary b{color:#d85a30;font-size:16px;font-weight:600}
+.tmain{display:flex;gap:16px;align-items:flex-start}
+.itin{flex:1;min-width:0}
+.mapcol{width:380px;flex-shrink:0;position:sticky;top:14px}
+@media(max-width:840px){
+  .tmain{flex-direction:column}
+  .mapcol{width:100%;position:static}
+  .emain{flex-direction:column;height:auto}
+  .cal{width:100%}
+}
+.maphint{font-size:11px;color:#8a877e;margin-top:6px;text-align:center}
+
+.ongoing{
+  background:#fff;border:1px solid #e4c898;
+  border-radius:14px;padding:13px 16px;margin-bottom:14px;
+}
+.ongoing .ohd{font-size:11px;font-weight:600;color:#b8882a;margin-bottom:9px;letter-spacing:.04em}
+.ocard{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fdf8f0;border:1px solid #ead5a8;border-radius:20px;
+  padding:5px 13px;margin:3px 4px 3px 0;
+  font-size:12.5px;text-decoration:none;color:#7a5520;transition:.1s;
+}
+.ocard:hover{background:#f5edd8}
+
+.day{margin-bottom:18px}
+.dayhd{
+  display:flex;align-items:baseline;gap:10px;
+  padding:6px 0;border-bottom:1px solid #e8e5de;margin-bottom:11px;
+}
+.dayhd .dnum{font-size:17px;font-weight:600;color:#1a1916}
+.dayhd .dwk{font-size:12.5px;color:#7d7a71}
+.dayhd .dcnt{font-size:11.5px;color:#8a877e;margin-left:auto}
+.dayhd.wknd .dnum{color:#d85a30}
+
+.ev{
+  background:#fff;border:1px solid #e8e5de;border-radius:14px;
+  padding:13px 16px;margin-bottom:9px;transition:border-color .15s;
+}
+.ev:hover{border-color:#c8c4bc}
+.ev-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.badge{
+  font-size:10px;padding:2px 10px;border-radius:20px;
+  color:#fff;font-weight:600;flex-shrink:0;letter-spacing:.04em;
+}
+.badge.f{background:#d85a30}
+.badge.w{background:#378add}
+.ev-name{font-size:14.5px;font-weight:500;flex:1;min-width:0;color:#1a1916}
+.pill{
+  font-size:11px;padding:2px 10px;border-radius:20px;
+  background:#f0ede8;color:#888;flex-shrink:0;
+}
+.pill.paid{background:#fde8e0;color:#c04a1a}
+.pill.free{background:#e4f0fc;color:#1e68b0}
+.ev-meta{font-size:12.5px;color:#6f6c64;margin-bottom:3px;line-height:1.55}
+.ev-meta .k{color:#9a978d;margin-right:3px}
+.ev-links{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.lnk{
+  font-size:11.5px;padding:5px 13px;border-radius:20px;
+  text-decoration:none;border:1px solid #d8d4cc;
+  color:#555;display:inline-flex;align-items:center;gap:3px;transition:.12s;
+}
+.lnk:hover{background:#f0ede8;border-color:#b8b4aa}
+.lnk.primary{background:#1a1916;color:#fff;border-color:#1a1916}
+.lnk.primary:hover{background:#333}
+
+.empty{
+  text-align:center;color:#9a978d;font-size:13px;
+  padding:48px 20px;background:#fff;
+  border:1px solid #e8e5de;border-radius:12px;
+}
+
+.foot{
+  text-align:center;font-size:11px;color:#8a877e;
+  margin-top:28px;padding-top:16px;
+  border-top:1px solid #e8e5de;
+}
+
+/* ── 浮動 日/夜 切換鈕（右下角） ── */
+.theme-toggle{
+  position:fixed;right:24px;bottom:24px;z-index:200;
+  width:78px;height:38px;border-radius:19px;
+  border:none;cursor:pointer;padding:0;
+  background:#c4c2bd;
+  display:flex;align-items:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);
+  transition:background .3s ease;
+}
+.theme-toggle .tt-knob{
+  position:absolute;top:4px;left:4px;
+  width:30px;height:30px;border-radius:50%;
+  background:#fff;
+  transition:transform .3s cubic-bezier(.4,.1,.3,1.3);
+  z-index:2;
+}
+.theme-toggle .tt-ico{
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  width:30px;height:30px;transition:opacity .3s,color .3s;
+}
+.theme-toggle .tt-sun{right:5px;color:#fff}
+.theme-toggle .tt-moon{left:5px;color:#cfcdc7;opacity:0}
+body.dark .theme-toggle{background:#33363d}
+body.dark .theme-toggle .tt-knob{transform:translateX(40px)}
+body.dark .theme-toggle .tt-sun{opacity:0}
+body.dark .theme-toggle .tt-moon{opacity:1;color:#f2efe8}
+@media(max-width:560px){
+  .theme-toggle{right:16px;bottom:16px;width:68px;height:34px;border-radius:17px}
+  .theme-toggle .tt-knob{width:26px;height:26px}
+  body.dark .theme-toggle .tt-knob{transform:translateX(34px)}
+}
+
+/* ===================== 夜間模式（精修配色） ===================== */
+/* palette（調淺一階）:
+   bg #1b1e24 / surface #252932 / surface2 #2f333d / border #3a3f4a
+   text #ecebe6 / text2 #a7a499 / text3 #74716a
+   coral #e8703f / blue #4f9ae8 */
+body.dark{background:#1b1e24;color:#ecebe6;color-scheme:dark}
+body.dark .topbar{background:#252932;border-bottom-color:#3a3f4a}
+body.dark .topbar h1 .brand-jp{color:#ecebe6}
+body.dark .topbar h1 .brand-en{color:#8b887f}
+
+body.dark .fbar,
+body.dark .elist,
+body.dark .ibar,
+body.dark .kpi,
+body.dark .card,
+body.dark .reco,
+body.dark .setup,
+body.dark .summary,
+body.dark .ev,
+body.dark .empty,
+body.dark .ongoing{background:#252932;border-color:#3a3f4a}
+
+body.dark .svgwrap{background:#202329;border-color:#3a3f4a}
+body.dark .pref-path:hover{fill:#7a5e22}
+
+body.dark .chip{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .chip:hover{background:#373c47;border-color:#525866}
+body.dark .chip.on{background:#ecebe6;border-color:#ecebe6;color:#1b1e24}
+body.dark .chip.on.cf{background:#e8703f;border-color:#e8703f;color:#fff}
+body.dark .chip.on.cw{background:#4f9ae8;border-color:#4f9ae8;color:#fff}
+body.dark .fsel,
+body.dark .tripfld input[type=date],
+body.dark .fld input[type=date],
+body.dark .fld select{background:#2f333d;border-color:#434956;color:#d6d3ca}
+body.dark .fsel{background-color:#2f333d;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b8b4ab' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+body.dark .nb{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .mselpop{background:#252932;border-color:#3a3f4a}
+body.dark .mselpop label{color:#d6d3ca}
+body.dark .mselpop label:hover{background:#373c47}
+body.dark .nb:hover{background:#373c47}
+
+body.dark .fgrp .lbl,
+body.dark .cnt,
+body.dark .dow,
+body.dark .emeta,
+body.dark .ev-meta,
+body.dark .anote,
+body.dark .maphint,
+body.dark .li,
+body.dark .fld .lb,
+body.dark .elist-h,
+body.dark .dayhd .dwk,
+body.dark .dayhd .dcnt{color:#a7a499}
+
+body.dark .cal-ttl,
+body.dark .ename,
+body.dark .ev-name,
+body.dark .dayhd .dnum,
+body.dark .tip-n,
+body.dark .insight b,
+body.dark .reco li b,
+body.dark h2.sec{color:#ecebe6}
+body.dark .dn{color:#d6d3ca}
+
+body.dark .dc:hover:not(.emp){background:#373c47}
+body.dark .dc.sel{background:#4d3a20;border-color:#e8703f}
+body.dark .dc.sel .dn{color:#f0a070}
+body.dark .dc.sun .dn{color:#e8703f}
+body.dark .dc.sat .dn{color:#4f9ae8}
+body.dark .dc.trange{background:#27445f}
+body.dark .dc.trange.dim{background:#22384e}
+
+body.dark .erow{border-bottom-color:#2f333d}
+body.dark .erow:hover{background:#2f333d}
+body.dark .elist-h{background:#252932;border-bottom-color:#3a3f4a}
+body.dark .ebadge.f,body.dark .badge.f{background:#e8703f}
+body.dark .ebadge.w,body.dark .badge.w{background:#4f9ae8}
+body.dark .elink{color:#4f9ae8}
+
+/* elist 滾輪軌道 */
+body.dark .elist::-webkit-scrollbar{width:10px}
+body.dark .elist::-webkit-scrollbar-track{background:#252932;border-radius:0 14px 14px 0}
+body.dark .elist::-webkit-scrollbar-thumb{background:#434956;border-radius:5px;border:2px solid #252932}
+body.dark .elist::-webkit-scrollbar-thumb:hover{background:#525866}
+body.dark .elist{scrollbar-color:#434956 #252932;scrollbar-width:thin}
+
+body.dark .tip{background:#2f333d;border-color:#434956}
+body.dark .tip-s{color:#a7a499}
+
+body.dark .insight{background:#2b231b;border-left-color:#e8703f;color:#c7c4bb}
+body.dark .insight.blue{background:#1c2733;border-left-color:#4f9ae8}
+body.dark .reco li{color:#c7c4bb}
+body.dark .summary{color:#c7c4bb}
+body.dark .summary b{color:#f0a070}
+
+body.dark .tripsw{color:#c7c4bb}
+body.dark .tripsw .sw{background:#434956}
+body.dark .tripsw.on .sw{background:#4f9ae8}
+body.dark .sep,
+body.dark .tripdiv{background:#3a3f4a}
+body.dark .dot-f{background:#e8703f}
+body.dark .dot-w{background:#4f9ae8}
+
+body.dark .lnk{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .lnk:hover{background:#373c47;border-color:#525866}
+body.dark .lnk.primary{background:#ecebe6;color:#1b1e24;border-color:#ecebe6}
+body.dark .lnk.primary:hover{background:#fff}
+body.dark .pill{background:#373c47;color:#a7a499}
+body.dark .pill.paid{background:#46291d;color:#f0905c}
+body.dark .pill.free{background:#1e3247;color:#6fb0ee}
+
+body.dark .dayhd{border-bottom-color:#3a3f4a}
+body.dark .dayhd.wknd .dnum{color:#e8703f}
+body.dark .ev:hover{border-color:#525866}
+body.dark .ongoing{border-color:#6b5832}
+body.dark .ongoing .ohd{color:#d9ad55}
+body.dark .ocard{background:#2e2619;border-color:#6b5832;color:#d9ad55}
+body.dark .ocard:hover{background:#383020}
+body.dark h2.sec .num{background:#ecebe6;color:#1b1e24}
+body.dark .kpi .label,
+body.dark .kpi .sub{color:#a7a499}
+body.dark .kpi .val{color:#ecebe6}
+body.dark .kpi.coral .val{color:#e8703f}
+body.dark .kpi.blue .val{color:#4f9ae8}
+body.dark .empty{color:#74716a;border-color:#3a3f4a}
+body.dark .foot{color:#74716a;border-top-color:#3a3f4a}
+body.dark .reset-btn{background:#2f333d;border-color:#525866;color:#c7c4bb}
+body.dark .reset-btn:hover{background:#373c47}
+</style>
+<style>
+  /* report 専用の上書き：分析パネルを常時表示＋レイアウト微調整 */
+  #tab-analytics{display:block!important;max-width:1000px;margin:0 auto;padding:20px 20px 60px}
+  .wrap{display:block}
+  .topbar{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .backlink{font-size:13px;color:#378add;text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+  body.dark .backlink{color:#5fa3ea}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <h1><span class="brand-jp">花火祭ナビ</span><span class="brand-en">分析レポート</span></h1>
+    <a class="backlink" href="./">← 地図・カレンダーへ戻る</a>
+  </div>
+
+  <div class="report" id="tab-analytics">
+    <div class="kpis" id="a_kpis"></div>
+
+    <div class="card"><h2 class="sec"><span class="num">1</span>月別活動分布趨勢</h2>
+      <div class="anote">各月開催活動數（跨月活動各月計入）。掌握旺季規劃時程。</div>
+      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+      <svg class="chart" id="a-monthly" viewBox="0 0 720 260"></svg>
+      <div class="insight">祭典・花火とも <b>7〜8 月</b> に集中。盛夏是黃金期，但人潮與住宿成本最高。</div></div>
+
+    <div class="grid2">
+      <div class="card"><h2 class="sec"><span class="num">2</span>地區分布</h2><div class="anote">十大地區件數。</div>
+        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+        <svg class="chart" id="a-region" viewBox="0 0 360 300"></svg></div>
+      <div class="card"><h2 class="sec"><span class="num">3</span>都道府縣 Top 15</h2><div class="anote">最密集的縣（堆疊）。</div>
+        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+        <svg class="chart" id="a-pref" viewBox="0 0 360 360"></svg></div>
+    </div>
+    <div class="insight blue">關東兩者皆居首。<b>都市圈花火密度極高</b>，想避人潮可考慮東北、甲信越。</div>
+
+    <div class="grid2">
+      <div class="card"><h2 class="sec"><span class="num">4</span>花火規模分布</h2><div class="anote">共 <b id="ins-scale-total">–</b> 場。</div><svg class="chart" id="a-scale" viewBox="0 0 360 220"></svg></div>
+      <div class="card"><h2 class="sec"><span class="num">5</span>費用結構</h2><div class="anote">祭典看入場料、花火看有料席。</div>
+        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>有料</span><span class="li"><span class="ls" style="background:#b5d4f4"></span>無料</span><span class="li"><span class="ls" style="background:#dcdad3"></span>不明</span></div>
+        <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg></div>
+    </div>
+    <div class="insight">祭典 <b id="ins-fes-free">–</b>% 免費入場，低預算首選；花火約四成設有料席，熱門大會建議提前購票。</div>
+
+    <div class="grid2">
+      <div class="card"><h2 class="sec"><span class="num">6</span>花火發射數分布</h2><div class="anote">另有 <b id="ins-launch-nonpub">–</b> 場非公開/未定。</div><svg class="chart" id="a-launch" viewBox="0 0 360 230"></svg></div>
+      <div class="card"><h2 class="sec"><span class="num">7</span>活動持續天數</h2><div class="anote">單一活動橫跨天數。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg></div>
+    </div>
+    <div class="insight blue"><b id="ins-dur1">–</b>% 活動僅 1 天，行程須精準對齊日期。長期活動多為風鈴祭・燈飾等常設展。</div>
+
+    <div class="card"><h2 class="sec"><span class="num">8</span>星期分布</h2><div class="anote">各星期開催日數。</div>
+      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+      <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
+      <div class="insight">花火明顯<b>集中週六</b>；平日出遊可避人潮。</div></div>
+
+    <div class="card"><h2 class="sec"><span class="num">9</span>月份 × 地區 熱力圖</h2><div class="anote">顏色越深 = 活動越多。</div>
+      <svg class="chart" id="a-heat" viewBox="0 0 720 340"></svg>
+      <div class="insight">熱區集中<b>夏季的關東・東海・甲信越</b>；冬季幾乎空白。</div></div>
+
+    <div class="foot">資料來源：walkerplus.com｜每週自動更新・純前端靜態頁</div>
+  </div>
+</div>
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切換日間／夜間模式">
+  <span class="tt-knob"></span>
+  <span class="tt-ico tt-sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.4" y1="4.4" x2="6.2" y2="6.2"/><line x1="17.8" y1="17.8" x2="19.6" y2="19.6"/><line x1="4.4" y1="19.6" x2="6.2" y2="17.8"/><line x1="17.8" y1="6.2" x2="19.6" y2="4.4"/></g></svg></span>
+  <span class="tt-ico tt-moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="currentColor"/></svg></span>
+</button>
+<script>
+const STATS={"monthly":{"f":[1,0,0,1,5,11,434,421,50,28,6,3],"w":[10,10,5,11,30,19,214,423,40,32,11,5]},"region":{"labels":["北海道","東北","関東","甲信越","北陸","東海","関西","中国","四国","九州・沖縄"],"f":[64,73,175,62,43,77,107,85,53,142],"w":[59,75,148,68,19,117,68,43,36,103]},"prefTop":{"labels":["北海道","埼玉県","愛知県","東京都","静岡県","新潟県","福岡県","長野県","千葉県","兵庫県","神奈川県","大分県","茨城県","愛媛県","大阪府"],"f":[64,42,28,36,19,30,39,25,21,19,19,28,23,25,30],"w":[59,21,33,23,39,25,13,25,28,28,27,15,19,15,9]},"scale":{"大":114,"中":220,"小":283,"不明":119},"payment":{"f":{"paid":66,"free":811,"unknown":4},"w":{"paid":293,"free":435,"unknown":8}},"launch":{"labels":["〜1千","1〜3千","3〜5千","5千〜1万","1〜2万","2万〜"],"data":[91,190,119,101,96,17],"nonpub":122},"duration":{"labels":["1日","2〜3日","4〜7日","8〜30日","31日以上"],"data":[970,477,71,68,31]},"dow":{"labels":["月","火","水","木","金","土","日"],"f":[367,347,339,362,496,840,715],"w":[172,172,145,173,205,694,350]},"heatmap":{"regions":["北海道","東北","関東","甲信越","北陸","東海","関西","中国","四国","九州・沖縄"],"months":[1,2,3,4,5,6,7,8,9,10,11,12],"data":[[0,2,0,1,2,4,62,59,8,2,0,0],[1,0,0,1,2,3,43,99,4,2,0,0],[5,1,1,1,8,6,128,164,25,17,5,4],[1,2,0,1,2,3,40,82,2,1,1,0],[0,0,0,0,0,1,26,31,7,0,0,0],[1,1,1,2,6,3,69,119,8,7,1,0],[1,0,1,0,4,3,72,83,9,11,5,2],[0,0,0,0,1,3,58,64,4,2,0,1],[1,0,0,0,1,0,34,43,5,6,3,1],[1,4,2,6,9,4,116,100,18,12,2,0]]},"totals":{"events":1617,"festivals":881,"fireworks":736,"prefectures":47,"dateMin":"2025-12-31","dateMax":"2027-03-21"}};//__STATS_DATA__
+function $(id){return document.getElementById(id);}
+function toggleTheme(){document.body.classList.toggle('dark');}
+const AnaMod=(function(){
+const CORAL='#d85a30',BLUE='#378add',NS='http://www.w3.org/2000/svg';
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function txt(p,x,y,s,a={}){const t=el('text',{x,y,...a},p);t.textContent=s;return t;}
+function grid(svg,x0,y0,w,h,mx,steps=4){for(let i=0;i<=steps;i++){const v=mx*i/steps,y=y0+h-h*i/steps;el('line',{x1:x0,y1:y,x2:x0+w,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,x0-6,y+3,Math.round(v),{'font-size':10,fill:'#aaa','text-anchor':'end'});}}
+function init(){const S=STATS,T=S&&S.totals;if(!T){return;}
+  $('drange')&&($('drange').textContent='');
+  const kc=$('a_kpis');[['活動總數',T.events,'場',''],['🎏 祭典',T.festivals,'場','coral'],['🎆 花火大會',T.fireworks,'場','blue'],['涵蓋都道府縣',T.prefectures,'/ 47','']].forEach(k=>{const d=document.createElement('div');d.className='kpi '+k[3];d.innerHTML=`<div class="label">${k[0]}</div><div class="val">${k[1]}</div><div class="sub">${k[2]}</div>`;kc.appendChild(d);});
+  // monthly
+  (function(){const svg=$('a-monthly'),W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,M=['1','2','3','4','5','6','7','8','9','10','11','12'],f=S.monthly.f,w=S.monthly.w,mx=Math.max(...f,...w);grid(svg,PL,PT,cw,ch,mx);M.forEach((m,i)=>txt(svg,PL+cw*i/11,H-12,m+'月',{'font-size':10,fill:'#aaa','text-anchor':'middle'}));
+    function pth(arr,col){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/mx;d+=(i?'L':'M')+x+','+y;});el('path',{d:d+`L${PL+cw},${PT+ch}L${PL},${PT+ch}Z`,fill:col,'fill-opacity':0.1},svg);el('path',{d,fill:'none',stroke:col,'stroke-width':2.2},svg);arr.forEach((v,i)=>el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/mx,r:3.5,fill:col},svg));}
+    pth(w,BLUE);pth(f,CORAL);})();
+  // region grouped
+  (function(){const svg=$('a-region'),W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=S.region.labels,f=S.region.f,w=S.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(f[i],w[i])))||1;
+    L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2;txt(svg,labW-6,y+3,lb,{'font-size':11,fill:'#555','text-anchor':'end'});const fw=cw*f[i]/mx,ww=cw*w[i]/mx;el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);txt(svg,labW+fw+4,y-bh+bh/2+2,f[i],{'font-size':9,fill:CORAL});txt(svg,labW+ww+4,y+1+bh/2+2,w[i],{'font-size':9,fill:BLUE});});})();
+  // pref stacked
+  (function(){const svg=$('a-pref'),W=360,H=360,labW=58,PR=36,PT=6,PB=6,L=S.prefTop.labels,f=S.prefTop.f,w=S.prefTop.w,cw=W-labW-PR,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.6,mx=Math.max(...L.map((_,i)=>f[i]+w[i]))||1;
+    L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2;txt(svg,labW-6,y+3,lb,{'font-size':10,fill:'#555','text-anchor':'end'});const fw=cw*f[i]/mx,ww=cw*w[i]/mx;el('rect',{x:labW,y:y-bh/2,width:fw,height:bh,rx:2,fill:CORAL},svg);el('rect',{x:labW+fw,y:y-bh/2,width:ww,height:bh,rx:2,fill:BLUE},svg);txt(svg,labW+fw+ww+4,y+3,f[i]+w[i],{'font-size':9,fill:'#999'});});})();
+  // scale donut
+  (function(){const svg=$('a-scale'),cx=110,cy=110,r=70,ir=42,data=[['大',S.scale['大'],'#185fa5'],['中',S.scale['中'],BLUE],['小',S.scale['小'],'#9cc4ee'],['不明',S.scale['不明'],'#cfcdc5']],total=data.reduce((s,d)=>s+d[1],0);let ang=-Math.PI/2;
+    data.forEach(([lb,v,col])=>{const a2=ang+2*Math.PI*v/total,x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),xi1=cx+ir*Math.cos(a2),yi1=cy+ir*Math.sin(a2),xi2=cx+ir*Math.cos(ang),yi2=cy+ir*Math.sin(ang),lg=(a2-ang)>Math.PI?1:0;el('path',{d:`M${x1},${y1}A${r},${r} 0 ${lg} 1 ${x2},${y2}L${xi1},${yi1}A${ir},${ir} 0 ${lg} 0 ${xi2},${yi2}Z`,fill:col},svg);ang=a2;});
+    txt(svg,cx,cy-4,total,{'font-size':22,'font-weight':700,'text-anchor':'middle',fill:'#1c1c1a'});txt(svg,cx,cy+12,'場',{'font-size':10,'text-anchor':'middle',fill:'#aaa'});
+    data.forEach(([lb,v,col],i)=>{const ly=40+i*34;el('rect',{x:230,y:ly,width:12,height:12,rx:3,fill:col},svg);txt(svg,248,ly+10,`${lb}　${v} 場 (${Math.round(v/total*100)}%)`,{'font-size':11,fill:'#555'});});})();
+  // payment
+  (function(){const svg=$('a-pay'),W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,rows=[['祭典',S.payment.f],['花火',S.payment.w]],barW=70,gap=(cw-barW*2)/3;
+    rows.forEach(([lb,p],i)=>{const paid=p.paid||0,free=p.free||0,unk=p.unknown||0,tot=paid+free+unk,x=PL+gap+(barW+gap)*i;let y=PT+ch;
+      [['有料',paid,CORAL],['無料',free,'#b5d4f4'],['不明',unk,'#dcdad3']].forEach(([_,v,col])=>{const hh=ch*v/tot;y-=hh;el('rect',{x,y,width:barW,height:hh,fill:col},svg);if(hh>16)txt(svg,x+barW/2,y+hh/2+4,v,{'font-size':11,fill:col===CORAL?'#fff':'#555','text-anchor':'middle','font-weight':600});});
+      txt(svg,x+barW/2,H-18,lb,{'font-size':12,fill:'#444','text-anchor':'middle','font-weight':600});txt(svg,x+barW/2,H-5,`計 ${tot}`,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});})();
+  // vBar helper
+  function vBar(id,labels,data,color){const svg=$(id),W=360,H=230,PL=36,PT=18,PB=46,PR=12,cw=W-PL-PR,ch=H-PT-PB,n=labels.length,mx=Math.max(...data)||1;grid(svg,PL,PT,cw,ch,mx);const bw=cw/n*0.6;
+    labels.forEach((lb,i)=>{const x=PL+cw*(i+0.5)/n,h=ch*data[i]/mx,y=PT+ch-h;el('rect',{x:x-bw/2,y,width:bw,height:h,rx:3,fill:color},svg);txt(svg,x,y-4,data[i],{'font-size':10,fill:'#777','text-anchor':'middle'});txt(svg,x,H-16,lb,{'font-size':9.5,fill:'#999','text-anchor':'middle'});});}
+  vBar('a-launch',S.launch.labels,S.launch.data,BLUE);vBar('a-duration',S.duration.labels,S.duration.data,CORAL);
+  // dow
+  (function(){const svg=$('a-dow'),W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,L=S.dow.labels,f=S.dow.f,w=S.dow.w,mx=Math.max(...f,...w)||1,n=7;grid(svg,PL,PT,cw,ch,mx);const gp=cw/n,bw=gp*0.32;
+    L.forEach((lb,i)=>{const cx=PL+gp*(i+0.5),fh=ch*f[i]/mx,wh=ch*w[i]/mx;el('rect',{x:cx-bw-2,y:PT+ch-fh,width:bw,height:fh,rx:2,fill:CORAL},svg);el('rect',{x:cx+2,y:PT+ch-wh,width:bw,height:wh,rx:2,fill:BLUE},svg);const wd=(i===5||i===6);txt(svg,cx,H-16,lb,{'font-size':12,fill:wd?'#d85a30':'#999','text-anchor':'middle','font-weight':wd?700:400});});})();
+  // heatmap
+  (function(){const svg=$('a-heat'),W=720,H=340,PL=80,PT=24,cg=2,R=S.heatmap.regions,M=S.heatmap.months,D=S.heatmap.data,cw=(W-PL-20)/12,chh=(H-PT-30)/R.length;let mx=0;D.forEach(r=>r.forEach(v=>mx=Math.max(mx,v)));
+    M.forEach((m,j)=>txt(svg,PL+cw*(j+0.5),PT-8,m+'月',{'font-size':10,fill:'#999','text-anchor':'middle'}));
+    R.forEach((r,i)=>{txt(svg,PL-6,PT+chh*(i+0.5)+3,r,{'font-size':10,fill:'#555','text-anchor':'end'});D[i].forEach((v,j)=>{const t=v/mx,col=v===0?'#f4f3ef':`rgb(${Math.round(245-200*t)},${Math.round(240-130*t)},${Math.round(235-70*t)})`;el('rect',{x:PL+cw*j,y:PT+chh*i,width:cw-cg,height:chh-cg,rx:2,fill:col},svg);if(v>=mx*0.45)txt(svg,PL+cw*j+(cw-cg)/2,PT+chh*i+chh/2+3,v,{'font-size':9,fill:'#fff','text-anchor':'middle','font-weight':600});});});})();
+  // 動的インサイト：数字を STATS から埋める（古い固定値を排除）
+  var _fill=function(id,v){var e=$(id);if(e)e.textContent=v;};
+  var _pf=S.payment.f,_pft=(_pf.free+_pf.paid+_pf.unknown)||1;
+  var _du=S.duration.data,_dut=_du.reduce(function(a,b){return a+b;},0)||1;
+  _fill('ins-scale-total',T.fireworks);
+  _fill('ins-launch-nonpub',(S.launch.nonpub||0));
+  _fill('ins-fes-free',Math.round(_pf.free/_pft*100));
+  _fill('ins-dur1',Math.round(_du[0]/_dut*100));
+}
+return{init};})();
+AnaMod.init();
+</script>
+</body>
+</html>
