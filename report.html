@@ -788,19 +788,27 @@ function render(){
     d.innerHTML='<div class="label">'+k[0]+'</div><div class="val">'+k[1]+'</div><div class="sub">'+k[2]+'</div>';kc.appendChild(d);});
 
   // 1) monthly（月フィルタは無視して描き、選択月をハイライト）
+  //    y 軸は 100 単位（フィルタで最大値が小さい時は 5/10/20/50 に自動縮小）。
+  //    hover は月単位の透明カラムで受け、祭典・花火の両方を 1 つの tooltip に表示
+  //    （線が重なっていてもどちらの値も読める）。
   (function(){const svg=$('a-monthly');clear(svg);const W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,f=SM.monthly.f,w=SM.monthly.w,mx=Math.max(...f,...w,1);
+    const step=mx>=100?100:mx>=50?50:mx>=20?20:mx>=10?10:5,top=Math.ceil(mx/step)*step;
     if(F.month>=0){el('rect',{x:PL+cw*F.month/11-cw/22,y:PT-6,width:cw/11,height:ch+10,rx:6,fill:CORAL,'fill-opacity':.08},svg);}
-    grid(svg,PL,PT,cw,ch,mx);
+    for(let v=0;v<=top;v+=step){const y=PT+ch-ch*v/top;el('line',{x1:PL,y1:y,x2:PL+cw,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,PL-6,y+3,v,{'font-size':10,fill:'#aaa','text-anchor':'end'});}
     for(let i=0;i<12;i++){const t=txt(svg,PL+cw*i/11,H-12,(i+1)+'月',{'font-size':10,fill:F.month===i?CORAL:'#aaa','text-anchor':'middle','font-weight':F.month===i?700:400});
-      t.classList.add('clickable');t.addEventListener('click',()=>setMonth(i));tip(t,'クリックで '+(i+1)+'月 に絞り込み');}
-    function pth(arr,col,name){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/mx;d+=(i?'L':'M')+x+','+y;});
+      t.classList.add('clickable');t.addEventListener('click',()=>setMonth(i));}
+    function pth(arr,col){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/top;d+=(i?'L':'M')+x+','+y;});
       el('path',{d:d+'L'+(PL+cw)+','+(PT+ch)+'L'+PL+','+(PT+ch)+'Z',fill:col,'fill-opacity':0.1},svg);
       const p=el('path',{d,fill:'none',stroke:col,'stroke-width':2.2},svg);p.classList.add('ln');
-      arr.forEach((v,i)=>{const c=el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/mx,r:4,fill:col},svg);c.classList.add('pt');
-        if(F.month>=0&&F.month!==i)c.style.opacity=DIM;
-        c.style.cursor='pointer';c.addEventListener('click',()=>setMonth(i));
-        tip(c,'<b>'+(i+1)+'月</b> '+name+'：'+v+' 場');});}
-    pth(w,BLUE,'花火');pth(f,CORAL,'祭典');})();
+      arr.forEach((v,i)=>{const c=el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/top,r:4,fill:col},svg);c.classList.add('pt');
+        c.style.pointerEvents='none';
+        if(F.month>=0&&F.month!==i)c.style.opacity=DIM;});}
+    pth(w,BLUE);pth(f,CORAL);
+    // 透明カラム：その月のどこに乗せても両系列の値を表示。クリックで月フィルタ。
+    for(let i=0;i<12;i++){const hc=el('rect',{x:PL+cw*i/11-cw/22,y:PT-6,width:cw/11,height:ch+12,fill:'transparent'},svg);
+      hc.classList.add('clickable');hc.addEventListener('click',()=>setMonth(i));
+      tip(hc,'<b>'+(i+1)+'月</b><br><span style="color:#ff9d73">●</span> 祭典：'+f[i]+' 場<br><span style="color:#7db9f0">●</span> 花火：'+w[i]+' 場');}
+  })();
 
   // 2) region（地區フィルタ無視で全地區・選択をハイライト。バーとラベルはクリック可）
   (function(){const svg=$('a-region');clear(svg);const W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=REP.regions,f=SR.region.f,w=SR.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(f[i],w[i])),1);
