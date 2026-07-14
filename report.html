@@ -646,7 +646,7 @@ body.dark .reset-btn:hover{background:#373c47}
 
   <div class="report" id="tab-analytics">
     <div class="fltbar">
-      <span class="fgl">種別</span>
+      <span class="fgl">種類</span>
       <button class="chipbtn on" id="ft-all">全部</button>
       <button class="chipbtn cf" id="ft-f">🎏 祭典</button>
       <button class="chipbtn cw" id="ft-w">🎆 花火</button>
@@ -661,16 +661,16 @@ body.dark .reset-btn:hover{background:#373c47}
 
     <div class="card"><h2 class="sec"><span class="num">1</span>月別活動分布趨勢</h2>
       <div class="anote">各月開催活動數（跨月活動各月計入）。掌握旺季規劃時程。</div>
-      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+      <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
       <svg class="chart" id="a-monthly" viewBox="0 0 720 260"></svg>
       <div class="insight">祭典・花火とも <b>7〜8 月</b> に集中。盛夏是黃金期，但人潮與住宿成本最高。</div></div>
 
     <div class="grid2">
       <div class="card"><h2 class="sec"><span class="num">2</span>地區分布</h2><div class="anote">十大地區件數。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+        <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
         <svg class="chart" id="a-region" viewBox="0 0 360 300"></svg></div>
       <div class="card"><h2 class="sec"><span class="num">3</span>都道府縣 Top 15</h2><div class="anote">最密集的縣（堆疊）。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+        <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
         <svg class="chart" id="a-pref" viewBox="0 0 360 360"></svg></div>
     </div>
     <div class="insight blue">關東兩者皆居首。<b>都市圈花火密度極高</b>，想避人潮可考慮東北、甲信越。</div>
@@ -678,7 +678,7 @@ body.dark .reset-btn:hover{background:#373c47}
     <div class="grid2">
       <div class="card"><h2 class="sec"><span class="num">4</span>花火規模分布</h2><div class="anote">共 <b id="ins-scale-total">–</b> 場。</div><svg class="chart" id="a-scale" viewBox="0 0 360 220"></svg></div>
       <div class="card"><h2 class="sec"><span class="num">5</span>費用結構</h2><div class="anote">祭典看入場料、花火看有料席。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>有料</span><span class="li"><span class="ls" style="background:#b5d4f4"></span>無料</span><span class="li"><span class="ls" style="background:#dcdad3"></span>不明</span></div>
+        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#e0a44e"></span>有料</span><span class="li"><span class="ls" style="background:#79b791"></span>無料</span><span class="li"><span class="ls" style="background:#cbc8c0"></span>不明</span></div>
         <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg></div>
     </div>
     <div class="insight">祭典 <b id="ins-fes-free">–</b>% 免費入場，低預算首選；花火約四成設有料席，熱門大會建議提前購票。</div>
@@ -690,7 +690,7 @@ body.dark .reset-btn:hover{background:#373c47}
     <div class="insight blue"><b id="ins-dur1">–</b>% 活動僅 1 天，行程須精準對齊日期。長期活動多為風鈴祭・燈飾等常設展。</div>
 
     <div class="card"><h2 class="sec"><span class="num">8</span>星期分布</h2><div class="anote">各星期開催日數。</div>
-      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
+      <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
       <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
       <div class="insight">花火明顯<b>集中週六</b>；平日出遊可避人潮。</div></div>
 
@@ -790,6 +790,10 @@ function syncUI(){
 const DIM=.22;
 
 function render(){
+  // 種類フィルタで片方だけの時は、もう片方（全部 0）の系列をチャートから消す
+  const showF=F.t!=='w',showW=F.t!=='f',both=showF&&showW;
+  document.querySelectorAll('.leg-f').forEach(e=>{e.style.display=showF?'':'none';});
+  document.querySelectorAll('.leg-w').forEach(e=>{e.style.display=showW?'':'none';});
   const S=compute();                       // 全フィルタ適用（大半のチャート用）
   const SR=compute({ignoreRegion:true});   // 地區チャート：自分は全地區を表示して選択をハイライト
   const SM=compute({ignoreMonth:true});    // 月別チャート
@@ -805,7 +809,7 @@ function render(){
 
   // 1) monthly（月フィルタ無視で描き選択月をハイライト。y 軸 100 単位。
   //    hover は月カラムで受け両系列を表示＋その月の点を拡大）
-  (function(){const svg=$('a-monthly');clear(svg);const W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,f=SM.monthly.f,w=SM.monthly.w,mx=Math.max(...f,...w,1);
+  (function(){const svg=$('a-monthly');clear(svg);const W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,f=SM.monthly.f,w=SM.monthly.w,mx=Math.max(...(showF?f:[0]),...(showW?w:[0]),1);
     if(F.month>=0){el('rect',{x:PL+cw*F.month/11-cw/22,y:PT-6,width:cw/11,height:ch+10,rx:6,fill:CORAL,'fill-opacity':.08},svg);}
     const top=yaxis(svg,PL,PT,cw,ch,mx,100);
     for(let i=0;i<12;i++){const t=txt(svg,PL+cw*i/11,H-12,(i+1)+'月',{'font-size':10,fill:F.month===i?CORAL:'#aaa','text-anchor':'middle','font-weight':F.month===i?700:400});
@@ -817,40 +821,59 @@ function render(){
       arr.forEach((v,i)=>{const c=el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/top,r:4,fill:col},svg);c.classList.add('pt');
         c.style.pointerEvents='none';cir[si][i]=c;
         if(F.month>=0&&F.month!==i)c.style.opacity=DIM;});}
-    pth(w,BLUE,0);pth(f,CORAL,1);
+    if(showW)pth(w,BLUE,0);
+    if(showF)pth(f,CORAL,1);
     for(let i=0;i<12;i++){const hc=el('rect',{x:PL+cw*i/11-cw/22,y:PT-6,width:cw/11,height:ch+12,fill:'transparent'},svg);
       hc.classList.add('clickable');hc.addEventListener('click',()=>setMonth(i));
       hc.addEventListener('mouseenter',()=>{cir[0][i]&&cir[0][i].setAttribute('r',7);cir[1][i]&&cir[1][i].setAttribute('r',7);});
       hc.addEventListener('mouseleave',()=>{cir[0][i]&&cir[0][i].setAttribute('r',4);cir[1][i]&&cir[1][i].setAttribute('r',4);});
-      tip(hc,'<b>'+(i+1)+'月</b><br><span style="color:'+CORAL+'">●</span> 祭典：'+f[i]+' 場<br><span style="color:'+BLUE+'">●</span> 花火：'+w[i]+' 場');}
+      let ht='<b>'+(i+1)+'月</b>';
+      if(showF)ht+='<br><span style="color:'+CORAL+'">●</span> 祭典：'+f[i]+' 場';
+      if(showW)ht+='<br><span style="color:'+BLUE+'">●</span> 花火：'+w[i]+' 場';
+      tip(hc,ht);}
   })();
 
-  // 2) region（地區フィルタ無視・選択ハイライト。2 本バー）
-  (function(){const svg=$('a-region');clear(svg);const W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=REP.regions,f=SR.region.f,w=SR.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(f[i],w[i])),1);
+  // 2) region（地區フィルタ無視・選択ハイライト。両方=2本バー / 片方のみ=1本バー）
+  (function(){const svg=$('a-region');clear(svg);const W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=REP.regions,f=SR.region.f,w=SR.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(showF?f[i]:0,showW?w[i]:0)),1);
     L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2,dim=F.region>=0&&F.region!==i;
       const t=txt(svg,labW-6,y+3,lb,{'font-size':11,fill:F.region===i?CORAL:'#555','text-anchor':'end','font-weight':F.region===i?700:400});
       t.classList.add('clickable');t.addEventListener('click',()=>setRegion(i));tip(t,'クリックで '+lb+' に絞り込み');
-      const fw=cw*f[i]/mx,ww=cw*w[i]/mx;
-      const r1=el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);
-      const r2=el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);
-      [r1,r2].forEach(r=>{r.classList.add('gx','clickable');if(dim)r.style.opacity=DIM;r.addEventListener('click',()=>setRegion(i));});
-      tip(r1,'<b>'+lb+'</b> 祭典：'+f[i]+' 場');tip(r2,'<b>'+lb+'</b> 花火：'+w[i]+' 場');
-      txt(svg,labW+fw+4,y-bh+bh/2+2,f[i],{'font-size':9,fill:CORAL}).style.opacity=dim?DIM:1;
-      txt(svg,labW+ww+4,y+1+bh/2+2,w[i],{'font-size':9,fill:BLUE}).style.opacity=dim?DIM:1;});})();
+      if(both){
+        const fw=cw*f[i]/mx,ww=cw*w[i]/mx;
+        const r1=el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);
+        const r2=el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);
+        [r1,r2].forEach(r=>{r.classList.add('gx','clickable');if(dim)r.style.opacity=DIM;r.addEventListener('click',()=>setRegion(i));});
+        tip(r1,'<b>'+lb+'</b> 祭典：'+f[i]+' 場');tip(r2,'<b>'+lb+'</b> 花火：'+w[i]+' 場');
+        txt(svg,labW+fw+4,y-bh+bh/2+2,f[i],{'font-size':9,fill:CORAL}).style.opacity=dim?DIM:1;
+        txt(svg,labW+ww+4,y+1+bh/2+2,w[i],{'font-size':9,fill:BLUE}).style.opacity=dim?DIM:1;
+      }else{
+        const v=showF?f[i]:w[i],col=showF?CORAL:BLUE,name=showF?'祭典':'花火',wd=cw*v/mx;
+        const r=el('rect',{x:labW,y:y-bh,width:wd,height:bh*2,rx:2,fill:col},svg);
+        r.classList.add('gx','clickable');if(dim)r.style.opacity=DIM;r.addEventListener('click',()=>setRegion(i));
+        tip(r,'<b>'+lb+'</b> '+name+'：'+v+' 場');
+        txt(svg,labW+wd+4,y+3,v,{'font-size':9,fill:col}).style.opacity=dim?DIM:1;
+      }});})();
 
-  // 3) pref Top15（2 と同じく祭典・花火を 2 本バーに分ける）
+  // 3) pref Top15（2 と同形式。両方=2本バー / 片方のみ=1本バー）
   (function(){const svg=$('a-pref');clear(svg);const W=360,H=360,labW=58,PR=40,PT=6,PB=6,cw=W-labW-PR;
-    const arr=Object.entries(S.prefAgg).map(([pi,o])=>[REP.prefs[pi],o.f,o.w,o.f+o.w]).sort((a,b)=>b[3]-a[3]).slice(0,15);
-    if(!arr.length){txt(svg,W/2,40,'該当なし',{'font-size':12,fill:'#aaa','text-anchor':'middle'});return;}
-    const rowH=(H-PT-PB)/15,bh=rowH*0.32,mx=Math.max(...arr.map(x=>Math.max(x[1],x[2])),1);
+    const arr=Object.entries(S.prefAgg).map(([pi,o])=>[REP.prefs[pi],o.f,o.w,(showF?o.f:0)+(showW?o.w:0)]).sort((a,b)=>b[3]-a[3]).slice(0,15);
+    if(!arr.length||!arr[0][3]){txt(svg,W/2,40,'該当なし',{'font-size':12,fill:'#aaa','text-anchor':'middle'});return;}
+    const rowH=(H-PT-PB)/15,bh=rowH*0.32,mx=Math.max(...arr.map(x=>Math.max(showF?x[1]:0,showW?x[2]:0)),1);
     arr.forEach(([lb,fv,wv],i)=>{const y=PT+rowH*i+rowH/2;
       txt(svg,labW-6,y+3,lb,{'font-size':10,fill:'#555','text-anchor':'end'});
-      const fw=cw*fv/mx,ww=cw*wv/mx;
-      const r1=el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);r1.classList.add('gx');
-      const r2=el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);r2.classList.add('gx');
-      tip(r1,'<b>'+lb+'</b> 祭典：'+fv+' 場');tip(r2,'<b>'+lb+'</b> 花火：'+wv+' 場');
-      txt(svg,labW+fw+3,y-bh/2+1,fv,{'font-size':8,fill:CORAL});
-      txt(svg,labW+ww+3,y+bh+1,wv,{'font-size':8,fill:BLUE});});})();
+      if(both){
+        const fw=cw*fv/mx,ww=cw*wv/mx;
+        const r1=el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);r1.classList.add('gx');
+        const r2=el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);r2.classList.add('gx');
+        tip(r1,'<b>'+lb+'</b> 祭典：'+fv+' 場');tip(r2,'<b>'+lb+'</b> 花火：'+wv+' 場');
+        txt(svg,labW+fw+3,y-bh/2+1,fv,{'font-size':8,fill:CORAL});
+        txt(svg,labW+ww+3,y+bh+1,wv,{'font-size':8,fill:BLUE});
+      }else{
+        const v=showF?fv:wv,col=showF?CORAL:BLUE,name=showF?'祭典':'花火',wd=cw*v/mx;
+        const r=el('rect',{x:labW,y:y-bh,width:wd,height:bh*2,rx:2,fill:col},svg);r.classList.add('gx');
+        tip(r,'<b>'+lb+'</b> '+name+'：'+v+' 場');
+        txt(svg,labW+wd+3,y+3,v,{'font-size':9,fill:col});
+      }});})();
 
   // 4) scale donut（自分の規模フィルタは無視して全スライス表示・選択を強調。クリックで規模フィルタ）
   (function(){const svg=$('a-scale');clear(svg);const cx=110,cy=110,r=70,ir=42;
@@ -871,10 +894,13 @@ function render(){
       if(F.scale>=0&&F.scale!==si){g.style.opacity=DIM;t.style.opacity=DIM;}});})();
 
   // 5) payment（色は種別と別系統。クリックで有料/無料/不明フィルタ）
-  (function(){const svg=$('a-pay');clear(svg);const W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,rows=[['祭典',SP.payment.f],['花火',SP.payment.w]],barW=70,gap=(cw-barW*2)/3;
+  (function(){const svg=$('a-pay');clear(svg);const W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,barW=70;
+    const rows=[];
+    if(showF)rows.push(['祭典',SP.payment.f]);
+    if(showW)rows.push(['花火',SP.payment.w]);
+    const gap=(cw-barW*rows.length)/(rows.length+1);
     const pf=S.payment.f,pft=pf.paid+pf.free+pf.unknown;
     $('ins-fes-free').textContent=pct(pf.free,pft);
-    const KEYS=['paid','free','unknown'];
     rows.forEach(([lb,p],ri)=>{const paid=p.paid||0,free=p.free||0,unk=p.unknown||0,tot=paid+free+unk,x=PL+gap+(barW+gap)*ri;let y=PT+ch;
       if(!tot){txt(svg,x+barW/2,PT+ch/2,'—',{'font-size':14,fill:'#ccc','text-anchor':'middle'});}
       [paid,free,unk].forEach((v,pi)=>{if(!tot)return;const col=PAY_COLORS[pi],hh=ch*v/tot;y-=hh;
@@ -884,9 +910,7 @@ function render(){
         tip(r,'<b>'+lb+'・'+PAY_NAMES[pi]+'</b>：'+v+' 場（'+pct(v,tot)+'%）<br><span style="opacity:.7">クリックで費用で絞り込み</span>');
         if(hh>16)txt(svg,x+barW/2,y+hh/2+4,v,{'font-size':11,fill:'#fff','text-anchor':'middle','font-weight':600});});
       txt(svg,x+barW/2,H-18,lb,{'font-size':12,fill:'#444','text-anchor':'middle','font-weight':600});
-      txt(svg,x+barW/2,H-5,'計 '+tot,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});
-    // 凡例
-    PAY_NAMES.forEach((nm,pi)=>{const lx=PL+pi*66;el('rect',{x:lx,y:4,width:10,height:10,rx:2,fill:PAY_COLORS[pi]},svg);txt(svg,lx+14,13,nm,{'font-size':10,fill:'#888'});});})();
+      txt(svg,x+barW/2,H-5,'計 '+tot,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});})();
 
   // 6/7) launch & duration（y 軸間隔を指定）
   function vBar(id,labels,data,color,unit,step){const svg=$(id);clear(svg);const W=360,H=230,PL=36,PT=18,PB=46,PR=12,cw=W-PL-PR,ch=H-PT-PB,n=labels.length,mx=Math.max(...data,1);const top=yaxis(svg,PL,PT,cw,ch,mx,step);const bw=cw/n*0.6;
@@ -902,11 +926,18 @@ function render(){
   $('ins-dur1').textContent=pct(S.duration[0],dt);
 
   // 8) dow（y 軸 200 単位）
-  (function(){const svg=$('a-dow');clear(svg);const W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,f=S.dow.f,w=S.dow.w,mx=Math.max(...f,...w,1),n=7;const top=yaxis(svg,PL,PT,cw,ch,mx,200);const gp=cw/n,bw=gp*0.32;
-    DOW_LABELS.forEach((lb,i)=>{const cx=PL+gp*(i+0.5),fh=ch*f[i]/top,wh=ch*w[i]/top;
-      const r1=el('rect',{x:cx-bw-2,y:PT+ch-fh,width:bw,height:fh,rx:2,fill:CORAL},svg);r1.classList.add('gy');
-      const r2=el('rect',{x:cx+2,y:PT+ch-wh,width:bw,height:wh,rx:2,fill:BLUE},svg);r2.classList.add('gy');
-      tip(r1,'<b>'+lb+'曜</b> 祭典：'+f[i]+' 日');tip(r2,'<b>'+lb+'曜</b> 花火：'+w[i]+' 日');
+  (function(){const svg=$('a-dow');clear(svg);const W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,f=S.dow.f,w=S.dow.w,mx=Math.max(...(showF?f:[0]),...(showW?w:[0]),1),n=7;const top=yaxis(svg,PL,PT,cw,ch,mx,200);const gp=cw/n,bw=gp*0.32;
+    DOW_LABELS.forEach((lb,i)=>{const cx=PL+gp*(i+0.5);
+      if(both){
+        const fh=ch*f[i]/top,wh=ch*w[i]/top;
+        const r1=el('rect',{x:cx-bw-2,y:PT+ch-fh,width:bw,height:fh,rx:2,fill:CORAL},svg);r1.classList.add('gy');
+        const r2=el('rect',{x:cx+2,y:PT+ch-wh,width:bw,height:wh,rx:2,fill:BLUE},svg);r2.classList.add('gy');
+        tip(r1,'<b>'+lb+'曜</b> 祭典：'+f[i]+' 日');tip(r2,'<b>'+lb+'曜</b> 花火：'+w[i]+' 日');
+      }else{
+        const v=showF?f[i]:w[i],col=showF?CORAL:BLUE,name=showF?'祭典':'花火',hh=ch*v/top;
+        const r=el('rect',{x:cx-bw,y:PT+ch-hh,width:bw*2,height:hh,rx:2,fill:col},svg);r.classList.add('gy');
+        tip(r,'<b>'+lb+'曜</b> '+name+'：'+v+' 日');
+      }
       const wd=(i===5||i===6);txt(svg,cx,H-16,lb,{'font-size':12,fill:wd?CORAL:'#999','text-anchor':'middle','font-weight':wd?700:400});});})();
 
   // 9) heatmap（両方あり=紫 / 祭典のみ=珊瑚 / 花火のみ=青。地區・月フィルタ無視で全体表示）
@@ -922,7 +953,9 @@ function render(){
         const dimmed=(F.region>=0&&F.region!==i)||(F.month>=0&&F.month!==j);
         if(dimmed)c.style.opacity=DIM;
         c.classList.add('clickable');c.addEventListener('click',()=>{const sel=F.region===i&&F.month===j;F.region=sel?-1:i;F.month=sel?-1:j;syncUI();render();});
-        tip(c,'<b>'+r+'・'+(j+1)+'月</b>：計 '+v+' 場<br><span style="color:'+CORAL+'">●</span> 祭典 '+fv+'　<span style="color:'+BLUE+'">●</span> 花火 '+wv);
+        let ht='<b>'+r+'・'+(j+1)+'月</b>：計 '+v+' 場';
+        if(both)ht+='<br><span style="color:'+CORAL+'">●</span> 祭典 '+fv+'　<span style="color:'+BLUE+'">●</span> 花火 '+wv;
+        tip(c,ht);
         if(v>=mx*0.45)txt(svg,PL+cw*j+(cw-cg)/2,PT+chh*i+chh/2+3,v,{'font-size':9,fill:'#fff','text-anchor':'middle','font-weight':600}).style.opacity=dimmed?DIM:1;}});})();
 }
 
