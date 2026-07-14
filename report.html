@@ -718,13 +718,20 @@ const SC_NAMES=['大','中','小','不明'],SC_COLORS=['#185fa5',BLUE,'#9cc4ee',
 const L_LABELS=['〜1千','1〜3千','3〜5千','5千〜1万','1〜2万','2万〜'];
 const D_LABELS=['1日','2〜3日','4〜7日','8〜30日','31日以上'];
 const DOW_LABELS=['月','火','水','木','金','土','日'];
-const F={t:'all',region:-1,month:-1};   // region/month: -1 = 未選択
+// 費用の色は種別（珊瑚=祭典 / 青=花火）と被らない配色に
+const PAY_NAMES=['有料','無料','不明'],PAY_COLORS=['#e0a44e','#79b791','#cbc8c0'];
+// ヒートマップ用グラデ：両方あり=紫 / 祭典のみ=珊瑚 / 花火のみ=青
+const HEAT={both:[[244,239,249],[122,79,163]],f:[[251,238,231],[216,90,48]],w:[[233,241,251],[55,138,221]]};
+const F={t:'all',region:-1,month:-1,scale:-1,pay:-1};
 let tipEl;
 
 function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
 function txt(p,x,y,s,a={}){const t=el('text',{x,y,...a},p);t.textContent=s;return t;}
 function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild);}
-function grid(svg,x0,y0,w,h,mx,steps=4){for(let i=0;i<=steps;i++){const v=mx*i/steps,y=y0+h-h*i/steps;el('line',{x1:x0,y1:y,x2:x0+w,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,x0-6,y+3,Math.round(v),{'font-size':10,fill:'#aaa','text-anchor':'end'});}}
+// 目盛り間隔 step を基準に、データが小さい時は自動で縮小して 2 区間以上を確保
+const LADDER=[500,200,100,50,20,10,5,2,1];
+function axis(mx,step){let s=step;while(s>1&&mx<s*2){const i=LADDER.indexOf(s);s=i>=0&&i<LADDER.length-1?LADDER[i+1]:Math.max(1,Math.floor(s/2));}return{step:s,top:Math.max(s,Math.ceil(mx/s)*s)};}
+function yaxis(svg,PL,PT,cw,ch,mx,step){const a=axis(mx,step);for(let v=0;v<=a.top;v+=a.step){const y=PT+ch-ch*v/a.top;el('line',{x1:PL,y1:y,x2:PL+cw,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,PL-6,y+3,v,{'font-size':10,fill:'#aaa','text-anchor':'end'});}return a.top;}
 function tip(node,html){
   node.addEventListener('mousemove',ev=>{tipEl.style.display='block';tipEl.innerHTML=html;
     const w=tipEl.offsetWidth,x=ev.clientX+14+w>innerWidth?ev.clientX-w-10:ev.clientX+14;
@@ -732,18 +739,20 @@ function tip(node,html){
   node.addEventListener('mouseleave',()=>{tipEl.style.display='none';});
 }
 const pct=(v,t)=>t?Math.round(v/t*100):0;
+function mix(t,a,b){return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';}
 
 // ---- フィルタに応じた統計を events タプルから再計算 ----
 // tuple: [isW, ri, pi, nd, sc, pay, lb, monthMask, dow0..dow6]
 function compute(opts={}){
-  const igR=opts.ignoreRegion,igM=opts.ignoreMonth;
+  const igR=opts.ignoreRegion,igM=opts.ignoreMonth,igS=opts.ignoreScale,igP=opts.ignorePay;
   const S={monthly:{f:Array(12).fill(0),w:Array(12).fill(0)},
     region:{f:Array(10).fill(0),w:Array(10).fill(0)},
     prefAgg:{},scale:[0,0,0,0],
     payment:{f:{paid:0,free:0,unknown:0},w:{paid:0,free:0,unknown:0}},
     launch:Array(6).fill(0),nonpub:0,duration:Array(5).fill(0),
     dow:{f:Array(7).fill(0),w:Array(7).fill(0)},
-    heat:REP.regions.map(()=>Array(12).fill(0)),
+    heatF:REP.regions.map(()=>Array(12).fill(0)),
+    heatW:REP.regions.map(()=>Array(12).fill(0)),
     prefSet:new Set(),events:0,fes:0,fw:0};
   const PK=['paid','free','unknown'];
   for(const e of REP.events){
@@ -752,9 +761,11 @@ function compute(opts={}){
     if(F.t==='w'&&!isW)continue;
     if(!igR&&F.region>=0&&e[1]!==F.region)continue;
     if(!igM&&F.month>=0&&!((e[7]>>F.month)&1))continue;
+    if(!igS&&F.scale>=0&&!(isW&&(e[4]<0?3:e[4])===F.scale))continue;
+    if(!igP&&F.pay>=0&&e[5]!==F.pay)continue;
     S.events++;isW?S.fw++:S.fes++;
     S.prefSet.add(e[2]);
-    for(let m=0;m<12;m++)if((e[7]>>m)&1){(isW?S.monthly.w:S.monthly.f)[m]++;if(e[1]>=0)S.heat[e[1]][m]++;}
+    for(let m=0;m<12;m++)if((e[7]>>m)&1){(isW?S.monthly.w:S.monthly.f)[m]++;if(e[1]>=0)(isW?S.heatW:S.heatF)[e[1]][m]++;}
     if(e[1]>=0)(isW?S.region.w:S.region.f)[e[1]]++;
     (S.prefAgg[e[2]]??={f:0,w:0})[isW?'w':'f']++;
     if(isW){S.scale[e[4]<0?3:e[4]]++;S.payment.w[PK[e[5]]]++;e[6]<0?S.nonpub++:S.launch[e[6]]++;}
@@ -767,6 +778,8 @@ function compute(opts={}){
 
 function setRegion(ri){F.region=F.region===ri?-1:ri;syncUI();render();}
 function setMonth(m){F.month=F.month===m?-1:m;syncUI();render();}
+function setScale(i){F.scale=F.scale===i?-1:i;syncUI();render();}
+function setPay(i){F.pay=F.pay===i?-1:i;syncUI();render();}
 function syncUI(){
   $('ft-all').classList.toggle('on',F.t==='all');
   $('ft-f').classList.toggle('on',F.t==='f');
@@ -778,8 +791,11 @@ const DIM=.22;
 
 function render(){
   const S=compute();                       // 全フィルタ適用（大半のチャート用）
-  const SR=compute({ignoreRegion:true});   // 地區チャート用（自分は全地區を表示して選択をハイライト）
-  const SM=compute({ignoreMonth:true});    // 月別チャート・ヒートマップ用
+  const SR=compute({ignoreRegion:true});   // 地區チャート：自分は全地區を表示して選択をハイライト
+  const SM=compute({ignoreMonth:true});    // 月別チャート
+  const SS=compute({ignoreScale:true});    // 規模ドーナツ
+  const SP=compute({ignorePay:true});      // 費用チャート
+  const SH=compute({ignoreRegion:true,ignoreMonth:true}); // ヒートマップ
 
   // KPI
   const kc=$('a_kpis');kc.innerHTML='';
@@ -787,30 +803,29 @@ function render(){
     const d=document.createElement('div');d.className='kpi '+k[3];
     d.innerHTML='<div class="label">'+k[0]+'</div><div class="val">'+k[1]+'</div><div class="sub">'+k[2]+'</div>';kc.appendChild(d);});
 
-  // 1) monthly（月フィルタは無視して描き、選択月をハイライト）
-  //    y 軸は 100 単位（フィルタで最大値が小さい時は 5/10/20/50 に自動縮小）。
-  //    hover は月単位の透明カラムで受け、祭典・花火の両方を 1 つの tooltip に表示
-  //    （線が重なっていてもどちらの値も読める）。
+  // 1) monthly（月フィルタ無視で描き選択月をハイライト。y 軸 100 単位。
+  //    hover は月カラムで受け両系列を表示＋その月の点を拡大）
   (function(){const svg=$('a-monthly');clear(svg);const W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,f=SM.monthly.f,w=SM.monthly.w,mx=Math.max(...f,...w,1);
-    const step=mx>=100?100:mx>=50?50:mx>=20?20:mx>=10?10:5,top=Math.ceil(mx/step)*step;
     if(F.month>=0){el('rect',{x:PL+cw*F.month/11-cw/22,y:PT-6,width:cw/11,height:ch+10,rx:6,fill:CORAL,'fill-opacity':.08},svg);}
-    for(let v=0;v<=top;v+=step){const y=PT+ch-ch*v/top;el('line',{x1:PL,y1:y,x2:PL+cw,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,PL-6,y+3,v,{'font-size':10,fill:'#aaa','text-anchor':'end'});}
+    const top=yaxis(svg,PL,PT,cw,ch,mx,100);
     for(let i=0;i<12;i++){const t=txt(svg,PL+cw*i/11,H-12,(i+1)+'月',{'font-size':10,fill:F.month===i?CORAL:'#aaa','text-anchor':'middle','font-weight':F.month===i?700:400});
       t.classList.add('clickable');t.addEventListener('click',()=>setMonth(i));}
-    function pth(arr,col){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/top;d+=(i?'L':'M')+x+','+y;});
+    const cir=[[],[]];
+    function pth(arr,col,si){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/top;d+=(i?'L':'M')+x+','+y;});
       el('path',{d:d+'L'+(PL+cw)+','+(PT+ch)+'L'+PL+','+(PT+ch)+'Z',fill:col,'fill-opacity':0.1},svg);
       const p=el('path',{d,fill:'none',stroke:col,'stroke-width':2.2},svg);p.classList.add('ln');
       arr.forEach((v,i)=>{const c=el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/top,r:4,fill:col},svg);c.classList.add('pt');
-        c.style.pointerEvents='none';
+        c.style.pointerEvents='none';cir[si][i]=c;
         if(F.month>=0&&F.month!==i)c.style.opacity=DIM;});}
-    pth(w,BLUE);pth(f,CORAL);
-    // 透明カラム：その月のどこに乗せても両系列の値を表示。クリックで月フィルタ。
+    pth(w,BLUE,0);pth(f,CORAL,1);
     for(let i=0;i<12;i++){const hc=el('rect',{x:PL+cw*i/11-cw/22,y:PT-6,width:cw/11,height:ch+12,fill:'transparent'},svg);
       hc.classList.add('clickable');hc.addEventListener('click',()=>setMonth(i));
-      tip(hc,'<b>'+(i+1)+'月</b><br><span style="color:#ff9d73">●</span> 祭典：'+f[i]+' 場<br><span style="color:#7db9f0">●</span> 花火：'+w[i]+' 場');}
+      hc.addEventListener('mouseenter',()=>{cir[0][i]&&cir[0][i].setAttribute('r',7);cir[1][i]&&cir[1][i].setAttribute('r',7);});
+      hc.addEventListener('mouseleave',()=>{cir[0][i]&&cir[0][i].setAttribute('r',4);cir[1][i]&&cir[1][i].setAttribute('r',4);});
+      tip(hc,'<b>'+(i+1)+'月</b><br><span style="color:'+CORAL+'">●</span> 祭典：'+f[i]+' 場<br><span style="color:'+BLUE+'">●</span> 花火：'+w[i]+' 場');}
   })();
 
-  // 2) region（地區フィルタ無視で全地區・選択をハイライト。バーとラベルはクリック可）
+  // 2) region（地區フィルタ無視・選択ハイライト。2 本バー）
   (function(){const svg=$('a-region');clear(svg);const W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=REP.regions,f=SR.region.f,w=SR.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(f[i],w[i])),1);
     L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2,dim=F.region>=0&&F.region!==i;
       const t=txt(svg,labW-6,y+3,lb,{'font-size':11,fill:F.region===i?CORAL:'#555','text-anchor':'end','font-weight':F.region===i?700:400});
@@ -823,81 +838,92 @@ function render(){
       txt(svg,labW+fw+4,y-bh+bh/2+2,f[i],{'font-size':9,fill:CORAL}).style.opacity=dim?DIM:1;
       txt(svg,labW+ww+4,y+1+bh/2+2,w[i],{'font-size':9,fill:BLUE}).style.opacity=dim?DIM:1;});})();
 
-  // 3) pref Top15（フィルタ適用後の上位）
-  (function(){const svg=$('a-pref');clear(svg);const W=360,H=360,labW=58,PR=36,PT=6,PB=6,cw=W-labW-PR;
+  // 3) pref Top15（2 と同じく祭典・花火を 2 本バーに分ける）
+  (function(){const svg=$('a-pref');clear(svg);const W=360,H=360,labW=58,PR=40,PT=6,PB=6,cw=W-labW-PR;
     const arr=Object.entries(S.prefAgg).map(([pi,o])=>[REP.prefs[pi],o.f,o.w,o.f+o.w]).sort((a,b)=>b[3]-a[3]).slice(0,15);
     if(!arr.length){txt(svg,W/2,40,'該当なし',{'font-size':12,fill:'#aaa','text-anchor':'middle'});return;}
-    const n=arr.length,rowH=(H-PT-PB)/Math.max(n,15),bh=rowH*0.6,mx=Math.max(...arr.map(x=>x[3]),1);
-    arr.forEach(([lb,fv,wv,tot],i)=>{const y=PT+rowH*i+rowH/2;
+    const rowH=(H-PT-PB)/15,bh=rowH*0.32,mx=Math.max(...arr.map(x=>Math.max(x[1],x[2])),1);
+    arr.forEach(([lb,fv,wv],i)=>{const y=PT+rowH*i+rowH/2;
       txt(svg,labW-6,y+3,lb,{'font-size':10,fill:'#555','text-anchor':'end'});
       const fw=cw*fv/mx,ww=cw*wv/mx;
-      const r1=el('rect',{x:labW,y:y-bh/2,width:fw,height:bh,rx:2,fill:CORAL},svg);r1.classList.add('gx');
-      const r2=el('rect',{x:labW+fw,y:y-bh/2,width:ww,height:bh,rx:2,fill:BLUE},svg);r2.classList.add('gx');
+      const r1=el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);r1.classList.add('gx');
+      const r2=el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);r2.classList.add('gx');
       tip(r1,'<b>'+lb+'</b> 祭典：'+fv+' 場');tip(r2,'<b>'+lb+'</b> 花火：'+wv+' 場');
-      txt(svg,labW+fw+ww+4,y+3,tot,{'font-size':9,fill:'#999'});});})();
+      txt(svg,labW+fw+3,y-bh/2+1,fv,{'font-size':8,fill:CORAL});
+      txt(svg,labW+ww+3,y+bh+1,wv,{'font-size':8,fill:BLUE});});})();
 
-  // 4) scale donut
+  // 4) scale donut（自分の規模フィルタは無視して全スライス表示・選択を強調。クリックで規模フィルタ）
   (function(){const svg=$('a-scale');clear(svg);const cx=110,cy=110,r=70,ir=42;
-    const data=SC_NAMES.map((lb,i)=>[lb,S.scale[i],SC_COLORS[i]]).filter(d=>d[1]>0);
+    const data=SC_NAMES.map((lb,i)=>[lb,SS.scale[i],SC_COLORS[i],i]).filter(d=>d[1]>0);
     const total=data.reduce((s,d)=>s+d[1],0);
     $('ins-scale-total').textContent=total;
     if(!total){txt(svg,cx,cy,'該当なし',{'font-size':12,fill:'#aaa','text-anchor':'middle'});return;}
     let ang=-Math.PI/2;
-    data.forEach(([lb,v,col])=>{const a2=ang+2*Math.PI*v/total-(v===total?.0001:0),x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),xi1=cx+ir*Math.cos(a2),yi1=cy+ir*Math.sin(a2),xi2=cx+ir*Math.cos(ang),yi2=cy+ir*Math.sin(ang),lg=(a2-ang)>Math.PI?1:0;
+    data.forEach(([lb,v,col,si])=>{const a2=ang+2*Math.PI*v/total-(v===total?.0001:0),x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),xi1=cx+ir*Math.cos(a2),yi1=cy+ir*Math.sin(a2),xi2=cx+ir*Math.cos(ang),yi2=cy+ir*Math.sin(ang),lg=(a2-ang)>Math.PI?1:0;
       const p=el('path',{d:'M'+x1+','+y1+'A'+r+','+r+' 0 '+lg+' 1 '+x2+','+y2+'L'+xi1+','+yi1+'A'+ir+','+ir+' 0 '+lg+' 0 '+xi2+','+yi2+'Z',fill:col},svg);
-      p.classList.add('sl');tip(p,'<b>'+lb+'</b>：'+v+' 場（'+pct(v,total)+'%）');ang=a2;});
+      p.classList.add('sl','clickable');if(F.scale>=0&&F.scale!==si)p.style.opacity=DIM;
+      p.addEventListener('click',()=>setScale(si));
+      tip(p,'<b>'+lb+'</b>：'+v+' 場（'+pct(v,total)+'%）<br><span style="opacity:.7">クリックで規模で絞り込み</span>');ang=a2;});
     txt(svg,cx,cy-4,total,{'font-size':22,'font-weight':700,'text-anchor':'middle',fill:'#1c1c1a'});
     txt(svg,cx,cy+12,'場',{'font-size':10,'text-anchor':'middle',fill:'#aaa'});
-    data.forEach(([lb,v,col],i)=>{const ly=40+i*34;el('rect',{x:230,y:ly,width:12,height:12,rx:3,fill:col},svg);
-      txt(svg,248,ly+10,lb+'　'+v+' 場 ('+pct(v,total)+'%)',{'font-size':11,fill:'#555'});});})();
+    data.forEach(([lb,v,col,si],i)=>{const ly=40+i*34;const g=el('rect',{x:230,y:ly,width:12,height:12,rx:3,fill:col},svg);g.classList.add('clickable');g.addEventListener('click',()=>setScale(si));
+      const t=txt(svg,248,ly+10,lb+'　'+v+' 場 ('+pct(v,total)+'%)',{'font-size':11,fill:'#555'});t.classList.add('clickable');t.addEventListener('click',()=>setScale(si));
+      if(F.scale>=0&&F.scale!==si){g.style.opacity=DIM;t.style.opacity=DIM;}});})();
 
-  // 5) payment
-  (function(){const svg=$('a-pay');clear(svg);const W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,rows=[['祭典',S.payment.f],['花火',S.payment.w]],barW=70,gap=(cw-barW*2)/3;
+  // 5) payment（色は種別と別系統。クリックで有料/無料/不明フィルタ）
+  (function(){const svg=$('a-pay');clear(svg);const W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,rows=[['祭典',SP.payment.f],['花火',SP.payment.w]],barW=70,gap=(cw-barW*2)/3;
     const pf=S.payment.f,pft=pf.paid+pf.free+pf.unknown;
     $('ins-fes-free').textContent=pct(pf.free,pft);
-    rows.forEach(([lb,p],i)=>{const paid=p.paid||0,free=p.free||0,unk=p.unknown||0,tot=paid+free+unk,x=PL+gap+(barW+gap)*i;let y=PT+ch;
+    const KEYS=['paid','free','unknown'];
+    rows.forEach(([lb,p],ri)=>{const paid=p.paid||0,free=p.free||0,unk=p.unknown||0,tot=paid+free+unk,x=PL+gap+(barW+gap)*ri;let y=PT+ch;
       if(!tot){txt(svg,x+barW/2,PT+ch/2,'—',{'font-size':14,fill:'#ccc','text-anchor':'middle'});}
-      [['有料',paid,CORAL],['無料',free,'#b5d4f4'],['不明',unk,'#dcdad3']].forEach(([nm,v,col])=>{if(!tot)return;const hh=ch*v/tot;y-=hh;
-        const r=el('rect',{x,y,width:barW,height:hh,fill:col},svg);r.classList.add('gy');
-        tip(r,'<b>'+lb+'・'+nm+'</b>：'+v+' 場（'+pct(v,tot)+'%）');
-        if(hh>16)txt(svg,x+barW/2,y+hh/2+4,v,{'font-size':11,fill:col===CORAL?'#fff':'#555','text-anchor':'middle','font-weight':600});});
+      [paid,free,unk].forEach((v,pi)=>{if(!tot)return;const col=PAY_COLORS[pi],hh=ch*v/tot;y-=hh;
+        const r=el('rect',{x,y,width:barW,height:hh,fill:col},svg);r.classList.add('gy','clickable');
+        if(F.pay>=0&&F.pay!==pi)r.style.opacity=DIM;
+        r.addEventListener('click',()=>setPay(pi));
+        tip(r,'<b>'+lb+'・'+PAY_NAMES[pi]+'</b>：'+v+' 場（'+pct(v,tot)+'%）<br><span style="opacity:.7">クリックで費用で絞り込み</span>');
+        if(hh>16)txt(svg,x+barW/2,y+hh/2+4,v,{'font-size':11,fill:'#fff','text-anchor':'middle','font-weight':600});});
       txt(svg,x+barW/2,H-18,lb,{'font-size':12,fill:'#444','text-anchor':'middle','font-weight':600});
-      txt(svg,x+barW/2,H-5,'計 '+tot,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});})();
+      txt(svg,x+barW/2,H-5,'計 '+tot,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});
+    // 凡例
+    PAY_NAMES.forEach((nm,pi)=>{const lx=PL+pi*66;el('rect',{x:lx,y:4,width:10,height:10,rx:2,fill:PAY_COLORS[pi]},svg);txt(svg,lx+14,13,nm,{'font-size':10,fill:'#888'});});})();
 
-  // 6/7) launch & duration
-  function vBar(id,labels,data,color,unit){const svg=$(id);clear(svg);const W=360,H=230,PL=36,PT=18,PB=46,PR=12,cw=W-PL-PR,ch=H-PT-PB,n=labels.length,mx=Math.max(...data,1);grid(svg,PL,PT,cw,ch,mx);const bw=cw/n*0.6;
-    labels.forEach((lb,i)=>{const x=PL+cw*(i+0.5)/n,h=ch*data[i]/mx,y=PT+ch-h;
+  // 6/7) launch & duration（y 軸間隔を指定）
+  function vBar(id,labels,data,color,unit,step){const svg=$(id);clear(svg);const W=360,H=230,PL=36,PT=18,PB=46,PR=12,cw=W-PL-PR,ch=H-PT-PB,n=labels.length,mx=Math.max(...data,1);const top=yaxis(svg,PL,PT,cw,ch,mx,step);const bw=cw/n*0.6;
+    labels.forEach((lb,i)=>{const x=PL+cw*(i+0.5)/n,h=ch*data[i]/top,y=PT+ch-h;
       const r=el('rect',{x:x-bw/2,y,width:bw,height:h,rx:3,fill:color},svg);r.classList.add('gy');
       tip(r,'<b>'+lb+'</b>：'+data[i]+' '+unit);
       txt(svg,x,y-4,data[i],{'font-size':10,fill:'#777','text-anchor':'middle'});
       txt(svg,x,H-16,lb,{'font-size':9.5,fill:'#999','text-anchor':'middle'});});}
   $('ins-launch-nonpub').textContent=S.nonpub;
-  vBar('a-launch',L_LABELS,S.launch,BLUE,'場');
-  vBar('a-duration',D_LABELS,S.duration,CORAL,'場');
+  vBar('a-launch',L_LABELS,S.launch,BLUE,'場',50);
+  vBar('a-duration',D_LABELS,S.duration,CORAL,'場',200);
   const dt=S.duration.reduce((a,b)=>a+b,0);
   $('ins-dur1').textContent=pct(S.duration[0],dt);
 
-  // 8) dow
-  (function(){const svg=$('a-dow');clear(svg);const W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,f=S.dow.f,w=S.dow.w,mx=Math.max(...f,...w,1),n=7;grid(svg,PL,PT,cw,ch,mx);const gp=cw/n,bw=gp*0.32;
-    DOW_LABELS.forEach((lb,i)=>{const cx=PL+gp*(i+0.5),fh=ch*f[i]/mx,wh=ch*w[i]/mx;
+  // 8) dow（y 軸 200 単位）
+  (function(){const svg=$('a-dow');clear(svg);const W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,f=S.dow.f,w=S.dow.w,mx=Math.max(...f,...w,1),n=7;const top=yaxis(svg,PL,PT,cw,ch,mx,200);const gp=cw/n,bw=gp*0.32;
+    DOW_LABELS.forEach((lb,i)=>{const cx=PL+gp*(i+0.5),fh=ch*f[i]/top,wh=ch*w[i]/top;
       const r1=el('rect',{x:cx-bw-2,y:PT+ch-fh,width:bw,height:fh,rx:2,fill:CORAL},svg);r1.classList.add('gy');
       const r2=el('rect',{x:cx+2,y:PT+ch-wh,width:bw,height:wh,rx:2,fill:BLUE},svg);r2.classList.add('gy');
       tip(r1,'<b>'+lb+'曜</b> 祭典：'+f[i]+' 日');tip(r2,'<b>'+lb+'曜</b> 花火：'+w[i]+' 日');
       const wd=(i===5||i===6);txt(svg,cx,H-16,lb,{'font-size':12,fill:wd?CORAL:'#999','text-anchor':'middle','font-weight':wd?700:400});});})();
 
-  // 9) heatmap（地區・月フィルタは無視して全体を描き、選択行/列以外を dim。セルはクリックで両方選択）
-  (function(){const svg=$('a-heat');clear(svg);const W=720,H=340,PL=80,PT=24,cg=2,R=REP.regions,D=compute({ignoreRegion:true,ignoreMonth:true}).heat,cw=(W-PL-20)/12,chh=(H-PT-30)/R.length;let mx=1;D.forEach(r=>r.forEach(v=>mx=Math.max(mx,v)));
+  // 9) heatmap（両方あり=紫 / 祭典のみ=珊瑚 / 花火のみ=青。地區・月フィルタ無視で全体表示）
+  (function(){const svg=$('a-heat');clear(svg);const W=720,H=340,PL=80,PT=24,cg=2,R=REP.regions,HF=SH.heatF,HW=SH.heatW,cw=(W-PL-20)/12,chh=(H-PT-30)/R.length;let mx=1;R.forEach((_,i)=>{for(let j=0;j<12;j++)mx=Math.max(mx,HF[i][j]+HW[i][j]);});
     for(let j=0;j<12;j++){const t=txt(svg,PL+cw*(j+0.5),PT-8,(j+1)+'月',{'font-size':10,fill:F.month===j?CORAL:'#999','text-anchor':'middle','font-weight':F.month===j?700:400});
       t.classList.add('clickable');t.addEventListener('click',()=>setMonth(j));}
     R.forEach((r,i)=>{const t=txt(svg,PL-6,PT+chh*(i+0.5)+3,r,{'font-size':10,fill:F.region===i?CORAL:'#555','text-anchor':'end','font-weight':F.region===i?700:400});
       t.classList.add('clickable');t.addEventListener('click',()=>setRegion(i));
-      D[i].forEach((v,j)=>{const tt=v/mx,col=v===0?'#f4f3ef':'rgb('+Math.round(245-200*tt)+','+Math.round(240-130*tt)+','+Math.round(235-70*tt)+')';
+      for(let j=0;j<12;j++){const fv=HF[i][j],wv=HW[i][j],v=fv+wv;
+        const ramp=v===0?null:(fv>0&&wv>0?HEAT.both:fv>0?HEAT.f:HEAT.w);
+        const col=v===0?'#f4f3ef':mix(0.2+0.8*(v/mx),ramp[0],ramp[1]);
         const c=el('rect',{x:PL+cw*j,y:PT+chh*i,width:cw-cg,height:chh-cg,rx:2,fill:col},svg);
         const dimmed=(F.region>=0&&F.region!==i)||(F.month>=0&&F.month!==j);
         if(dimmed)c.style.opacity=DIM;
         c.classList.add('clickable');c.addEventListener('click',()=>{const sel=F.region===i&&F.month===j;F.region=sel?-1:i;F.month=sel?-1:j;syncUI();render();});
-        tip(c,'<b>'+r+'・'+(j+1)+'月</b>：'+v+' 場');
-        if(v>=mx*0.45)txt(svg,PL+cw*j+(cw-cg)/2,PT+chh*i+chh/2+3,v,{'font-size':9,fill:'#fff','text-anchor':'middle','font-weight':600}).style.opacity=dimmed?DIM:1;});});})();
+        tip(c,'<b>'+r+'・'+(j+1)+'月</b>：計 '+v+' 場<br><span style="color:'+CORAL+'">●</span> 祭典 '+fv+'　<span style="color:'+BLUE+'">●</span> 花火 '+wv);
+        if(v>=mx*0.45)txt(svg,PL+cw*j+(cw-cg)/2,PT+chh*i+chh/2+3,v,{'font-size':9,fill:'#fff','text-anchor':'middle','font-weight':600}).style.opacity=dimmed?DIM:1;}});})();
 }
 
 function init(){
@@ -911,7 +937,7 @@ function init(){
   $('ft-w').addEventListener('click',()=>{F.t='w';syncUI();render();});
   $('fregion').addEventListener('change',e=>{F.region=e.target.value===''?-1:+e.target.value;render();});
   $('fmonth').addEventListener('change',e=>{F.month=e.target.value===''?-1:+e.target.value;render();});
-  $('freset').addEventListener('click',()=>{F.t='all';F.region=-1;F.month=-1;syncUI();render();});
+  $('freset').addEventListener('click',()=>{F.t='all';F.region=-1;F.month=-1;F.scale=-1;F.pay=-1;syncUI();render();});
   render();
 }
 return{init};})();
