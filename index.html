@@ -606,8 +606,8 @@ body.dark .reset-btn:hover{background:#373c47}
   <div class="tabpanel active" id="tab-explorer">
     <div class="fbar">
       <div class="fbar-row fbar-r1">
-        <div class="fgrp"><span class="lbl">種類</span>
-          <button class="chip on" id="e_t-all">全部</button><button class="chip" id="e_t-f">🎏 祭り</button><button class="chip" id="e_t-w">🎆 花火</button></div>
+        <div class="fgrp"><span class="lbl">種別</span>
+          <button class="chip on" id="e_t-all">すべて</button><button class="chip" id="e_t-f">🎏 祭り</button><button class="chip" id="e_t-w">🎆 花火</button></div>
         <div class="fgrp"><span class="lbl">地区</span><select class="fsel" id="e_region"><option value="">全国</option></select></div>
         <div class="fgrp"><span class="lbl">検索</span><input class="fsearch" id="e_q" type="search" placeholder="イベント名・会場" autocomplete="off"></div>
         <button class="copylink" id="e_copylink" title="現在の絞り込み状態のリンクをコピー">🔗 リンクをコピー</button>
@@ -616,15 +616,15 @@ body.dark .reset-btn:hover{background:#373c47}
         <div class="fsec fg-f">
           <span class="seclbl cf">🎏 祭り</span><span class="sep"></span>
           <div class="fgrp" id="g_adm"><span class="lbl">入場</span>
-            <select class="fsel" id="e_adm"><option value="all">全部</option><option value="free">無料</option><option value="paid">有料</option></select></div>
+            <select class="fsel" id="e_adm"><option value="all">すべて</option><option value="free">無料</option><option value="paid">有料</option></select></div>
           <div class="fgrp" id="g_park_f"><span class="lbl">駐車場</span>
-            <select class="fsel" id="e_park_f"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+            <select class="fsel" id="e_park_f"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
         </div>
         <div class="fsec fg-w">
           <span class="seclbl cw">🎆 花火</span><span class="sep"></span>
           <div class="fgrp" id="g_scale"><span class="lbl">規模</span>
             <div class="msel" id="m_scale">
-              <button type="button" class="fsel mselbtn" id="e_scale-btn">全部</button>
+              <button type="button" class="fsel mselbtn" id="e_scale-btn">すべて</button>
               <div class="mselpop" id="e_scale-pop">
                 <label><input type="checkbox" value="大">大</label>
                 <label><input type="checkbox" value="中">中</label>
@@ -633,11 +633,11 @@ body.dark .reset-btn:hover{background:#373c47}
               </div>
             </div></div>
           <div class="fgrp" id="g_seat"><span class="lbl">有料席</span>
-            <select class="fsel" id="e_seat"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+            <select class="fsel" id="e_seat"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
           <div class="fgrp" id="g_stall"><span class="lbl">屋台</span>
-            <select class="fsel" id="e_stall"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+            <select class="fsel" id="e_stall"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
           <div class="fgrp" id="g_park_w"><span class="lbl">駐車場</span>
-            <select class="fsel" id="e_park_w"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+            <select class="fsel" id="e_park_w"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
         </div>
       </div>
       <div class="fbar-row triprow">
@@ -717,7 +717,7 @@ body.dark .reset-btn:hover{background:#373c47}
   </div>
 </div>
 
-<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切換日間／夜間模式">
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="ライト／ダークモード切替">
   <span class="tt-knob"></span>
   <span class="tt-ico tt-sun" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.4" y1="4.4" x2="6.2" y2="6.2"/><line x1="17.8" y1="17.8" x2="19.6" y2="19.6"/><line x1="4.4" y1="19.6" x2="6.2" y2="17.8"/><line x1="17.8" y1="6.2" x2="19.6" y2="4.4"/></g></svg>
@@ -985,7 +985,7 @@ function writeHash(){try{const p=new URLSearchParams();
 function refresh(){renderCal();renderMap();renderList();fcount();if(S.trip)tripRender();writeHash();}
 function tripPass(e){return pass(e)&&e.d0<=S.tto&&e.d1>=S.tfrom;}
 function tripEvCard(id){const e=EV[id];
-  const pp=e.pd===true?'<span class="pill paid">有料</span>':e.pd===false?'<span class="pill free">免費</span>':'';
+  const pp=e.pd===true?'<span class="pill paid">有料</span>':e.pd===false?'<span class="pill free">無料</span>':'';
   const sp=e.t==='w'&&e.sc&&e.sc!=='不明'?`<span class="pill">規模 ${e.sc}</span>`:'';
   const dn=e.nd>1?'<span class="pill">連日開催</span>':'';
   return `<div class="ev"><div class="ev-top"><span class="badge ${e.t}">${e.t==='f'?'祭り':'花火'}</span><span class="ev-name">${e.n}</span>${sp}${pp}${dn}</div>
@@ -996,8 +996,8 @@ function tripEvCard(id){const e=EV[id];
     <a class="lnk" href="${gmaps(e)}" target="_blank">📍 地圖</a><a class="lnk" href="${weatherL(e)}" target="_blank">🌤 天氣</a></div></div>`;}
 function tripRender(){
   if(!S.trip)return;
-  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">請輸入出發日與回程日 📅</span>';$('e_titin').innerHTML='';return;}
-  if(S.tfrom>S.tto){$('e_tsummary').innerHTML='<span style="color:#dc2626">回程日不可早於出發日</span>';$('e_titin').innerHTML='';return;}
+  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">出発日と帰着日を入力してください 📅</span>';$('e_titin').innerHTML='';return;}
+  if(S.tfrom>S.tto){$('e_tsummary').innerHTML='<span style="color:#dc2626">帰着日は出発日より前にできません</span>';$('e_titin').innerHTML='';return;}
   const ids=Object.keys(EV).filter(id=>tripPass(EV[id]));
   const set=new Set(ids),days={};
   let d=new Date(S.tfrom+'T00:00'),end=new Date(S.tto+'T00:00');
@@ -1022,7 +1022,7 @@ function init(){const rs=$('e_region');TRIP.regions.forEach(r=>{const o=document
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done).catch(fallback);}else fallback();
   });
   // 規模：多選下拉（checkbox 面板）
-  function syncScale(){const n=S.fscale.length;$('e_scale-btn').textContent=(n===0||n>=4)?'全部':n<=2?S.fscale.join('・'):n+'件選択';}
+  function syncScale(){const n=S.fscale.length;$('e_scale-btn').textContent=(n===0||n>=4)?'すべて':n<=2?S.fscale.join('・'):n+'件選択';}
   function posScalePop(){const p=$('e_scale-pop');if(!p.classList.contains('open'))return;const r=$('e_scale-btn').getBoundingClientRect();p.style.left=r.left+'px';p.style.top=(r.bottom+4)+'px';}
   $('e_scale-btn').onclick=ev=>{ev.stopPropagation();$('e_scale-pop').classList.toggle('open');posScalePop();};
   $('e_scale-pop').querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',()=>{const v=cb.value,i=S.fscale.indexOf(v);if(cb.checked){if(i<0)S.fscale.push(v);}else if(i>=0)S.fscale.splice(i,1);syncScale();refresh();}));
