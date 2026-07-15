@@ -592,6 +592,8 @@ body.dark .reset-btn:hover{background:#373c47}
   body.dark .backlink{color:#5fa3ea}
   .note{background:#fdf6ee;border:1px solid #f0dcc4;font-size:12.5px;color:#7a5a3a;padding:10px 12px;border-radius:8px;margin-top:12px;line-height:1.7}
   body.dark .note{background:#33291f;border-color:#5a3f2c;color:#d8b48c}
+  /* 種類で片方だけ選択時、駐車場カードを半分の幅に */
+  @media(min-width:641px){.card.half{max-width:calc(50% - 7px)}}
 
   /* ── 対話機能 ── */
   .fltbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;
@@ -689,28 +691,28 @@ body.dark .reset-btn:hover{background:#373c47}
         <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#e0a44e"></span>有料</span><span class="li"><span class="ls" style="background:#79b791"></span>無料</span><span class="li"><span class="ls" style="background:#cbc8c0"></span>不明</span></div>
         <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg>
         <div class="insight">祭典は <b id="ins-fes-free">–</b>% が入場無料で低予算向き。花火は約 4 割が有料席あり、人気大会は早めの購入を。</div></div>
-      <div class="card"><h2 class="sec"><span class="num">6</span>打上げ時間（ショーの長さ）</h2><div class="anote">花火のみ。launch_duration「約○分」より。</div><svg class="chart" id="a-ldur" viewBox="0 0 360 230"></svg>
-        <div class="insight">短時間の地域イベントと 1 時間級の大型大会に<b>二極化</b>。</div></div>
+      <div class="card"><h2 class="sec"><span class="num">6</span>開催日数</h2><div class="anote">開催日数（毎週開催などは日数でカウント）。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg>
+        <div class="insight"><b id="ins-dur1">–</b>% が 1 日のみ。日程をピンポイントで合わせる必要あり。</div></div>
     </div>
 
     <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">7</span>開催日数</h2><div class="anote">開催日数（毎週開催などは日数でカウント）。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg>
-        <div class="insight"><b id="ins-dur1">–</b>% が 1 日のみ。日程をピンポイントで合わせる必要あり。</div></div>
+      <div class="card"><h2 class="sec"><span class="num">7</span>打上げ時間（ショーの長さ）</h2><div class="anote">花火のみ。launch_duration「約○分」より。</div><svg class="chart" id="a-ldur" viewBox="0 0 360 230"></svg>
+        <div class="insight">短時間の地域イベントと 1 時間級の大型大会に<b>二極化</b>。</div></div>
       <div class="card"><h2 class="sec"><span class="num">8</span>長期開催（開催期間）</h2><div class="anote">祭典のみ。開催初日〜最終日の日数。</div><svg class="chart" id="a-longterm" viewBox="0 0 360 230"></svg>
         <div class="insight">花火はほぼ 1 日。祭典は<b>風鈴祭・ライトアップ等の長期開催</b>が一定数。</div></div>
     </div>
 
-    <div class="card"><h2 class="sec"><span class="num">9</span>曜日分布</h2><div class="anote">曜日別の開催日数。</div>
-      <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
-      <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
-      <div class="insight">花火は<b>土曜に集中</b>。平日なら混雑を避けやすい。</div></div>
-
-    <div class="card"><h2 class="sec"><span class="num">10</span>駐車場の有無</h2><div class="anote">駐車場ありと明記された割合。</div>
-      <div class="grid2">
+    <div class="card" id="card-park"><h2 class="sec"><span class="num">9</span>駐車場の有無</h2><div class="anote">駐車場ありと明記された割合。</div>
+      <div class="grid2" id="park-grid">
         <div class="leg-f" style="text-align:center"><div class="anote">🎏 祭典</div><svg class="chart" id="a-park-f" viewBox="0 0 330 240"></svg></div>
         <div class="leg-w" style="text-align:center"><div class="anote">🎆 花火</div><svg class="chart" id="a-park-w" viewBox="0 0 330 240"></svg></div>
       </div>
       <div class="insight">花火は<b>駐車場ありが多い</b>（郊外・河川敷の会場が中心）。祭典は市街地開催が多く半々。</div></div>
+
+    <div class="card"><h2 class="sec"><span class="num">10</span>曜日分布</h2><div class="anote">曜日別の開催日数。</div>
+      <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
+      <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
+      <div class="insight">花火は<b>土曜に集中</b>。平日なら混雑を避けやすい。</div></div>
 
     <div class="card"><h2 class="sec"><span class="num">11</span>月 × 地域 ヒートマップ</h2><div class="anote">色が濃いほど開催が多い。</div>
       <svg class="chart" id="a-heat" viewBox="0 0 720 340"></svg>
@@ -830,6 +832,10 @@ function render(){
   const showF=F.t!=='w',showW=F.t!=='f',both=showF&&showW;
   document.querySelectorAll('.leg-f').forEach(e=>{e.style.display=showF?'':'none';});
   document.querySelectorAll('.leg-w').forEach(e=>{e.style.display=showW?'':'none';});
+  // 駐車場カード：片方だけの時は半幅＋1列に
+  const _pc=$('card-park'),_pg=$('park-grid');
+  if(_pc)_pc.classList.toggle('half',!both);
+  if(_pg)_pg.style.gridTemplateColumns=both?'':'1fr';
   const S=compute();                       // 全フィルタ適用（大半のチャート用）
   const SR=compute({ignoreRegion:true});   // 地區チャート：自分は全地區を表示して選択をハイライト
   const SM=compute({ignoreMonth:true});    // 月別チャート
