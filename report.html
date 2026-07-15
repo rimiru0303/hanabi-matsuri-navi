@@ -648,34 +648,34 @@ body.dark .reset-btn:hover{background:#373c47}
 
   <div class="report" id="tab-analytics">
     <div class="fltbar">
-      <span class="fgl">種類</span>
-      <button class="chipbtn on" id="ft-all">全部</button>
+      <span class="fgl">種別</span>
+      <button class="chipbtn on" id="ft-all">すべて</button>
       <button class="chipbtn cf" id="ft-f">🎏 祭典</button>
       <button class="chipbtn cw" id="ft-w">🎆 花火</button>
-      <span class="fgl" style="margin-left:8px">地區</span>
-      <select class="fsel2" id="fregion"><option value="">全地區</option></select>
-      <span class="fgl" style="margin-left:8px">月份</span>
-      <select class="fsel2" id="fmonth"><option value="">全年</option></select>
-      <button class="chipbtn" id="freset" style="margin-left:4px">重設</button>
-      <span class="hint">💡 圖上的地區名・月份也可以直接點</span>
+      <span class="fgl" style="margin-left:8px">地域</span>
+      <select class="fsel2" id="fregion"><option value="">全地域</option></select>
+      <span class="fgl" style="margin-left:8px">月</span>
+      <select class="fsel2" id="fmonth"><option value="">通年</option></select>
+      <button class="chipbtn" id="freset" style="margin-left:4px">リセット</button>
+      <span class="hint">💡 グラフ内の地域名・月も直接クリックできます</span>
     </div>
     <div class="kpis" id="a_kpis"></div>
 
-    <div class="card"><h2 class="sec"><span class="num">1</span>月別活動分布趨勢</h2>
-      <div class="anote">各月開催活動數（跨月活動各月計入）。掌握旺季規劃時程。</div>
+    <div class="card"><h2 class="sec"><span class="num">1</span>月別イベント分布</h2>
+      <div class="anote">各月の開催件数（複数月にまたがる場合は各月に計上）。繁忙期の把握に。</div>
       <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
       <svg class="chart" id="a-monthly" viewBox="0 0 720 260"></svg>
-      <div class="insight">祭典・花火とも <b>7〜8 月</b> に集中。盛夏是黃金期，但人潮與住宿成本最高。</div></div>
+      <div class="insight">祭典・花火とも <b>7〜8 月</b> に集中。真夏がベストシーズンだが、混雑・宿泊費も最も高い。</div></div>
 
     <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">2</span>地區分布</h2><div class="anote">十大地區件數。</div>
+      <div class="card"><h2 class="sec"><span class="num">2</span>地域分布</h2><div class="anote">10 地域別の件数。</div>
         <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
         <svg class="chart" id="a-region" viewBox="0 0 360 300"></svg></div>
-      <div class="card"><h2 class="sec"><span class="num">3</span>都道府縣 Top 15</h2><div class="anote">最密集的縣（堆疊）。</div>
+      <div class="card"><h2 class="sec"><span class="num">3</span>都道府県 Top 15</h2><div class="anote">件数の多い上位の県。</div>
         <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
         <svg class="chart" id="a-pref" viewBox="0 0 360 360"></svg></div>
     </div>
-    <div class="insight blue">關東兩者皆居首。<b>都市圈花火密度極高</b>，想避人潮可考慮東北、甲信越。</div>
+    <div class="insight blue">関東が両方とも首位。<b>都市圏は花火の密度が非常に高い</b>。混雑を避けるなら東北・甲信越も。</div>
 
     <div class="card"><h2 class="sec"><span class="num">4</span>花火の発射数と規模</h2>
       <div class="grid2">
@@ -685,41 +685,41 @@ body.dark .reset-btn:hover{background:#373c47}
       <div class="note">💡 <b>規模は発射数から自動分類</b>：大 = 10,000発以上／中 = 3,000〜9,999発／小 = 3,000発未満／未知 = 非公開・未定。左右は同じ指標を「実数」と「区分」で見たもの。</div></div>
 
     <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">5</span>費用結構</h2><div class="anote">祭典看入場料、花火看有料席。</div>
+      <div class="card"><h2 class="sec"><span class="num">5</span>費用構造</h2><div class="anote">祭典は入場料、花火は有料席の有無。</div>
         <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#e0a44e"></span>有料</span><span class="li"><span class="ls" style="background:#79b791"></span>無料</span><span class="li"><span class="ls" style="background:#cbc8c0"></span>不明</span></div>
         <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg>
-        <div class="insight">祭典 <b id="ins-fes-free">–</b>% 免費入場，低預算首選；花火約四成設有料席，熱門大會建議提前購票。</div></div>
-      <div class="card"><h2 class="sec"><span class="num">6</span>打上げ時間（ショーの長さ）</h2><div class="anote">花火のみ。launch_duration「約○分」より。y 軸 50 単位。</div><svg class="chart" id="a-ldur" viewBox="0 0 360 230"></svg>
+        <div class="insight">祭典は <b id="ins-fes-free">–</b>% が入場無料で低予算向き。花火は約 4 割が有料席あり、人気大会は早めの購入を。</div></div>
+      <div class="card"><h2 class="sec"><span class="num">6</span>打上げ時間（ショーの長さ）</h2><div class="anote">花火のみ。launch_duration「約○分」より。</div><svg class="chart" id="a-ldur" viewBox="0 0 360 230"></svg>
         <div class="insight">短時間の地域イベントと 1 時間級の大型大会に<b>二極化</b>。</div></div>
     </div>
 
     <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">7</span>活動持續天數</h2><div class="anote">開催日数（毎週開催などは日数でカウント）。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg>
-        <div class="insight"><b id="ins-dur1">–</b>% 活動僅 1 天，行程須精準對齊日期。</div></div>
-      <div class="card"><h2 class="sec"><span class="num">8</span>長期開催（開催期間）</h2><div class="anote">祭典のみ。開催初日〜最終日の日数。y 軸 100 単位。</div><svg class="chart" id="a-longterm" viewBox="0 0 360 230"></svg>
+      <div class="card"><h2 class="sec"><span class="num">7</span>開催日数</h2><div class="anote">開催日数（毎週開催などは日数でカウント）。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg>
+        <div class="insight"><b id="ins-dur1">–</b>% が 1 日のみ。日程をピンポイントで合わせる必要あり。</div></div>
+      <div class="card"><h2 class="sec"><span class="num">8</span>長期開催（開催期間）</h2><div class="anote">祭典のみ。開催初日〜最終日の日数。</div><svg class="chart" id="a-longterm" viewBox="0 0 360 230"></svg>
         <div class="insight">花火はほぼ 1 日。祭典は<b>風鈴祭・ライトアップ等の長期開催</b>が一定数。</div></div>
     </div>
 
-    <div class="card"><h2 class="sec"><span class="num">9</span>星期分布</h2><div class="anote">各星期開催日數。y 軸 200 単位。</div>
+    <div class="card"><h2 class="sec"><span class="num">9</span>曜日分布</h2><div class="anote">曜日別の開催日数。</div>
       <div class="leg" style="margin-bottom:6px"><span class="li leg-f"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li leg-w"><span class="ls" style="background:#378add"></span>花火</span></div>
       <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
-      <div class="insight">花火明顯<b>集中週六</b>；平日出遊可避人潮。</div></div>
+      <div class="insight">花火は<b>土曜に集中</b>。平日なら混雑を避けやすい。</div></div>
 
-    <div class="card"><h2 class="sec"><span class="num">10</span>停車場の有無</h2><div class="anote">駐車場ありと明記された割合。</div>
+    <div class="card"><h2 class="sec"><span class="num">10</span>駐車場の有無</h2><div class="anote">駐車場ありと明記された割合。</div>
       <div class="grid2">
         <div class="leg-f" style="text-align:center"><div class="anote">🎏 祭典</div><svg class="chart" id="a-park-f" viewBox="0 0 330 240"></svg></div>
         <div class="leg-w" style="text-align:center"><div class="anote">🎆 花火</div><svg class="chart" id="a-park-w" viewBox="0 0 330 240"></svg></div>
       </div>
       <div class="insight">花火は<b>駐車場ありが多い</b>（郊外・河川敷の会場が中心）。祭典は市街地開催が多く半々。</div></div>
 
-    <div class="card"><h2 class="sec"><span class="num">11</span>月份 × 地區 熱力圖</h2><div class="anote">顏色越深 = 活動越多。</div>
+    <div class="card"><h2 class="sec"><span class="num">11</span>月 × 地域 ヒートマップ</h2><div class="anote">色が濃いほど開催が多い。</div>
       <svg class="chart" id="a-heat" viewBox="0 0 720 340"></svg>
-      <div class="insight">熱區集中<b>夏季的關東・東海・甲信越</b>；冬季幾乎空白。</div></div>
+      <div class="insight">熱いのは<b>夏の関東・東海・甲信越</b>。冬はほぼ空白。</div></div>
 
-    <div class="foot">資料來源：walkerplus.com｜每週自動更新・純前端靜態頁</div>
+    <div class="foot">データ出典：walkerplus.com｜毎週自動更新・フロントエンドのみの静的ページ</div>
   </div>
 </div>
-<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切換日間／夜間模式">
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="ライト／ダークモード切替">
   <span class="tt-knob"></span>
   <span class="tt-ico tt-sun" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.4" y1="4.4" x2="6.2" y2="6.2"/><line x1="17.8" y1="17.8" x2="19.6" y2="19.6"/><line x1="4.4" y1="19.6" x2="6.2" y2="17.8"/><line x1="17.8" y1="6.2" x2="19.6" y2="4.4"/></g></svg></span>
   <span class="tt-ico tt-moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="currentColor"/></svg></span>
@@ -839,7 +839,7 @@ function render(){
 
   // KPI
   const kc=$('a_kpis');kc.innerHTML='';
-  [['活動總數',S.events,'場',''],['🎏 祭典',S.fes,'場','coral'],['🎆 花火大會',S.fw,'場','blue'],['涵蓋都道府縣',S.prefSet.size,'/ 47','']].forEach(k=>{
+  [['イベント総数',S.events,'件',''],['🎏 祭典',S.fes,'件','coral'],['🎆 花火大会',S.fw,'件','blue'],['対象都道府県',S.prefSet.size,'/ 47','']].forEach(k=>{
     const d=document.createElement('div');d.className='kpi '+k[3];
     d.innerHTML='<div class="label">'+k[0]+'</div><div class="val">'+k[1]+'</div><div class="sub">'+k[2]+'</div>';kc.appendChild(d);});
 
