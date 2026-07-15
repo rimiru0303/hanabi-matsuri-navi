@@ -594,6 +594,11 @@ body.dark .reset-btn:hover{background:#373c47}
   body.dark .note{background:#33291f;border-color:#5a3f2c;color:#d8b48c}
   /* 種類で片方だけ選択時、駐車場カードを半分の幅に */
   @media(min-width:641px){.card.half{max-width:calc(50% - 7px)}}
+  /* 半幅カードの自動フロー：非表示カードは詰められ、行に1枚だけ残ったら全幅に伸びる */
+  .cardflow{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px;align-items:stretch}
+  .cardflow>.card{flex:1 1 calc(50% - 7px);margin:0;min-width:0}
+  .cardflow>.card .chart{max-width:560px;margin-left:auto;margin-right:auto}
+  @media(max-width:640px){.cardflow>.card{flex:1 1 100%}}
 
   /* ── 対話機能 ── */
   .fltbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;
@@ -686,16 +691,13 @@ body.dark .reset-btn:hover{background:#373c47}
       </div>
       <div class="note">💡 <b>規模は発射数から自動分類</b>：大 = 10,000発以上／中 = 3,000〜9,999発／小 = 3,000発未満／未知 = 非公開・未定。左右は同じ指標を「実数」と「区分」で見たもの。</div></div>
 
-    <div class="grid2">
+    <div class="cardflow">
       <div class="card"><h2 class="sec"><span class="num">5</span>費用構造</h2><div class="anote">祭典は入場料、花火は有料席の有無。</div>
         <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#e0a44e"></span>有料</span><span class="li"><span class="ls" style="background:#79b791"></span>無料</span><span class="li"><span class="ls" style="background:#cbc8c0"></span>不明</span></div>
         <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg>
         <div class="insight">祭典は <b id="ins-fes-free">–</b>% が入場無料で低予算向き。花火は約 4 割が有料席あり、人気大会は早めの購入を。</div></div>
       <div class="card"><h2 class="sec"><span class="num">6</span>開催日数</h2><div class="anote">開催日数（毎週開催などは日数でカウント）。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg>
         <div class="insight"><b id="ins-dur1">–</b>% が 1 日のみ。日程をピンポイントで合わせる必要あり。</div></div>
-    </div>
-
-    <div class="grid2">
       <div class="card leg-w"><h2 class="sec"><span class="num">7</span>打上げ時間（ショーの長さ）</h2><div class="anote">花火のみ。launch_duration「約○分」より。</div><svg class="chart" id="a-ldur" viewBox="0 0 360 230"></svg>
         <div class="insight">短時間の地域イベントと 1 時間級の大型大会に<b>二極化</b>。</div></div>
       <div class="card leg-f"><h2 class="sec"><span class="num">8</span>長期開催（開催期間）</h2><div class="anote">祭典のみ。開催初日〜最終日の日数。</div><svg class="chart" id="a-longterm" viewBox="0 0 360 230"></svg>
@@ -836,6 +838,10 @@ function render(){
   const _pc=$('card-park'),_pg=$('park-grid');
   if(_pc)_pc.classList.toggle('half',!both);
   if(_pg)_pg.style.gridTemplateColumns=both?'':'1fr';
+  // 章番号を「表示中のカード」で 1..N に振り直す（非表示による欠番を防ぐ）
+  let _n=0;document.querySelectorAll('#tab-analytics .card').forEach(c=>{
+    const b=c.querySelector('.sec .num');if(!b)return;
+    if(getComputedStyle(c).display==='none')return;b.textContent=++_n;});
   const S=compute();                       // 全フィルタ適用（大半のチャート用）
   const SR=compute({ignoreRegion:true});   // 地區チャート：自分は全地區を表示して選択をハイライト
   const SM=compute({ignoreMonth:true});    // 月別チャート
