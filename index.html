@@ -229,6 +229,8 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .dc.trange{background:#e6f1fc}
 .dc.trange.sel{background:#fde8e0}
 .dc.trange.dim{opacity:.6;background:#eef6fd}
+.dc.past .dn{color:#b8b4ac;text-decoration:line-through}
+.cal-note{font-size:11px;line-height:1.4;color:#a8623a;background:#fbf3ee;border:1px solid #f2ddd0;border-radius:6px;padding:4px 7px}
 .dn{font-size:12px;line-height:1.3;color:#3a3935}
 .dc.sel .dn{color:#c94e25;font-weight:700}
 .dc.sun .dn{color:#d85a30}
@@ -531,6 +533,8 @@ body.dark .dc.sun .dn{color:#e8703f}
 body.dark .dc.sat .dn{color:#4f9ae8}
 body.dark .dc.trange{background:#27445f}
 body.dark .dc.trange.dim{background:#22384e}
+body.dark .dc.past .dn{color:#7d7a72}
+body.dark .cal-note{color:#e0a080;background:#3a2a20;border-color:#4d3a2a}
 
 body.dark .erow{border-bottom-color:#2f333d}
 body.dark .erow:hover{background:#2f333d}
@@ -652,6 +656,7 @@ body.dark .reset-btn:hover{background:#373c47}
     <div class="emain">
       <div class="cal">
         <div class="cal-nav"><button class="nb" id="e_prev">‹</button><span class="cal-ttl" id="e_calttl"></span><button class="nb" id="e_next">›</button></div>
+        <div class="cal-note" id="e_calnote" hidden></div>
         <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
         <div class="cgrid" id="e_cgrid"></div>
         <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭り</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span><span class="li"><span class="ls" style="background:#7c3aed"></span>両方</span></div>
@@ -813,9 +818,14 @@ function tripEnd(){return(S.tto&&S.tto>=S.tfrom)?S.tto:S.tfrom;}
 function datesWith(){const r={},fs=new Set(fids());for(const[d,ids]of Object.entries(DIDX)){let hf=false,hw=false;for(const id of ids){if(!fs.has(id))continue;if(EV[id].t==='f')hf=true;else hw=true;if(hf&&hw)break;}if(hf||hw)r[d]=[hf,hw];}return r;}
 function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];$('e_calttl').textContent=`${S.y}年${MN[S.m-1]}`;
   const g=$('e_cgrid');g.innerHTML='';const d1=new Date(S.y,S.m-1,1),sw=d1.getDay(),dim=new Date(S.y,S.m,0).getDate();
+  // 今日境界：来源は開催後の祭典を掲載から外すため、過去日付はデータが欠けうる。
+  // 「掲載が無い＝開催が無い」という誤解を防ぐため、過去日をグレー化し注記を出す。
+  const _t=new Date(),TODAY=`${_t.getFullYear()}-${String(_t.getMonth()+1).padStart(2,'0')}-${String(_t.getDate()).padStart(2,'0')}`;
+  const _mm=String(S.m).padStart(2,'0'),_first=`${S.y}-${_mm}-01`,_last=`${S.y}-${_mm}-${String(dim).padStart(2,'0')}`,_note=$('e_calnote');
+  if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 過去の月です。掲載期間を過ぎた開催情報は表示されていない場合があります。':'※ グレーの日付は過去です。掲載期間を過ぎた開催情報は表示されない場合があります。';_note.hidden=false;}else{_note.hidden=true;}}
   for(let i=0;i<sw;i++){const e=document.createElement('div');e.className='dc emp';g.appendChild(e);}
   for(let d=1;d<=dim;d++){const ds=`${S.y}-${String(S.m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,info=CAL[ds],dow=(sw+d-1)%7;
-    const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
+    const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';if(ds<TODAY)cls+=' past';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
     const dn=document.createElement('div');dn.className='dn';dn.textContent=d;el.appendChild(dn);
     const dots=document.createElement('div');dots.className='dots';
     if(info&&(!tripActive()||inTrip)){const dot=document.createElement('div');dot.className='dot';const[hf,hw]=info;dot.style.background=(hf&&hw)?'#7c3aed':hf?'#d85a30':'#378add';dots.appendChild(dot);}
