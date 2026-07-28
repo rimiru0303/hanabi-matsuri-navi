@@ -12,7 +12,7 @@ body{
   background:#f7f6f3;
   color:#1a1916;
   line-height:1.6;
-  font-size:14px;
+  font-size:15px;
   -webkit-font-smoothing:antialiased;
 }
 
@@ -27,70 +27,69 @@ body{
   border-bottom:1px solid #e8e5de;
 }
 .reportlink{
-  flex:none;font-size:13px;font-weight:600;color:#d85a30;text-decoration:none;
+  flex:none;font-size:15px;font-weight:700;color:#b8431f;text-decoration:none;
   padding:7px 14px;border:1px solid #f0c9b0;border-radius:8px;background:#fdf3ee;white-space:nowrap;
 }
-.reportlink:hover{background:#f8e6dc}
-body.dark .reportlink{color:#f0a070;background:#33291f;border-color:#5a3f2c}
+.reportlink:hover{background:#faebe3}
+body.dark .reportlink{color:#f0a070;background:#46382b;border-color:#5a3f2c}
 body.dark .reportlink:hover{background:#3f3121}
 .topbar h1{
   display:flex;flex-direction:column;gap:1px;
   flex:1;line-height:1.15;
 }
 .topbar h1 .brand-jp{
-  font-size:22px;font-weight:700;
+  font-size:28px;font-weight:700;
   color:#1a1916;letter-spacing:.01em;
 }
 .topbar h1 .brand-en{
-  font-size:11px;font-weight:500;
-  color:#a8a69c;letter-spacing:.16em;
+  font-size:12px;font-weight:600;
+  color:#786d5e;letter-spacing:.16em;
   text-transform:lowercase;
 }
 .topbar h1 .dot-f{
   display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:#d85a30;margin:0 1px 2px;vertical-align:middle;
+  background:#b8431f;margin:0 1px 2px;vertical-align:middle;
 }
 .topbar h1 .dot-w{
   display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:#378add;margin:0 1px 2px;vertical-align:middle;
+  background:#2c6ea8;margin:0 1px 2px;vertical-align:middle;
 }
 
-.tabpanel{display:none}.tabpanel.active{display:block}
 
 /* ── chips：膠囊，方向A標誌 ── */
 .chip{
-  font-size:12.5px;padding:5px 15px;border-radius:20px;
+  font-size:15px;padding:5px 15px;border-radius:20px;
   border:1px solid #d0cdc4;background:#fff;
   cursor:pointer;color:#555;transition:.15s;white-space:nowrap;
 }
 .chip:hover{background:#f0ede8;border-color:#bbb8b0}
 .chip.on{background:#1a1916;border-color:#1a1916;color:#fff}
-.chip.on.cf{background:#d85a30;border-color:#d85a30}
-.chip.on.cw{background:#378add;border-color:#378add}
+.chip.on.cf{background:#b8431f;border-color:#b8431f}
+.chip.on.cw{background:#2c6ea8;border-color:#2c6ea8}
 .chip:focus-visible,.fsel:focus-visible,.nb:focus-visible,.reset-btn:focus-visible,
 .mselbtn:focus-visible,.mselpop input:focus-visible,.lnk:focus-visible,.elink:focus-visible,
 .tripfld input:focus-visible,.fld input:focus-visible,.fld select:focus-visible{
   outline:2px solid rgba(55,138,221,.65);outline-offset:2px;
 }
 .fsearch{
-  font-size:12.5px;padding:5px 12px;border-radius:20px;
+  font-size:15px;padding:5px 12px;border-radius:20px;
   border:1px solid #d0cdc4;background-color:#fff;color:#444;
   width:148px;-webkit-appearance:none;appearance:none;
 }
-.fsearch::placeholder{color:#aaa}
-body.dark .fsearch{background-color:#2f333d;border-color:#434956;color:#d6d3ca}
+.fsearch::placeholder{color:#6b6862}
+body.dark .fsearch{background-color:#343945;border-color:#434956;color:#d6d3ca}
 .copylink{
-  font-size:12px;padding:5px 12px;border-radius:20px;
+  font-size:15px;padding:5px 12px;border-radius:20px;
   border:1px solid #d0cdc4;background:#fff;color:#555;cursor:pointer;
   white-space:nowrap;transition:.12s;
 }
 .copylink:hover{background:#f4f2ed;border-color:#bdb9af}
-.copylink.done{background:#e6f4ea;border-color:#9ed3b0;color:#2e7d4f}
-body.dark .copylink{background:#2f333d;border-color:#434956;color:#c7c4bb}
+.copylink.done{background:#e6f4ea;border-color:#9ed3b0;color:#276b43}
+body.dark .copylink{background:#343945;border-color:#434956;color:#c7c4bb}
 body.dark .copylink:hover{background:#373c47}
 body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .fsel{
-  font-size:12.5px;padding:5px 28px 5px 12px;border-radius:20px;
+  font-size:15px;padding:5px 28px 5px 12px;border-radius:20px;
   border:1px solid #d0cdc4;background-color:#fff;
   color:#444;cursor:pointer;text-align:left;
   -webkit-appearance:none;appearance:none;
@@ -108,23 +107,23 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .fbar-row{display:flex;align-items:center;gap:14px;min-height:32px;flex-wrap:wrap;row-gap:9px}
 .fgrp{display:flex;align-items:center;gap:6px}
 .fgrp .lbl{
-  font-size:11px;color:#6b6860;margin-right:2px;
+  font-size:12px;color:#6b6860;margin-right:2px;
   letter-spacing:.04em;white-space:nowrap;
 }
 .sep{width:1px;height:16px;background:#e8e5de}
 .fsec{display:flex;align-items:center;gap:12px;flex-wrap:wrap;row-gap:9px}
 .fsec+.fsec{margin-left:10px}
-.seclbl{font-size:12px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
-.seclbl.cf{color:#d85a30}
-.seclbl.cw{color:#378add}
+.seclbl{font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.seclbl.cf{color:#b8431f}
+.seclbl.cw{color:#2c6ea8}
 .msel{position:relative;display:inline-block}
 .mselbtn{white-space:nowrap}
-.mselpop{display:none;position:fixed;z-index:60;background:#fff;border:1px solid #d0cdc4;border-radius:10px;padding:5px;box-shadow:0 6px 22px rgba(0,0,0,.12);min-width:96px}
+.mselpop{display:none;position:fixed;z-index:60;background:#fff;border:1px solid #d0cdc4;border-radius:10px;padding:5px;min-width:96px}
 .mselpop.open{display:block}
-.mselpop label{display:flex;align-items:center;gap:7px;padding:5px 9px;font-size:12.5px;color:#444;border-radius:6px;cursor:pointer;white-space:nowrap}
+.mselpop label{display:flex;align-items:center;gap:7px;padding:5px 9px;font-size:15px;color:#444;border-radius:6px;cursor:pointer;white-space:nowrap}
 .mselpop label:hover{background:#f0ede8}
-.mselpop input{accent-color:#378add;cursor:pointer}
-.cnt{font-size:11px;color:#8a877e;margin-left:auto}
+.mselpop input{accent-color:#2c6ea8;cursor:pointer}
+.cnt{font-size:12px;color:#786d5e;margin-left:auto}
 
 /* ── Map wrapper ── */
 .svgwrap{
@@ -144,7 +143,7 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 @media (prefers-reduced-motion: reduce){.mkanim{animation:none}}
 .reset-btn{
   position:absolute;top:10px;right:10px;
-  padding:4px 12px;font-size:11px;
+  padding:4px 12px;font-size:15px;
   background:#fff;border:1px solid #ccc9c0;
   border-radius:20px;cursor:pointer;display:none;
   z-index:10;color:#555;
@@ -154,23 +153,23 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 /* ── Trip toggle ── */
 .tripsw{
   display:inline-flex;align-items:center;gap:8px;
-  font-size:12.5px;color:#555;cursor:pointer;user-select:none;
+  font-size:15px;color:#555;cursor:pointer;user-select:none;
 }
 .tripsw .sw{
   position:relative;width:40px;height:21px;
-  background:#d8d4cc;border-radius:11px;transition:background .2s;flex:none;
+  background:#d8d4cc;border-radius:12px;transition:background .2s;flex:none;
 }
 .tripsw .sw::after{
   content:'';position:absolute;top:2.5px;left:2.5px;
   width:16px;height:16px;background:#fff;border-radius:50%;
   transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.18);
 }
-.tripsw.on .sw{background:#378add}
+.tripsw.on .sw{background:#2c6ea8}
 .tripsw.on .sw::after{transform:translateX(19px)}
 .tripdiv{width:1px;align-self:stretch;background:#e8e5de;margin:0 4px}
 .tripfld{display:inline-flex;align-items:center;gap:6px}
 .tripfld input[type=date]{
-  font-size:12.5px;padding:5px 10px;
+  font-size:15px;padding:5px 10px;
   border:1px solid #d0cdc4;border-radius:20px;color:#333;
   background:#fff;
 }
@@ -183,14 +182,14 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   border:1px solid #d8d4cc;border-radius:10px;
   padding:8px 12px;font-size:12px;
   pointer-events:none;z-index:30;display:none;
-  max-width:210px;box-shadow:0 4px 16px rgba(0,0,0,.1);
+  max-width:210px;
 }
 .tip-n{font-weight:600;margin-bottom:2px;color:#1a1916}
-.tip-s{color:#888;font-size:11px}
+.tip-s{color:#6b6862;font-size:12px}
 
 /* ── Legend ── */
 .leg{display:flex;gap:14px;align-items:center}
-.li{display:flex;align-items:center;gap:5px;font-size:11px;color:#6f6c64}
+.li{display:flex;align-items:center;gap:5px;font-size:15px;color:#6f6c64}
 .ls{width:8px;height:8px;border-radius:50%}
 
 /* ── Explorer layout ── */
@@ -199,20 +198,20 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 /* Calendar */
 .cal{width:clamp(244px,20vw,320px);flex-shrink:0;display:flex;flex-direction:column;gap:7px}
 .cal-nav{display:flex;align-items:center;justify-content:space-between}
-.cal-ttl{font-size:15px;font-weight:600;color:#1a1916;letter-spacing:.01em}
+.cal-ttl{font-size:15px;font-weight:700;color:#1a1916;letter-spacing:.01em}
 .nb{
   background:#fff;border:1px solid #d0cdc4;border-radius:20px;
-  width:28px;height:28px;cursor:pointer;font-size:14px;
+  width:28px;height:28px;cursor:pointer;font-size:15px;
   display:flex;align-items:center;justify-content:center;
   color:#666;transition:.12s;
 }
 .nb:hover{background:#f0ede8}
 .dow{
   display:grid;grid-template-columns:repeat(7,1fr);
-  text-align:center;font-size:11px;color:#7d7a71;padding-bottom:4px;
+  text-align:center;font-size:12px;color:#786d5e;padding-bottom:4px;
 }
-.dow span:first-child{color:#d85a30}
-.dow span:last-child{color:#378add}
+.dow span:first-child{color:#b8431f}
+.dow span:last-child{color:#2c6ea8}
 .cgrid{
   display:grid;grid-template-columns:repeat(7,1fr);
   grid-auto-rows:minmax(34px,auto);gap:3px;
@@ -223,20 +222,20 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   cursor:pointer;border:1.2px solid transparent;
 }
 .dc:hover:not(.emp){background:#f0ede8}
-.dc.sel{background:#fde8e0;border-color:#d85a30}
+.dc.sel{background:#fde8e0;border-color:#b8431f}
 .dc.emp{pointer-events:none}
 .dc.dim{opacity:.3}
 .dc.trange{background:#e6f1fc}
 .dc.trange.sel{background:#fde8e0}
 .dc.trange.dim{opacity:.6;background:#eef6fd}
-.dc.past .dn{color:#b8b4ac;text-decoration:line-through}
-.cal-note{font-size:11px;line-height:1.4;color:#a8623a;background:#fbf3ee;border:1px solid #f2ddd0;border-radius:6px;padding:4px 7px}
+.dc.past .dn{color:#786d5e;text-decoration:line-through}
+.cal-note{font-size:15px;line-height:1.6;color:#8f5028;background:#fbf3ee;border:1px solid #f2ddd0;border-radius:6px;padding:4px 7px}
 .dn{font-size:12px;line-height:1.3;color:#3a3935}
 .dc.sel .dn{color:#c94e25;font-weight:700}
-.dc.sun .dn{color:#d85a30}
-.dc.sat .dn{color:#378add}
-.dots{display:flex;gap:2px;height:5px}
-.dot{width:4px;height:4px;border-radius:50%}
+.dc.sun .dn{color:#b8431f}
+.dc.sat .dn{color:#2c6ea8}
+.dots{display:flex;gap:2px;height:8px}
+.dot{width:8px;height:8px;border-radius:50%}
 
 .mapw{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
 .ibar{
@@ -258,7 +257,7 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .elist::-webkit-scrollbar-thumb{background:#cfccc3;border-radius:5px;border:2px solid #f4f2ed}
 .elist::-webkit-scrollbar-thumb:hover{background:#b8b4aa}
 .elist-h{
-  font-size:11px;font-weight:600;color:#6b6860;
+  font-size:12px;font-weight:600;color:#6b6860;
   padding:9px 16px;border-bottom:1px solid #f0ede8;
   position:sticky;top:0;background:#fff;z-index:2;
   letter-spacing:.04em;
@@ -266,23 +265,22 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .erow{
   display:flex;align-items:center;gap:10px;
   padding:9px 16px;border-bottom:1px solid #f7f5f0;
-  font-size:13px;cursor:pointer;transition:.1s;
+  font-size:12px;cursor:pointer;transition:.1s;
 }
 .erow:hover{background:#faf8f4}
 .ebadge{
-  font-size:10px;padding:2px 9px;border-radius:20px;
+  font-size:12px;padding:2px 9px;border-radius:20px;
   color:#fff;flex-shrink:0;font-weight:600;letter-spacing:.03em;white-space:nowrap;
 }
-.ebadge.f{background:#d85a30}
-.ebadge.w{background:#378add}
-.ename{font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1a1916}
-.emeta{font-size:11px;color:#8a877e;flex-shrink:0;white-space:nowrap}
-.elink{color:#378add;text-decoration:none;font-size:11px;flex-shrink:0}
+.ebadge.f{background:#b8431f}
+.ebadge.w{background:#2c6ea8}
+.ename{font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1a1916}
+.emeta{font-size:12px;color:#786d5e;flex-shrink:0;white-space:nowrap}
+.elink{color:#2c6ea8;text-decoration:none;font-size:12px;flex-shrink:0}
 .elink:hover{text-decoration:underline}
-.empty-l{padding:24px;text-align:center;color:#9a978d;font-size:12px}
+.empty-l{padding:24px;text-align:center;color:#786d5e;font-size:12px}
 
 /* ── Analytics（隱藏，僅保留月曆tab） ── */
-#tab-analytics{display:none!important}
 
 /* ── KPI cards ── */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
@@ -290,9 +288,9 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   background:#fff;border:1px solid #e8e5de;
   border-radius:12px;padding:16px 18px;
 }
-.kpi .label{font-size:11px;color:#aaa9a0;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
-.kpi .val{font-size:28px;font-weight:500;letter-spacing:-.03em;color:#1a1916}
-.kpi .sub{font-size:11px;color:#c0bdb5;margin-top:3px}
+.kpi .label{font-size:12px;color:#786d5e;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.kpi .val{font-size:28px;font-weight:700;line-height:1.15;letter-spacing:-.03em;color:#1a1916}
+.kpi .sub{font-size:12px;color:#786d5e;margin-top:3px}
 .kpi.coral .val{color:#d85a30}
 .kpi.blue .val{color:#378add}
 
@@ -304,31 +302,31 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:760px){.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
 
-h2.sec{
-  font-size:13.5px;font-weight:600;
+h2.sec{line-height:1.4;
+  font-size:19px;font-weight:600;
   margin:4px 0 3px;
   display:flex;align-items:center;gap:8px;color:#1a1916;
 }
 h2.sec .num{
   display:inline-flex;align-items:center;justify-content:center;
   width:18px;height:18px;border-radius:5px;
-  background:#1a1916;color:#fff;font-size:10px;flex-shrink:0;
+  background:#1a1916;color:#fff;font-size:12px;flex-shrink:0;
 }
-.anote{font-size:11.5px;color:#888;margin-bottom:12px;line-height:1.5}
+.anote{font-size:15px;color:#6b6862;margin-bottom:12px;line-height:1.6}
 svg.chart{display:block;width:100%;overflow:visible}
 
 .insight{
   background:#fdf9f5;
-  border-left:2px solid #d85a30;
+  border-left:2px solid #b8431f;
   border-radius:0 8px 8px 0;
   padding:10px 14px;margin:12px 0;
-  font-size:12.5px;color:#555;line-height:1.65;
+  font-size:15px;color:#555;line-height:1.6;
 }
 .insight b{color:#1a1916}
-.insight.blue{background:#f3f8fd;border-left-color:#378add}
+.insight.blue{background:#f3f8fd;border-left-color:#2c6ea8}
 
 .reco{background:#fff;border:1px solid #e8e5de;border-radius:12px;padding:18px 20px;margin-top:8px}
-.reco li{font-size:12.5px;color:#555;margin:8px 0;padding-left:4px;line-height:1.65}
+.reco li{font-size:15px;color:#555;margin:8px 0;padding-left:4px;line-height:1.6}
 .reco li b{color:#1a1916}
 
 /* ── Trip ── */
@@ -338,20 +336,20 @@ svg.chart{display:block;width:100%;overflow:visible}
   display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;
 }
 .fld{display:flex;flex-direction:column;gap:5px}
-.fld .lb{font-size:11px;color:#6b6860;letter-spacing:.04em}
+.fld .lb{font-size:12px;color:#6b6860;letter-spacing:.04em}
 .fld input[type=date],.fld select{
-  font-size:13.5px;padding:6px 12px;
+  font-size:15px;padding:6px 12px;
   border:1px solid #d0cdc4;border-radius:20px;
   background:#fff;color:#1a1916;
 }
 .chips{display:flex;gap:5px}
 .summary{
-  font-size:13.5px;color:#555;
+  font-size:12px;color:#555;
   padding:11px 17px;
   background:#fff;border:1px solid #e8e5de;
   border-radius:14px;margin-bottom:14px;
 }
-.summary b{color:#d85a30;font-size:16px;font-weight:600}
+.summary b{color:#b8431f;font-size:19px;font-weight:600}
 .tmain{display:flex;gap:16px;align-items:flex-start}
 .itin{flex:1;min-width:0}
 .mapcol{width:380px;flex-shrink:0;position:sticky;top:14px}
@@ -361,18 +359,18 @@ svg.chart{display:block;width:100%;overflow:visible}
   .emain{flex-direction:column;height:auto}
   .cal{width:100%}
 }
-.maphint{font-size:11px;color:#8a877e;margin-top:6px;text-align:center}
+.maphint{font-size:12px;color:#786d5e;margin-top:6px;text-align:center}
 
 .ongoing{
   background:#fff;border:1px solid #e4c898;
   border-radius:14px;padding:13px 16px;margin-bottom:14px;
 }
-.ongoing .ohd{font-size:11px;font-weight:600;color:#b8882a;margin-bottom:9px;letter-spacing:.04em}
+.ongoing .ohd{font-size:12px;font-weight:600;color:#8a6a12;margin-bottom:9px;letter-spacing:.04em}
 .ocard{
   display:inline-flex;align-items:center;gap:6px;
   background:#fdf8f0;border:1px solid #ead5a8;border-radius:20px;
   padding:5px 13px;margin:3px 4px 3px 0;
-  font-size:12.5px;text-decoration:none;color:#7a5520;transition:.1s;
+  font-size:12px;text-decoration:none;color:#7a5520;transition:.1s;
 }
 .ocard:hover{background:#f5edd8}
 
@@ -381,10 +379,10 @@ svg.chart{display:block;width:100%;overflow:visible}
   display:flex;align-items:baseline;gap:10px;
   padding:6px 0;border-bottom:1px solid #e8e5de;margin-bottom:11px;
 }
-.dayhd .dnum{font-size:17px;font-weight:600;color:#1a1916}
-.dayhd .dwk{font-size:12.5px;color:#7d7a71}
-.dayhd .dcnt{font-size:11.5px;color:#8a877e;margin-left:auto}
-.dayhd.wknd .dnum{color:#d85a30}
+.dayhd .dnum{font-size:19px;font-weight:600;color:#1a1916}
+.dayhd .dwk{font-size:12px;color:#786d5e}
+.dayhd .dcnt{font-size:12px;color:#786d5e;margin-left:auto}
+.dayhd.wknd .dnum{color:#b8431f}
 
 .ev{
   background:#fff;border:1px solid #e8e5de;border-radius:14px;
@@ -393,23 +391,23 @@ svg.chart{display:block;width:100%;overflow:visible}
 .ev:hover{border-color:#c8c4bc}
 .ev-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .badge{
-  font-size:10px;padding:2px 10px;border-radius:20px;
+  font-size:12px;padding:2px 10px;border-radius:20px;
   color:#fff;font-weight:600;flex-shrink:0;letter-spacing:.04em;
 }
-.badge.f{background:#d85a30}
-.badge.w{background:#378add}
-.ev-name{font-size:14.5px;font-weight:500;flex:1;min-width:0;color:#1a1916}
+.badge.f{background:#b8431f}
+.badge.w{background:#2c6ea8}
+.ev-name{font-size:15px;font-weight:700;flex:1;min-width:0;color:#1a1916}
 .pill{
-  font-size:11px;padding:2px 10px;border-radius:20px;
-  background:#f0ede8;color:#888;flex-shrink:0;
+  font-size:12px;padding:2px 10px;border-radius:20px;
+  background:#f0ede8;color:#6b6862;flex-shrink:0;
 }
-.pill.paid{background:#fde8e0;color:#c04a1a}
+.pill.paid{background:#fde8e0;color:#96420f}
 .pill.free{background:#e4f0fc;color:#1e68b0}
-.ev-meta{font-size:12.5px;color:#6f6c64;margin-bottom:3px;line-height:1.55}
-.ev-meta .k{color:#9a978d;margin-right:3px}
+x_EVMETA_x;color:#6f6c64;margin-bottom:3px;line-height:1.55}
+.ev-meta .k{color:#786d5e;margin-right:3px}
 .ev-links{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .lnk{
-  font-size:11.5px;padding:5px 13px;border-radius:20px;
+  font-size:15px;padding:5px 13px;border-radius:20px;
   text-decoration:none;border:1px solid #d8d4cc;
   color:#555;display:inline-flex;align-items:center;gap:3px;transition:.12s;
 }
@@ -418,13 +416,13 @@ svg.chart{display:block;width:100%;overflow:visible}
 .lnk.primary:hover{background:#333}
 
 .empty{
-  text-align:center;color:#9a978d;font-size:13px;
+  text-align:center;color:#786d5e;font-size:12px;
   padding:48px 20px;background:#fff;
   border:1px solid #e8e5de;border-radius:12px;
 }
 
 .foot{
-  text-align:center;font-size:11px;color:#8a877e;
+  text-align:center;font-size:12px;color:#786d5e;
   margin-top:28px;padding-top:16px;
   border-top:1px solid #e8e5de;
 }
@@ -432,7 +430,7 @@ svg.chart{display:block;width:100%;overflow:visible}
 /* ── 浮動 日/夜 切換鈕（右下角） ── */
 .theme-toggle{
   position:fixed;right:24px;bottom:24px;z-index:200;
-  width:78px;height:38px;border-radius:19px;
+  width:78px;height:38px;border-radius:20px;
   border:none;cursor:pointer;padding:0;
   background:#c4c2bd;
   display:flex;align-items:center;
@@ -451,26 +449,26 @@ svg.chart{display:block;width:100%;overflow:visible}
   width:30px;height:30px;transition:opacity .3s,color .3s;
 }
 .theme-toggle .tt-sun{right:5px;color:#fff}
-.theme-toggle .tt-moon{left:5px;color:#cfcdc7;opacity:0}
+.theme-toggle .tt-moon{left:5px;color:#786d5e;opacity:0}
 body.dark .theme-toggle{background:#33363d}
 body.dark .theme-toggle .tt-knob{transform:translateX(40px)}
 body.dark .theme-toggle .tt-sun{opacity:0}
 body.dark .theme-toggle .tt-moon{opacity:1;color:#f2efe8}
 @media(max-width:560px){
-  .theme-toggle{right:16px;bottom:16px;width:68px;height:34px;border-radius:17px}
+  .theme-toggle{right:16px;bottom:16px;width:68px;height:34px;border-radius:20px}
   .theme-toggle .tt-knob{width:26px;height:26px}
   body.dark .theme-toggle .tt-knob{transform:translateX(34px)}
 }
 
 /* ===================== 夜間模式（精修配色） ===================== */
 /* palette（調淺一階）:
-   bg #1b1e24 / surface #252932 / surface2 #2f333d / border #3a3f4a
+   bg #1b1e24 / surface #252932 / surface2 #343945 / border #3a3f4a
    text #ecebe6 / text2 #a7a499 / text3 #74716a
    coral #e8703f / blue #4f9ae8 */
 body.dark{background:#1b1e24;color:#ecebe6;color-scheme:dark}
 body.dark .topbar{background:#252932;border-bottom-color:#3a3f4a}
 body.dark .topbar h1 .brand-jp{color:#ecebe6}
-body.dark .topbar h1 .brand-en{color:#8b887f}
+body.dark .topbar h1 .brand-en{color:#aeaaa0}
 
 body.dark .fbar,
 body.dark .elist,
@@ -487,17 +485,17 @@ body.dark .ongoing{background:#252932;border-color:#3a3f4a}
 body.dark .svgwrap{background:#202329;border-color:#3a3f4a}
 body.dark .pref-path:hover{fill:#7a5e22}
 
-body.dark .chip{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .chip{background:#343945;border-color:#434956;color:#c7c4bb}
 body.dark .chip:hover{background:#373c47;border-color:#525866}
 body.dark .chip.on{background:#ecebe6;border-color:#ecebe6;color:#1b1e24}
-body.dark .chip.on.cf{background:#e8703f;border-color:#e8703f;color:#fff}
-body.dark .chip.on.cw{background:#4f9ae8;border-color:#4f9ae8;color:#fff}
+body.dark .chip.on.cf{background:#e8703f;border-color:#e8703f;color:#1b1e24}
+body.dark .chip.on.cw{background:#4f9ae8;border-color:#4f9ae8;color:#1b1e24}
 body.dark .fsel,
 body.dark .tripfld input[type=date],
 body.dark .fld input[type=date],
-body.dark .fld select{background:#2f333d;border-color:#434956;color:#d6d3ca}
-body.dark .fsel{background-color:#2f333d;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b8b4ab' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
-body.dark .nb{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .fld select{background:#343945;border-color:#434956;color:#d6d3ca}
+body.dark .fsel{background-color:#343945;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b8b4ab' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+body.dark .nb{background:#343945;border-color:#434956;color:#c7c4bb}
 body.dark .mselpop{background:#252932;border-color:#3a3f4a}
 body.dark .mselpop label{color:#d6d3ca}
 body.dark .mselpop label:hover{background:#373c47}
@@ -514,7 +512,7 @@ body.dark .li,
 body.dark .fld .lb,
 body.dark .elist-h,
 body.dark .dayhd .dwk,
-body.dark .dayhd .dcnt{color:#a7a499}
+body.dark .dayhd .dcnt{color:#aeaaa0}
 
 body.dark .cal-ttl,
 body.dark .ename,
@@ -523,7 +521,7 @@ body.dark .dayhd .dnum,
 body.dark .tip-n,
 body.dark .insight b,
 body.dark .reco li b,
-body.dark h2.sec{color:#ecebe6}
+body.dark h2.sec{line-height:1.4;color:#ecebe6}
 body.dark .dn{color:#d6d3ca}
 
 body.dark .dc:hover:not(.emp){background:#373c47}
@@ -533,11 +531,11 @@ body.dark .dc.sun .dn{color:#e8703f}
 body.dark .dc.sat .dn{color:#4f9ae8}
 body.dark .dc.trange{background:#27445f}
 body.dark .dc.trange.dim{background:#22384e}
-body.dark .dc.past .dn{color:#7d7a72}
-body.dark .cal-note{color:#e0a080;background:#3a2a20;border-color:#4d3a2a}
+body.dark .dc.past .dn{color:#aeaaa0}
+body.dark .cal-note{color:#e0a080;background:#46382b;border-color:#6b503a}
 
-body.dark .erow{border-bottom-color:#2f333d}
-body.dark .erow:hover{background:#2f333d}
+body.dark .erow{border-bottom-color:#343945}
+body.dark .erow:hover{background:#343945}
 body.dark .elist-h{background:#252932;border-bottom-color:#3a3f4a}
 body.dark .ebadge.f,body.dark .badge.f{background:#e8703f}
 body.dark .ebadge.w,body.dark .badge.w{background:#4f9ae8}
@@ -550,11 +548,11 @@ body.dark .elist::-webkit-scrollbar-thumb{background:#434956;border-radius:5px;b
 body.dark .elist::-webkit-scrollbar-thumb:hover{background:#525866}
 body.dark .elist{scrollbar-color:#434956 #252932;scrollbar-width:thin}
 
-body.dark .tip{background:#2f333d;border-color:#434956}
-body.dark .tip-s{color:#a7a499}
+body.dark .tip{background:#343945;border-color:#434956}
+body.dark .tip-s{color:#aeaaa0}
 
-body.dark .insight{background:#2b231b;border-left-color:#e8703f;color:#c7c4bb}
-body.dark .insight.blue{background:#1c2733;border-left-color:#4f9ae8}
+body.dark .insight{background:#443628;border-left-color:#e8703f;color:#c7c4bb}
+body.dark .insight.blue{background:#283c4f;border-left-color:#4f9ae8}
 body.dark .reco li{color:#c7c4bb}
 body.dark .summary{color:#c7c4bb}
 body.dark .summary b{color:#f0a070}
@@ -567,11 +565,11 @@ body.dark .tripdiv{background:#3a3f4a}
 body.dark .dot-f{background:#e8703f}
 body.dark .dot-w{background:#4f9ae8}
 
-body.dark .lnk{background:#2f333d;border-color:#434956;color:#c7c4bb}
+body.dark .lnk{background:#343945;border-color:#434956;color:#c7c4bb}
 body.dark .lnk:hover{background:#373c47;border-color:#525866}
 body.dark .lnk.primary{background:#ecebe6;color:#1b1e24;border-color:#ecebe6}
 body.dark .lnk.primary:hover{background:#fff}
-body.dark .pill{background:#373c47;color:#a7a499}
+body.dark .pill{background:#373c47;color:#aeaaa0}
 body.dark .pill.paid{background:#46291d;color:#f0905c}
 body.dark .pill.free{background:#1e3247;color:#6fb0ee}
 
@@ -580,18 +578,19 @@ body.dark .dayhd.wknd .dnum{color:#e8703f}
 body.dark .ev:hover{border-color:#525866}
 body.dark .ongoing{border-color:#6b5832}
 body.dark .ongoing .ohd{color:#d9ad55}
-body.dark .ocard{background:#2e2619;border-color:#6b5832;color:#d9ad55}
+body.dark .ocard{background:#403524;border-color:#6b5832;color:#d9ad55}
 body.dark .ocard:hover{background:#383020}
 body.dark h2.sec .num{background:#ecebe6;color:#1b1e24}
 body.dark .kpi .label,
-body.dark .kpi .sub{color:#a7a499}
+body.dark .kpi .sub{color:#aeaaa0}
 body.dark .kpi .val{color:#ecebe6}
 body.dark .kpi.coral .val{color:#e8703f}
 body.dark .kpi.blue .val{color:#4f9ae8}
-body.dark .empty{color:#74716a;border-color:#3a3f4a}
-body.dark .foot{color:#74716a;border-top-color:#3a3f4a}
-body.dark .reset-btn{background:#2f333d;border-color:#525866;color:#c7c4bb}
+body.dark .empty{color:#aeaaa0;border-color:#3a3f4a}
+body.dark .foot{color:#aeaaa0;border-top-color:#3a3f4a}
+body.dark .reset-btn{background:#343945;border-color:#525866;color:#c7c4bb}
 body.dark .reset-btn:hover{background:#373c47}
+
 </style>
 </head>
 <body>
@@ -602,30 +601,30 @@ body.dark .reset-btn:hover{background:#373c47}
       <span class="brand-jp">花火祭ナビ</span>
       <span class="brand-en">hanabinavi</span>
     </h1>
-    <a class="reportlink" href="report.html">📊 分析レポート →</a>
+    <a class="reportlink" href="report.html">分析レポート →</a>
   </div>
 
   <!-- ========== TRIP ========== -->
   <!-- ========== EXPLORER ========== -->
-  <div class="tabpanel active" id="tab-explorer">
+  <div id="tab-explorer">
     <div class="fbar">
       <div class="fbar-row fbar-r1">
         <div class="fgrp"><span class="lbl">種類</span>
-          <button class="chip on" id="e_t-all">すべて</button><button class="chip" id="e_t-f">🎏 祭り</button><button class="chip" id="e_t-w">🎆 花火</button></div>
+          <button class="chip on" id="e_t-all">すべて</button><button class="chip" id="e_t-f">祭り</button><button class="chip" id="e_t-w">花火</button></div>
         <div class="fgrp"><span class="lbl">地区</span><select class="fsel" id="e_region"><option value="">全国</option></select></div>
         <div class="fgrp"><span class="lbl">検索</span><input class="fsearch" id="e_q" type="search" placeholder="イベント名・会場" autocomplete="off"></div>
-        <button class="copylink" id="e_copylink" title="現在の絞り込み状態のリンクをコピー">🔗 リンクをコピー</button>
+        <button class="copylink" id="e_copylink" title="現在の絞り込み状態のリンクをコピー">リンクをコピー</button>
       </div>
       <div class="fbar-row fbar-r2">
         <div class="fsec fg-f">
-          <span class="seclbl cf">🎏 祭り</span><span class="sep"></span>
+          <span class="seclbl cf">祭り</span><span class="sep"></span>
           <div class="fgrp" id="g_adm"><span class="lbl">入場</span>
             <select class="fsel" id="e_adm"><option value="all">すべて</option><option value="free">無料</option><option value="paid">有料</option></select></div>
           <div class="fgrp" id="g_park_f"><span class="lbl">駐車場</span>
             <select class="fsel" id="e_park_f"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
         </div>
         <div class="fsec fg-w">
-          <span class="seclbl cw">🎆 花火</span><span class="sep"></span>
+          <span class="seclbl cw">花火</span><span class="sep"></span>
           <div class="fgrp" id="g_scale"><span class="lbl">規模</span>
             <div class="msel" id="m_scale">
               <button type="button" class="fsel mselbtn" id="e_scale-btn">すべて</button>
@@ -645,11 +644,11 @@ body.dark .reset-btn:hover{background:#373c47}
         </div>
       </div>
       <div class="fbar-row triprow">
-        <span class="tripsw" id="e_triptoggle">🗾 旅行プラン<span class="sw"></span></span>
+        <span class="tripsw" id="e_triptoggle">旅行プラン<span class="sw"></span></span>
         <span class="tripdiv" id="e_tripdiv" style="display:none"></span>
         <span class="fgrp tripfld" id="e_tripfld" style="display:none">
-          <span class="lbl">📅 出発日</span><input type="date" id="e_tfrom">
-          <span class="lbl">📅 帰着日</span><input type="date" id="e_tto">
+          <span class="lbl">出発日</span><input type="date" id="e_tfrom">
+          <span class="lbl">帰着日</span><input type="date" id="e_tto">
         </span>
       </div>
     </div>
@@ -659,7 +658,7 @@ body.dark .reset-btn:hover{background:#373c47}
         <div class="cal-note" id="e_calnote" hidden></div>
         <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
         <div class="cgrid" id="e_cgrid"></div>
-        <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭り</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span><span class="li"><span class="ls" style="background:#7c3aed"></span>両方</span></div>
+        <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭り</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span><span class="li"><span class="ls" style="background:#6d3ba8"></span>両方</span></div>
       </div>
       <div class="mapw">
         <div class="svgwrap" id="e_svgwrap" style="flex:1"><svg class="mapsvg" id="e_mapsvg" viewBox="0 0 540 520" preserveAspectRatio="xMidYMid meet"></svg>
@@ -676,50 +675,6 @@ body.dark .reset-btn:hover{background:#373c47}
   </div>
 
   <!-- ========== ANALYTICS ========== -->
-  <div class="tabpanel" id="tab-analytics">
-    <div class="kpis" id="a_kpis"></div>
-    <div class="card"><h2 class="sec"><span class="num">1</span>月別活動分布趨勢</h2>
-      <div class="anote">各月開催活動數（跨月活動各月計入）。掌握旺季規劃時程。</div>
-      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
-      <svg class="chart" id="a-monthly" viewBox="0 0 720 260"></svg>
-      <div class="insight"><b>祭典 7 月達高峰</b>，花火集中 <b>7〜8 月</b>。盛夏是黃金期，但人潮與住宿成本最高。</div></div>
-    <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">2</span>地區分布</h2><div class="anote">十大地區件數。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
-        <svg class="chart" id="a-region" viewBox="0 0 360 300"></svg></div>
-      <div class="card"><h2 class="sec"><span class="num">3</span>都道府縣 Top 15</h2><div class="anote">最密集的縣（堆疊）。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
-        <svg class="chart" id="a-pref" viewBox="0 0 360 360"></svg></div>
-    </div>
-    <div class="insight blue">關東兩者皆居首。<b>都市圈花火密度極高</b>，想避人潮可考慮東北、甲信越。</div>
-    <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">4</span>花火規模分布</h2><div class="anote">共 565 場。</div><svg class="chart" id="a-scale" viewBox="0 0 360 220"></svg></div>
-      <div class="card"><h2 class="sec"><span class="num">5</span>費用結構</h2><div class="anote">祭典看入場料、花火看有料席。</div>
-        <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>有料</span><span class="li"><span class="ls" style="background:#b5d4f4"></span>無料</span><span class="li"><span class="ls" style="background:#dcdad3"></span>不明</span></div>
-        <svg class="chart" id="a-pay" viewBox="0 0 360 220"></svg></div>
-    </div>
-    <div class="insight">祭典 <b>83% 免費入場</b>，低預算首選；花火約四成設有料席，熱門大會建議提前購票。</div>
-    <div class="grid2">
-      <div class="card"><h2 class="sec"><span class="num">6</span>花火發射數分布</h2><div class="anote">另有 91 場非公開/未定。</div><svg class="chart" id="a-launch" viewBox="0 0 360 230"></svg></div>
-      <div class="card"><h2 class="sec"><span class="num">7</span>活動持續天數</h2><div class="anote">單一活動橫跨天數。</div><svg class="chart" id="a-duration" viewBox="0 0 360 230"></svg></div>
-    </div>
-    <div class="insight blue"><b>69% 活動僅 1 天</b>，行程須精準對齊日期。長期活動多為風鈴祭・燈飾等常設展。</div>
-    <div class="card"><h2 class="sec"><span class="num">8</span>星期分布</h2><div class="anote">各星期開催日數。</div>
-      <div class="leg" style="margin-bottom:6px"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span></div>
-      <svg class="chart" id="a-dow" viewBox="0 0 720 230"></svg>
-      <div class="insight">花火明顯<b>集中週六</b>；平日出遊可避人潮。</div></div>
-    <div class="card"><h2 class="sec"><span class="num">9</span>月份 × 地區 熱力圖</h2><div class="anote">顏色越深 = 活動越多。</div>
-      <svg class="chart" id="a-heat" viewBox="0 0 720 340"></svg>
-      <div class="insight">熱區集中<b>夏季的關東・東海・甲信越</b>；冬季幾乎空白。</div></div>
-    <h2 class="sec" style="margin-top:24px"><span class="num">★</span>分析建議</h2>
-    <div class="reco"><ul>
-      <li><b>行程規劃</b>分頁已落實「日期區間 → 可參加清單」，最貼近觀光客需求。</li>
-      <li><b>旺季預警</b>：7〜8 月爆量，月曆可用背景深淺標示活動密度。</li>
-      <li><b>進階圖表</b>：發射數×規模散佈圖、有料席價格分析、交通便利度解析。</li>
-      <li><b>資料缺口</b>：冬季稀少、規模 16% 不明、發射數 91 場非公開 — UI 已明確標示。</li>
-    </ul></div>
-    <div class="foot">資料來源：walkerplus.com｜純前端靜態頁・無外部相依</div>
-  </div>
 </div>
 
 <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="ライト／ダークモード切替">
@@ -760,14 +715,6 @@ function toggleTheme(){
   if(typeof ExpMod!=='undefined'&&ExpMod.redrawMap)ExpMod.redrawMap();
 }
 
-/* ===== TAB switching with lazy init ===== */
-const inited={explorer:false,analytics:false};
-function showTab(name){
-  document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  $('tab-'+name).classList.add('active');$('tabbtn-'+name).classList.add('on');
-  if(!inited[name]){({explorer:ExpMod,analytics:AnaMod})[name].init();inited[name]=true;}
-}
 
 /* ===== EXPLORER module ===== */
 const ExpMod=(function(){
@@ -787,7 +734,7 @@ function MAPC(){const d=document.body.classList.contains('dark');return d?{
 }:{
   pstroke:'#94a3b8',pselstroke:'#f59e0b',psel:'#fde68a',
   pempty:'#f1f5f9',plo:'#dfeaf2',phi:'#2b6ca3',phover:'#fbbf24',mkstroke:'#fff',
-  mkf:'#d85a30',mkw:'#378add',mkb:'#7c3aed'
+  mkf:'#d85a30',mkw:'#378add',mkb:'#6d3ba8'
 };}
 function pass(e,ignoreGeo){
   if(S.ft!=='all'&&e.t!==S.ft)return false;
@@ -828,7 +775,7 @@ function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月
     const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';if(ds<TODAY)cls+=' past';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
     const dn=document.createElement('div');dn.className='dn';dn.textContent=d;el.appendChild(dn);
     const dots=document.createElement('div');dots.className='dots';
-    if(info&&(!tripActive()||inTrip)){const dot=document.createElement('div');dot.className='dot';const[hf,hw]=info;dot.style.background=(hf&&hw)?'#7c3aed':hf?'#d85a30':'#378add';dots.appendChild(dot);}
+    if(info&&(!tripActive()||inTrip)){const dot=document.createElement('div');dot.className='dot';const[hf,hw]=info;dot.style.background=(hf&&hw)?'#6d3ba8':hf?'#d85a30':'#378add';dots.appendChild(dot);}
     el.appendChild(dots);
     el.addEventListener('click',()=>{S.date=(S.date===ds?null:ds);S.pref=null;renderCal();renderMap();renderList();});g.appendChild(el);}}
 function buildMap(){const svg=$('e_mapsvg');const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='e_mapg';svg.appendChild(g);const mug=document.createElementNS('http://www.w3.org/2000/svg','g');mug.id='e_munig';mug.style.display='none';svg.appendChild(mug);const pog=document.createElementNS('http://www.w3.org/2000/svg','g');pog.id='e_prefoutline';svg.appendChild(pog);const mg=document.createElementNS('http://www.w3.org/2000/svg','g');mg.id='e_markg';svg.appendChild(mg);
@@ -918,15 +865,15 @@ function renderMarkers(animate=true){const mg=$('e_markg');mg.innerHTML='';if(_a
   clusterPts(pts,CLUSTER_PX/S.tk).forEach(cl=>{
     if(cl.m.length===1){const{e}=cl.m[0],cx=cl.m[0].x,cy=cl.m[0].y;const c=document.createElementNS(SVGNS,'circle');
       c.setAttribute('cx',cx.toFixed(1));c.setAttribute('cy',cy.toFixed(1));c.setAttribute('r',(5/S.tk).toFixed(2));c.setAttribute('fill',e.t==='f'?C.mkf:C.mkw);c.setAttribute('fill-opacity','0.85');c.setAttribute('stroke',C.mkstroke);c.setAttribute('stroke-width',(1/S.tk).toFixed(2));c.classList.add('mk');if(fade)c.classList.add('mkanim');
-      c.addEventListener('mouseenter',()=>{c.setAttribute('r',(7/S.tk).toFixed(2));$('e_tipn').textContent=(e.t==='f'?'🎏 ':'🎆 ')+e.n;let s=`${e.p}・${e.v}`;if(e.t==='w'&&e.sc)s+='／規模:'+e.sc;$('e_tips').textContent=s;$('e_tip').style.display='block';});
+      c.addEventListener('mouseenter',()=>{c.setAttribute('r',(7/S.tk).toFixed(2));$('e_tipn').textContent=(e.t==='f'?'':'')+e.n;let s=`${e.p}・${e.v}`;if(e.t==='w'&&e.sc)s+='／規模:'+e.sc;$('e_tips').textContent=s;$('e_tip').style.display='block';});
       c.addEventListener('mouseleave',()=>{c.setAttribute('r',(5/S.tk).toFixed(2));$('e_tip').style.display='none';});
       c.addEventListener('click',ev=>{ev.stopPropagation();if(e.u)window.open(e.u,'_blank');});mg.appendChild(c);}
     else{const n=cl.m.length,rpx=clusRadiusPx(n),g=document.createElementNS(SVGNS,'g');g.classList.add('mkclus');if(fade)g.classList.add('mkanim');
       let hf=false,hw=false;for(const it of cl.m){if(it.e.t==='f')hf=true;else hw=true;if(hf&&hw)break;}const col=(hf&&hw)?C.mkb:hf?C.mkf:C.mkw;
       const halo=document.createElementNS(SVGNS,'circle');halo.setAttribute('cx',cl.x.toFixed(1));halo.setAttribute('cy',cl.y.toFixed(1));halo.setAttribute('r',((rpx*1.25)/S.tk).toFixed(2));halo.setAttribute('fill',col);halo.setAttribute('fill-opacity','0.18');g.appendChild(halo);
       const c=document.createElementNS(SVGNS,'circle');c.setAttribute('cx',cl.x.toFixed(1));c.setAttribute('cy',cl.y.toFixed(1));c.setAttribute('r',(rpx/S.tk).toFixed(2));c.setAttribute('fill',col);c.setAttribute('fill-opacity','0.92');c.setAttribute('stroke','#fff');c.setAttribute('stroke-opacity','0.85');c.setAttribute('stroke-width',(1/S.tk).toFixed(2));g.appendChild(c);
-      const t=document.createElementNS(SVGNS,'text');t.setAttribute('x',cl.x.toFixed(1));t.setAttribute('y',cl.y.toFixed(1));t.setAttribute('fill','#fff');t.setAttribute('font-size',(Math.min(rpx*0.85,13)/S.tk).toFixed(2));t.textContent=n;g.appendChild(t);
-      g.addEventListener('mouseenter',()=>{const MAXN=10;const names=cl.m.slice(0,MAXN).map(it=>(it.e.t==='f'?'🎏 ':'🎆 ')+it.e.n).join('<br>');const more=cl.m.length>MAXN?`<br>…他 ${cl.m.length-MAXN}件`:'';$('e_tipn').textContent=n+'件';$('e_tips').innerHTML=names+more+'<br><span style="opacity:.55">クリックで拡大</span>';$('e_tip').style.display='block';});
+      const t=document.createElementNS(SVGNS,'text');t.setAttribute('x',cl.x.toFixed(1));t.setAttribute('y',cl.y.toFixed(1));t.setAttribute('fill','#fff');t.setAttribute('font-size',(Math.max(12,Math.min(rpx*0.85,15))/S.tk).toFixed(2));t.textContent=n;g.appendChild(t);
+      g.addEventListener('mouseenter',()=>{const MAXN=10;const names=cl.m.slice(0,MAXN).map(it=>(it.e.t==='f'?'':'')+it.e.n).join('<br>');const more=cl.m.length>MAXN?`<br>…他 ${cl.m.length-MAXN}件`:'';$('e_tipn').textContent=n+'件';$('e_tips').innerHTML=names+more+'<br><span style="opacity:.55">クリックで拡大</span>';$('e_tip').style.display='block';});
       g.addEventListener('mouseleave',()=>{$('e_tip').style.display='none';});
       g.addEventListener('click',ev=>{ev.stopPropagation();const nk=Math.min(80,S.tk*2.4);cancelAnim();animTo(270-nk*cl.x,260-nk*cl.y,nk);});
       mg.appendChild(g);}});}
@@ -952,7 +899,7 @@ function selectPref(code,p){
   if(S.fpref===code){clearPrefSel();refresh();return;}
   S.fpref=code;S.fregion='';clearMuni();if(p&&p.parentNode)p.parentNode.appendChild(p);setPrefOption(code);zoomToPath(code,p);refresh();}
 function clearPrefSel(){S.fpref=null;S.pref=null;clearPrefOption();clearMuni();animTo(0,0,1);}
-function showTip(code,name){const reg=PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　🎏 ${f}・🎆 ${w}（計 ${c}件）`:`${reg}　該当なし`;$('e_tip').style.display='block';}
+function showTip(code,name){const reg=PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　${f}・${w}（計 ${c}件）`:`${reg}　該当なし`;$('e_tip').style.display='block';}
 function updateInfo(){const el=$('e_ibar'),tot=fids().length;
   if(S.date&&S.pref)el.textContent=`${S.date} の ${CODENAME[S.pref]} — 該当 ${visible().length}件`;
   else if(S.date)el.textContent=`${S.date} — 該当 ${visible().length}件（マーカーが開催地）`;
@@ -999,14 +946,14 @@ function tripEvCard(id){const e=EV[id];
   const sp=e.t==='w'&&e.sc&&e.sc!=='不明'?`<span class="pill">規模 ${e.sc}</span>`:'';
   const dn=e.nd>1?'<span class="pill">連日開催</span>':'';
   return `<div class="ev"><div class="ev-top"><span class="badge ${e.t}">${e.t==='f'?'祭り':'花火'}</span><span class="ev-name">${e.n}</span>${sp}${pp}${dn}</div>
-    <div class="ev-meta"><span class="k">📍</span>${e.p}・${e.v}</div>
-    ${e.et?`<div class="ev-meta"><span class="k">🕐</span>${e.et}</div>`:''}
-    ${e.ac?`<div class="ev-meta"><span class="k">🚉</span>${e.ac}</div>`:''}
+    <div class="ev-meta">${e.p}・${e.v}</div>
+    ${e.et?`<div class="ev-meta">${e.et}</div>`:''}
+    ${e.ac?`<div class="ev-meta">${e.ac}</div>`:''}
     <div class="ev-links">${e.u?`<a class="lnk primary" href="${e.u}" target="_blank">官方詳情 ↗</a>`:''}
-    <a class="lnk" href="${gmaps(e)}" target="_blank">📍 地圖</a><a class="lnk" href="${weatherL(e)}" target="_blank">🌤 天氣</a></div></div>`;}
+    <a class="lnk" href="${gmaps(e)}" target="_blank">地圖</a><a class="lnk" href="${weatherL(e)}" target="_blank">天氣</a></div></div>`;}
 function tripRender(){
   if(!S.trip)return;
-  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">出発日と帰着日を入力してください 📅</span>';$('e_titin').innerHTML='';return;}
+  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">出発日と帰着日を入力してください </span>';$('e_titin').innerHTML='';return;}
   if(S.tfrom>S.tto){$('e_tsummary').innerHTML='<span style="color:#dc2626">帰着日は出発日より前にできません</span>';$('e_titin').innerHTML='';return;}
   const ids=Object.keys(EV).filter(id=>tripPass(EV[id]));
   const set=new Set(ids),days={};
@@ -1015,7 +962,7 @@ function tripRender(){
   const keys=Object.keys(days).sort();
   $('e_tsummary').innerHTML=`${S.tfrom}〜${S.tto}の期間に <b>${ids.length}</b> 件のイベントが見つかりました（<b>${keys.length}</b> 日間）。`;
   let h='';
-  if(!keys.length)h+='<div class="empty">この期間・条件ではイベントが見つかりませんでした<br>日付やエリアを変更してみてください 🔍</div>';
+  if(!keys.length)h+='<div class="empty">この期間・条件ではイベントが見つかりませんでした<br>日付やエリアを変更してみてください</div>';
   keys.forEach(ds=>{const dt=new Date(ds+'T00:00'),wd=dt.getDay(),wk=(wd===0||wd===6);const dd=days[ds];
     h+=`<div class="day"><div class="dayhd ${wk?'wknd':''}"><span class="dnum">${dt.getMonth()+1}/${dt.getDate()}</span><span class="dwk">(${WK[wd]})</span><span class="dcnt">${dd.length} 場</span></div>`;
     dd.sort((a,b)=>EV[a].t>EV[b].t?1:-1);dd.forEach(id=>h+=tripEvCard(id));h+='</div>';});
@@ -1095,51 +1042,10 @@ function init(){const rs=$('e_region');TRIP.regions.forEach(r=>{const o=document
   refresh();}
 return{init,redrawMap:()=>renderMap()};})();
 
-/* ===== ANALYTICS module ===== */
-const AnaMod=(function(){
-const CORAL='#d85a30',BLUE='#378add',NS='http://www.w3.org/2000/svg';
-function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
-function txt(p,x,y,s,a={}){const t=el('text',{x,y,...a},p);t.textContent=s;return t;}
-function grid(svg,x0,y0,w,h,mx,steps=4){for(let i=0;i<=steps;i++){const v=mx*i/steps,y=y0+h-h*i/steps;el('line',{x1:x0,y1:y,x2:x0+w,y2:y,stroke:'#eee','stroke-width':1},svg);txt(svg,x0-6,y+3,Math.round(v),{'font-size':10,fill:'#aaa','text-anchor':'end'});}}
-function init(){const S=STATS,T=S.totals;
-  $('drange')&&($('drange').textContent='');
-  const kc=$('a_kpis');[['活動總數',T.events,'場',''],['🎏 祭典',T.festivals,'場','coral'],['🎆 花火大會',T.fireworks,'場','blue'],['涵蓋都道府縣',T.prefectures,'/ 47','']].forEach(k=>{const d=document.createElement('div');d.className='kpi '+k[3];d.innerHTML=`<div class="label">${k[0]}</div><div class="val">${k[1]}</div><div class="sub">${k[2]}</div>`;kc.appendChild(d);});
-  // monthly
-  (function(){const svg=$('a-monthly'),W=720,H=260,PL=40,PR=15,PT=15,PB=30,cw=W-PL-PR,ch=H-PT-PB,M=['1','2','3','4','5','6','7','8','9','10','11','12'],f=S.monthly.f,w=S.monthly.w,mx=Math.max(...f,...w);grid(svg,PL,PT,cw,ch,mx);M.forEach((m,i)=>txt(svg,PL+cw*i/11,H-12,m+'月',{'font-size':10,fill:'#aaa','text-anchor':'middle'}));
-    function pth(arr,col){let d='';arr.forEach((v,i)=>{const x=PL+cw*i/11,y=PT+ch-ch*v/mx;d+=(i?'L':'M')+x+','+y;});el('path',{d:d+`L${PL+cw},${PT+ch}L${PL},${PT+ch}Z`,fill:col,'fill-opacity':0.1},svg);el('path',{d,fill:'none',stroke:col,'stroke-width':2.2},svg);arr.forEach((v,i)=>el('circle',{cx:PL+cw*i/11,cy:PT+ch-ch*v/mx,r:3.5,fill:col},svg));}
-    pth(w,BLUE);pth(f,CORAL);})();
-  // region grouped
-  (function(){const svg=$('a-region'),W=360,H=300,labW=68,PR=30,PT=8,PB=8,cw=W-labW-PR,L=S.region.labels,f=S.region.f,w=S.region.w,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.34,mx=Math.max(...L.map((_,i)=>Math.max(f[i],w[i])))||1;
-    L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2;txt(svg,labW-6,y+3,lb,{'font-size':11,fill:'#555','text-anchor':'end'});const fw=cw*f[i]/mx,ww=cw*w[i]/mx;el('rect',{x:labW,y:y-bh-1,width:fw,height:bh,rx:2,fill:CORAL},svg);el('rect',{x:labW,y:y+1,width:ww,height:bh,rx:2,fill:BLUE},svg);txt(svg,labW+fw+4,y-bh+bh/2+2,f[i],{'font-size':9,fill:CORAL});txt(svg,labW+ww+4,y+1+bh/2+2,w[i],{'font-size':9,fill:BLUE});});})();
-  // pref stacked
-  (function(){const svg=$('a-pref'),W=360,H=360,labW=58,PR=36,PT=6,PB=6,L=S.prefTop.labels,f=S.prefTop.f,w=S.prefTop.w,cw=W-labW-PR,n=L.length,rowH=(H-PT-PB)/n,bh=rowH*0.6,mx=Math.max(...L.map((_,i)=>f[i]+w[i]))||1;
-    L.forEach((lb,i)=>{const y=PT+rowH*i+rowH/2;txt(svg,labW-6,y+3,lb,{'font-size':10,fill:'#555','text-anchor':'end'});const fw=cw*f[i]/mx,ww=cw*w[i]/mx;el('rect',{x:labW,y:y-bh/2,width:fw,height:bh,rx:2,fill:CORAL},svg);el('rect',{x:labW+fw,y:y-bh/2,width:ww,height:bh,rx:2,fill:BLUE},svg);txt(svg,labW+fw+ww+4,y+3,f[i]+w[i],{'font-size':9,fill:'#999'});});})();
-  // scale donut
-  (function(){const svg=$('a-scale'),cx=110,cy=110,r=70,ir=42,data=[['大',S.scale['大'],'#185fa5'],['中',S.scale['中'],BLUE],['小',S.scale['小'],'#9cc4ee'],['不明',S.scale['不明'],'#cfcdc5']],total=data.reduce((s,d)=>s+d[1],0);let ang=-Math.PI/2;
-    data.forEach(([lb,v,col])=>{const a2=ang+2*Math.PI*v/total,x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),xi1=cx+ir*Math.cos(a2),yi1=cy+ir*Math.sin(a2),xi2=cx+ir*Math.cos(ang),yi2=cy+ir*Math.sin(ang),lg=(a2-ang)>Math.PI?1:0;el('path',{d:`M${x1},${y1}A${r},${r} 0 ${lg} 1 ${x2},${y2}L${xi1},${yi1}A${ir},${ir} 0 ${lg} 0 ${xi2},${yi2}Z`,fill:col},svg);ang=a2;});
-    txt(svg,cx,cy-4,total,{'font-size':22,'font-weight':700,'text-anchor':'middle',fill:'#1c1c1a'});txt(svg,cx,cy+12,'場',{'font-size':10,'text-anchor':'middle',fill:'#aaa'});
-    data.forEach(([lb,v,col],i)=>{const ly=40+i*34;el('rect',{x:230,y:ly,width:12,height:12,rx:3,fill:col},svg);txt(svg,248,ly+10,`${lb}　${v} 場 (${Math.round(v/total*100)}%)`,{'font-size':11,fill:'#555'});});})();
-  // payment
-  (function(){const svg=$('a-pay'),W=360,H=220,PL=50,PT=20,PB=40,PR=20,cw=W-PL-PR,ch=H-PT-PB,rows=[['祭典',S.payment.f],['花火',S.payment.w]],barW=70,gap=(cw-barW*2)/3;
-    rows.forEach(([lb,p],i)=>{const paid=p.paid||0,free=p.free||0,unk=p.unknown||0,tot=paid+free+unk,x=PL+gap+(barW+gap)*i;let y=PT+ch;
-      [['有料',paid,CORAL],['無料',free,'#b5d4f4'],['不明',unk,'#dcdad3']].forEach(([_,v,col])=>{const hh=ch*v/tot;y-=hh;el('rect',{x,y,width:barW,height:hh,fill:col},svg);if(hh>16)txt(svg,x+barW/2,y+hh/2+4,v,{'font-size':11,fill:col===CORAL?'#fff':'#555','text-anchor':'middle','font-weight':600});});
-      txt(svg,x+barW/2,H-18,lb,{'font-size':12,fill:'#444','text-anchor':'middle','font-weight':600});txt(svg,x+barW/2,H-5,`計 ${tot}`,{'font-size':9,fill:'#aaa','text-anchor':'middle'});});})();
-  // vBar helper
-  function vBar(id,labels,data,color){const svg=$(id),W=360,H=230,PL=36,PT=18,PB=46,PR=12,cw=W-PL-PR,ch=H-PT-PB,n=labels.length,mx=Math.max(...data)||1;grid(svg,PL,PT,cw,ch,mx);const bw=cw/n*0.6;
-    labels.forEach((lb,i)=>{const x=PL+cw*(i+0.5)/n,h=ch*data[i]/mx,y=PT+ch-h;el('rect',{x:x-bw/2,y,width:bw,height:h,rx:3,fill:color},svg);txt(svg,x,y-4,data[i],{'font-size':10,fill:'#777','text-anchor':'middle'});txt(svg,x,H-16,lb,{'font-size':9.5,fill:'#999','text-anchor':'middle'});});}
-  vBar('a-launch',S.launch.labels,S.launch.data,BLUE);vBar('a-duration',S.duration.labels,S.duration.data,CORAL);
-  // dow
-  (function(){const svg=$('a-dow'),W=720,H=230,PL=42,PT=18,PB=40,PR=15,cw=W-PL-PR,ch=H-PT-PB,L=S.dow.labels,f=S.dow.f,w=S.dow.w,mx=Math.max(...f,...w)||1,n=7;grid(svg,PL,PT,cw,ch,mx);const gp=cw/n,bw=gp*0.32;
-    L.forEach((lb,i)=>{const cx=PL+gp*(i+0.5),fh=ch*f[i]/mx,wh=ch*w[i]/mx;el('rect',{x:cx-bw-2,y:PT+ch-fh,width:bw,height:fh,rx:2,fill:CORAL},svg);el('rect',{x:cx+2,y:PT+ch-wh,width:bw,height:wh,rx:2,fill:BLUE},svg);const wd=(i===5||i===6);txt(svg,cx,H-16,lb,{'font-size':12,fill:wd?'#d85a30':'#999','text-anchor':'middle','font-weight':wd?700:400});});})();
-  // heatmap
-  (function(){const svg=$('a-heat'),W=720,H=340,PL=80,PT=24,cg=2,R=S.heatmap.regions,M=S.heatmap.months,D=S.heatmap.data,cw=(W-PL-20)/12,chh=(H-PT-30)/R.length;let mx=0;D.forEach(r=>r.forEach(v=>mx=Math.max(mx,v)));
-    M.forEach((m,j)=>txt(svg,PL+cw*(j+0.5),PT-8,m+'月',{'font-size':10,fill:'#999','text-anchor':'middle'}));
-    R.forEach((r,i)=>{txt(svg,PL-6,PT+chh*(i+0.5)+3,r,{'font-size':10,fill:'#555','text-anchor':'end'});D[i].forEach((v,j)=>{const t=v/mx,col=v===0?'#f4f3ef':`rgb(${Math.round(245-200*t)},${Math.round(240-130*t)},${Math.round(235-70*t)})`;el('rect',{x:PL+cw*j,y:PT+chh*i,width:cw-cg,height:chh-cg,rx:2,fill:col},svg);if(v>=mx*0.45)txt(svg,PL+cw*j+(cw-cg)/2,PT+chh*i+chh/2+3,v,{'font-size':9,fill:'#fff','text-anchor':'middle','font-weight':600});});});})();
-}
-return{init};})();
+
 
 /* boot: default = explorer (地圖月曆) */
-ExpMod.init();inited.explorer=true;
+ExpMod.init();
 
 </script>
 </body>
