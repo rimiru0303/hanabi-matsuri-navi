@@ -710,6 +710,11 @@ PATHS.forEach(p=>CODENAME[p.id]=p.name);
 const REGION_PREFS={'北海道':['01'],'東北':['02','03','04','05','06','07'],'関東':['08','09','10','11','12','13','14'],'甲信越':['15','19','20'],'北陸':['16','17','18'],'東海':['21','22','23','24'],'関西':['25','26','27','28','29','30'],'中国':['31','32','33','34','35'],'四国':['36','37','38','39'],'九州・沖縄':['40','41','42','43','44','45','46','47']};
 const PFNAME={};PATHS.forEach(p=>{PFNAME[p.id]=p.name;});
 const PFREG={};Object.entries(REGION_PREFS).forEach(([r,arr])=>arr.forEach(c=>{PFREG[c]=r;}));
+/* ===== 繁體中文對照表（僅供顯示，不影響篩選用的資料值） =====
+   PFNAME/PFREG/TRIP.regions 的值本身仍是日文（用於跟資料比對），這裡只是
+   在「地區」下拉選單和地圖提示框顯示前，另外查一次繁體名稱。 */
+const REGION_ZH={'北海道':'北海道','東北':'東北','関東':'關東','甲信越':'甲信越','北陸':'北陸','東海':'東海','関西':'關西','中国':'中國','四国':'四國','九州・沖縄':'九州・沖繩'};
+const PFNAME_ZH={'01':'北海道','02':'青森縣','03':'岩手縣','04':'宮城縣','05':'秋田縣','06':'山形縣','07':'福島縣','08':'茨城縣','09':'栃木縣','10':'群馬縣','11':'埼玉縣','12':'千葉縣','13':'東京都','14':'神奈川縣','15':'新潟縣','16':'富山縣','17':'石川縣','18':'福井縣','19':'山梨縣','20':'長野縣','21':'岐阜縣','22':'靜岡縣','23':'愛知縣','24':'三重縣','25':'滋賀縣','26':'京都府','27':'大阪府','28':'兵庫縣','29':'奈良縣','30':'和歌山縣','31':'鳥取縣','32':'島根縣','33':'岡山縣','34':'廣島縣','35':'山口縣','36':'德島縣','37':'香川縣','38':'愛媛縣','39':'高知縣','40':'福岡縣','41':'佐賀縣','42':'長崎縣','43':'熊本縣','44':'大分縣','45':'宮崎縣','46':'鹿兒島縣','47':'沖繩縣'};
 const MW=540,MH=520,PRJ_SCALE=900,PRJ_CX=137.5,PRJ_CY=38.2,PRJ_TX=MW/2,PRJ_TY=MH/2,D2R=Math.PI/180;
 const _mraw=(lon,lat)=>[lon*D2R,Math.log(Math.tan(Math.PI/4+lat*D2R/2))];
 const _rc=_mraw(PRJ_CX,PRJ_CY);
@@ -807,7 +812,7 @@ function buildMap(){const svg=$('e_mapsvg');const g=document.createElementNS('ht
   // ベース剪影レイヤー：残った微小な隙間を境界色で埋める（N03ならほぼ不要だが保険）
   baseEls=[];baseByCode={};const BC=MAPC();PATHS.forEach(({id,d})=>{const b=document.createElementNS('http://www.w3.org/2000/svg','path');b.setAttribute('d',d);b.setAttribute('fill',BC.pstroke);b.setAttribute('stroke',BC.pstroke);b.setAttribute('stroke-width',mapSW(0.4));b.setAttribute('stroke-linejoin','round');b.style.pointerEvents='none';g.appendChild(b);baseEls.push(b);baseByCode[id]=b;});
   PATHS.forEach(({id,name,d})=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('stroke',MAPC().pstroke);p.setAttribute('stroke-width',PREF_W);p.style.vectorEffect='non-scaling-stroke';p.setAttribute('stroke-linejoin','round');p.classList.add('pref-path');p._od=d;
-    p.addEventListener('mouseenter',()=>{if(S.pref!==id)p.setAttribute('fill',MAPC().phover);showTip(id,name);});
+    p.addEventListener('mouseenter',()=>{if(S.pref!==id)p.setAttribute('fill',MAPC().phover);showTip(id,PFNAME_ZH[id]||name);});
     p.addEventListener('mouseleave',()=>{if(S.pref!==id)p.setAttribute('fill',p._bf||MAPC().pempty);$('e_tip').style.display='none';});
     p.addEventListener('click',e=>{e.stopPropagation();selectPref(id,p);});g.appendChild(p);pathEls[id]=p;});
   // 県外框オーバーレイ：市区町村レイヤーの上に描き、詳細表示中も県界を区線より太く残す
@@ -918,13 +923,13 @@ function mainBBox(d){
   return{x:X0,y:Y0,width:X1-X0,height:Y1-Y0};}
 function zoomToPath(code,p){const bb=mainBBox(p._od||p.getAttribute('d'))||p.getBBox(),cx=bb.x+bb.width/2,cy=bb.y+bb.height/2,k=Math.min(36,0.95/Math.max(bb.width/540,bb.height/520));S.pref=code;S.fitK=k;animTo(270-k*cx,260-k*cy,k);}
 function zoomRegion(region){if(!region){S.pref=null;animTo(0,0,1);return;}const codes=REGION_PREFS[region]||[];let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;codes.forEach(c=>{const p=pathEls[c];if(!p)return;const b=p.getBBox();x0=Math.min(x0,b.x);y0=Math.min(y0,b.y);x1=Math.max(x1,b.x+b.width);y1=Math.max(y1,b.y+b.height);});if(x1<x0){S.pref=null;animTo(0,0,1);return;}const cx=(x0+x1)/2,cy=(y0+y1)/2,k=Math.min(5,0.82/Math.max((x1-x0)/540,(y1-y0)/520));S.pref=null;animTo(270-k*cx,260-k*cy,k);}
-function setPrefOption(code){const rs=$('e_region');let o=$('e_prefopt');if(!o){o=document.createElement('option');o.id='e_prefopt';rs.appendChild(o);}o.value='P:'+code;o.textContent=(PFREG[code]||'')+'-'+(PFNAME[code]||code);rs.value='P:'+code;}
+function setPrefOption(code){const rs=$('e_region');let o=$('e_prefopt');if(!o){o=document.createElement('option');o.id='e_prefopt';rs.appendChild(o);}o.value='P:'+code;o.textContent=(REGION_ZH[PFREG[code]]||PFREG[code]||'')+'-'+(PFNAME_ZH[code]||PFNAME[code]||code);rs.value='P:'+code;}
 function clearPrefOption(){const o=$('e_prefopt');if(o)o.remove();$('e_region').value=S.fregion;}
 function selectPref(code,p){
   if(S.fpref===code){clearPrefSel();refresh();return;}
   S.fpref=code;S.fregion='';clearMuni();if(p&&p.parentNode)p.parentNode.appendChild(p);setPrefOption(code);zoomToPath(code,p);refresh();}
 function clearPrefSel(){S.fpref=null;S.pref=null;clearPrefOption();clearMuni();animTo(0,0,1);}
-function showTip(code,name){const reg=PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　${f}・${w}（共 ${c}件）`:`${reg}　無符合項目`;$('e_tip').style.display='block';}
+function showTip(code,name){const reg=REGION_ZH[PFREG[code]]||PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　${f}・${w}（共 ${c}件）`:`${reg}　無符合項目`;$('e_tip').style.display='block';}
 function updateInfo(){const el=$('e_ibar'),tot=fids().length;
   if(S.date&&S.pref)el.textContent=`${S.date} 的 ${CODENAME[S.pref]} — 符合 ${visible().length}件`;
   else if(S.date)el.textContent=`${S.date} — 符合 ${visible().length}件（標記為舉辦地）`;
@@ -992,7 +997,7 @@ function tripRender(){
     h+=`<div class="day"><div class="dayhd ${wk?'wknd':''}"><span class="dnum">${dt.getMonth()+1}/${dt.getDate()}</span><span class="dwk">(${WK[wd]})</span><span class="dcnt">${dd.length} 場</span></div>`;
     dd.sort((a,b)=>EV[a].t>EV[b].t?1:-1);dd.forEach(id=>h+=tripEvCard(id));h+='</div>';});
   $('e_titin').innerHTML=h;}
-function init(){const rs=$('e_region');TRIP.regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;rs.appendChild(o);});
+function init(){const rs=$('e_region');TRIP.regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=REGION_ZH[r]||r;rs.appendChild(o);});
   rs.addEventListener('change',()=>{const v=rs.value;S.pref=null;
     if(v.indexOf('P:')===0){const code=v.slice(2);S.fpref=code;S.fregion='';const p=pathEls[code];if(p)zoomToPath(code,p);else{S.tx=0;S.ty=0;S.tk=1;tf();}refresh();}
     else{S.fpref=null;S.fregion=v;clearPrefOption();zoomRegion(v);refresh();}});
