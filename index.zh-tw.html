@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>花火祭ナビ｜日本の祭り・花火 観光ダッシュボード</title>
+<title>花火祭ナビ｜日本祭典・煙火 觀光儀表板</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 
@@ -612,7 +612,7 @@ body.dark .reset-btn:hover{background:#373c47}
       <span class="brand-jp">花火祭ナビ</span>
       <span class="brand-en">hanabinavi</span>
     </h1>
-    <a class="langlink" href="#" onclick="switchLang();return false;">中文 →</a>
+    <a class="langlink" href="#" onclick="switchLang();return false;">日本語 →</a>
   </div>
 
   <!-- ========== TRIP ========== -->
@@ -621,24 +621,24 @@ body.dark .reset-btn:hover{background:#373c47}
     <div class="fbar">
       <div class="fbar-row fbar-r1">
         <div class="fgrp"><span class="lbl">種類</span>
-          <button class="chip on" id="e_t-all">すべて</button><button class="chip" id="e_t-f">祭り</button><button class="chip" id="e_t-w">花火</button></div>
-        <div class="fgrp"><span class="lbl">地区</span><select class="fsel" id="e_region"><option value="">全国</option></select></div>
-        <div class="fgrp"><span class="lbl">検索</span><input class="fsearch" id="e_q" type="search" placeholder="イベント名・会場" autocomplete="off"></div>
-        <button class="copylink" id="e_copylink" title="現在の絞り込み状態のリンクをコピー">リンクをコピー</button>
+          <button class="chip on" id="e_t-all">全部</button><button class="chip" id="e_t-f">祭典</button><button class="chip" id="e_t-w">煙火</button></div>
+        <div class="fgrp"><span class="lbl">地區</span><select class="fsel" id="e_region"><option value="">全國</option></select></div>
+        <div class="fgrp"><span class="lbl">搜尋</span><input class="fsearch" id="e_q" type="search" placeholder="活動名稱、會場" autocomplete="off"></div>
+        <button class="copylink" id="e_copylink" title="複製目前篩選狀態的連結">複製連結</button>
       </div>
       <div class="fbar-row fbar-r2">
         <div class="fsec fg-f">
-          <span class="seclbl cf">祭り</span><span class="sep"></span>
+          <span class="seclbl cf">祭典</span><span class="sep"></span>
           <div class="fgrp" id="g_adm"><span class="lbl">入場</span>
-            <select class="fsel" id="e_adm"><option value="all">すべて</option><option value="free">無料</option><option value="paid">有料</option></select></div>
-          <div class="fgrp" id="g_park_f"><span class="lbl">駐車場</span>
-            <select class="fsel" id="e_park_f"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
+            <select class="fsel" id="e_adm"><option value="all">全部</option><option value="free">免費</option><option value="paid">付費</option></select></div>
+          <div class="fgrp" id="g_park_f"><span class="lbl">停車場</span>
+            <select class="fsel" id="e_park_f"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
         </div>
         <div class="fsec fg-w">
-          <span class="seclbl cw">花火</span><span class="sep"></span>
+          <span class="seclbl cw">煙火</span><span class="sep"></span>
           <div class="fgrp" id="g_scale"><span class="lbl">規模</span>
             <div class="msel" id="m_scale">
-              <button type="button" class="fsel mselbtn" id="e_scale-btn">すべて</button>
+              <button type="button" class="fsel mselbtn" id="e_scale-btn">全部</button>
               <div class="mselpop" id="e_scale-pop">
                 <label><input type="checkbox" value="大">大</label>
                 <label><input type="checkbox" value="中">中</label>
@@ -646,20 +646,20 @@ body.dark .reset-btn:hover{background:#373c47}
                 <label><input type="checkbox" value="不明">不明</label>
               </div>
             </div></div>
-          <div class="fgrp" id="g_seat"><span class="lbl">有料席</span>
-            <select class="fsel" id="e_seat"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
-          <div class="fgrp" id="g_stall"><span class="lbl">屋台</span>
-            <select class="fsel" id="e_stall"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
-          <div class="fgrp" id="g_park_w"><span class="lbl">駐車場</span>
-            <select class="fsel" id="e_park_w"><option value="all">すべて</option><option value="yes">有</option><option value="no">無</option></select></div>
+          <div class="fgrp" id="g_seat"><span class="lbl">付費座位</span>
+            <select class="fsel" id="e_seat"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+          <div class="fgrp" id="g_stall"><span class="lbl">攤位</span>
+            <select class="fsel" id="e_stall"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
+          <div class="fgrp" id="g_park_w"><span class="lbl">停車場</span>
+            <select class="fsel" id="e_park_w"><option value="all">全部</option><option value="yes">有</option><option value="no">無</option></select></div>
         </div>
       </div>
       <div class="fbar-row triprow">
-        <span class="tripsw" id="e_triptoggle">旅行プラン<span class="sw"></span></span>
+        <span class="tripsw" id="e_triptoggle">旅行規劃<span class="sw"></span></span>
         <span class="tripdiv" id="e_tripdiv" style="display:none"></span>
         <span class="fgrp tripfld" id="e_tripfld" style="display:none">
-          <span class="lbl">出発日</span><input type="date" id="e_tfrom">
-          <span class="lbl">帰着日</span><input type="date" id="e_tto">
+          <span class="lbl">出發日</span><input type="date" id="e_tfrom">
+          <span class="lbl">回程日</span><input type="date" id="e_tto">
         </span>
       </div>
     </div>
@@ -669,16 +669,16 @@ body.dark .reset-btn:hover{background:#373c47}
         <div class="cal-note" id="e_calnote" hidden></div>
         <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
         <div class="cgrid" id="e_cgrid"></div>
-        <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭り</span><span class="li"><span class="ls" style="background:#378add"></span>花火</span><span class="li"><span class="ls" style="background:#6d3ba8"></span>両方</span></div>
+        <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>煙火</span><span class="li"><span class="ls" style="background:#6d3ba8"></span>兩者皆有</span></div>
       </div>
       <div class="mapw">
         <div class="svgwrap" id="e_svgwrap" style="flex:1"><svg class="mapsvg" id="e_mapsvg" viewBox="0 0 540 520" preserveAspectRatio="xMidYMid meet"></svg>
           <div class="tip" id="e_tip"><div class="tip-n" id="e_tipn"></div><div class="tip-s" id="e_tips"></div></div>
-          <button class="reset-btn" id="e_reset">↺ リセット</button></div>
+          <button class="reset-btn" id="e_reset">↺ 重置</button></div>
         <div class="ibar" id="e_ibar"></div>
       </div>
     </div>
-    <div class="elist" id="e_elist"><div class="elist-h" id="e_elisth">イベント一覧</div><div id="e_elistbody"></div></div>
+    <div class="elist" id="e_elist"><div class="elist-h" id="e_elisth">活動列表</div><div id="e_elistbody"></div></div>
     <div id="e_tripout" style="display:none">
       <div class="summary" id="e_tsummary"></div>
       <div class="itin" id="e_titin"></div>
@@ -726,12 +726,11 @@ function toggleTheme(){
   if(typeof ExpMod!=='undefined'&&ExpMod.redrawMap)ExpMod.redrawMap();
 }
 
-/* ===== 言語切替 =====
-   ファイル名から相手言語のファイル名を導く。開発（hanabi-matsuri-navi_src.html ⇔
-   hanabi-matsuri-navi_src.zh-tw.html）・本番（index.html ⇔ index.zh-tw.html）
-   のどちらでも同じロジックで動く——ファイル名を書き換えずに済む。
-   フィルタ等の状態は URL ハッシュ（writeHash/applyHash）に載っているので、
-   ハッシュを引き継げば言語を切り替えても失われない。 */
+/* ===== 語言切換 =====
+   從檔名推導對方語言的檔名。開發（hanabi-matsuri-navi_src.html ⇔
+   hanabi-matsuri-navi_src.zh-tw.html）・正式站（index.html ⇔ index.zh-tw.html）
+   兩種情境用同一套邏輯，不必改寫檔名。篩選等狀態存在 URL hash 裡
+   （writeHash/applyHash），把 hash 一併帶過去，切換語言不會遺失。 */
 function switchLang(){
   const p=location.pathname;
   const file=p.split('/').pop();
@@ -793,7 +792,7 @@ function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月
   // 「掲載が無い＝開催が無い」という誤解を防ぐため、過去日をグレー化し注記を出す。
   const _t=new Date(),TODAY=`${_t.getFullYear()}-${String(_t.getMonth()+1).padStart(2,'0')}-${String(_t.getDate()).padStart(2,'0')}`;
   const _mm=String(S.m).padStart(2,'0'),_first=`${S.y}-${_mm}-01`,_last=`${S.y}-${_mm}-${String(dim).padStart(2,'0')}`,_note=$('e_calnote');
-  if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 過去の月です。掲載期間を過ぎた開催情報は表示されていない場合があります。':'※ グレーの日付は過去です。掲載期間を過ぎた開催情報は表示されない場合があります。';_note.hidden=false;}else{_note.hidden=true;}}
+  if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 這是過去的月份。已過刊登期限的活動可能不會顯示。':'※ 灰色的日期是過去。已過刊登期限的活動可能不會顯示。';_note.hidden=false;}else{_note.hidden=true;}}
   for(let i=0;i<sw;i++){const e=document.createElement('div');e.className='dc emp';g.appendChild(e);}
   for(let d=1;d<=dim;d++){const ds=`${S.y}-${String(S.m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,info=CAL[ds],dow=(sw+d-1)%7;
     const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';if(ds<TODAY)cls+=' past';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
@@ -837,7 +836,7 @@ function buildMuniFor(code){
   const arr=[];muniByCode[code]=arr;const list=MUNI[code];if(!list||!list.length)return arr;
   const mug=$('e_munig'),C=MAPC();
   list.forEach(m=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',m.d);p.setAttribute('fill','none');p.setAttribute('stroke',C.pstroke);p.setAttribute('stroke-width',MUNI_W);p.style.vectorEffect='non-scaling-stroke';p.setAttribute('stroke-linejoin','round');p.style.opacity='0.5';p.style.cursor='pointer';
-    p.addEventListener('mouseenter',()=>{const n=muniCount(p,code);$('e_tipn').textContent=m.n;$('e_tips').innerHTML=`${PFNAME[code]||''}　該当 ${n}件`;$('e_tip').style.display='block';});
+    p.addEventListener('mouseenter',()=>{const n=muniCount(p,code);$('e_tipn').textContent=m.n;$('e_tips').innerHTML=`${PFNAME[code]||''}　符合 ${n}件`;$('e_tip').style.display='block';});
     p.addEventListener('mouseleave',()=>{$('e_tip').style.display='none';});
     p.addEventListener('click',e=>{e.stopPropagation();if(S.fpref===code)return;const pe=pathEls[code];if(pe)selectPref(code,pe);});
     p.style.display='none';mug.appendChild(p);arr.push(p);muniEls.push(p);});
@@ -897,7 +896,7 @@ function renderMarkers(animate=true){const mg=$('e_markg');mg.innerHTML='';if(_a
       const halo=document.createElementNS(SVGNS,'circle');halo.setAttribute('cx',cl.x.toFixed(1));halo.setAttribute('cy',cl.y.toFixed(1));halo.setAttribute('r',((rpx*1.25)/S.tk).toFixed(2));halo.setAttribute('fill',col);halo.setAttribute('fill-opacity','0.18');g.appendChild(halo);
       const c=document.createElementNS(SVGNS,'circle');c.setAttribute('cx',cl.x.toFixed(1));c.setAttribute('cy',cl.y.toFixed(1));c.setAttribute('r',(rpx/S.tk).toFixed(2));c.setAttribute('fill',col);c.setAttribute('fill-opacity','0.92');c.setAttribute('stroke','#fff');c.setAttribute('stroke-opacity','0.85');c.setAttribute('stroke-width',(1/S.tk).toFixed(2));g.appendChild(c);
       const t=document.createElementNS(SVGNS,'text');t.setAttribute('x',cl.x.toFixed(1));t.setAttribute('y',cl.y.toFixed(1));t.setAttribute('fill','#fff');t.setAttribute('font-size',(Math.max(12,Math.min(rpx*0.85,15))/S.tk).toFixed(2));t.textContent=n;g.appendChild(t);
-      g.addEventListener('mouseenter',()=>{const MAXN=10;const names=cl.m.slice(0,MAXN).map(it=>(it.e.t==='f'?'':'')+it.e.n).join('<br>');const more=cl.m.length>MAXN?`<br>…他 ${cl.m.length-MAXN}件`:'';$('e_tipn').textContent=n+'件';$('e_tips').innerHTML=names+more+'<br><span style="opacity:.55">クリックで拡大</span>';$('e_tip').style.display='block';});
+      g.addEventListener('mouseenter',()=>{const MAXN=10;const names=cl.m.slice(0,MAXN).map(it=>(it.e.t==='f'?'':'')+it.e.n).join('<br>');const more=cl.m.length>MAXN?`<br>…其餘 ${cl.m.length-MAXN} 項`:'';$('e_tipn').textContent=n+'件';$('e_tips').innerHTML=names+more+'<br><span style="opacity:.55">點擊放大</span>';$('e_tip').style.display='block';});
       g.addEventListener('mouseleave',()=>{$('e_tip').style.display='none';});
       g.addEventListener('click',ev=>{ev.stopPropagation();const nk=Math.min(80,S.tk*2.4);cancelAnim();animTo(270-nk*cl.x,260-nk*cl.y,nk);});
       mg.appendChild(g);}});}
@@ -923,20 +922,20 @@ function selectPref(code,p){
   if(S.fpref===code){clearPrefSel();refresh();return;}
   S.fpref=code;S.fregion='';clearMuni();if(p&&p.parentNode)p.parentNode.appendChild(p);setPrefOption(code);zoomToPath(code,p);refresh();}
 function clearPrefSel(){S.fpref=null;S.pref=null;clearPrefOption();clearMuni();animTo(0,0,1);}
-function showTip(code,name){const reg=PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　${f}・${w}（計 ${c}件）`:`${reg}　該当なし`;$('e_tip').style.display='block';}
+function showTip(code,name){const reg=PFREG[code]||'';let f=0,w=0;fids().forEach(id=>{const e=EV[id];if(e.pc===code){e.t==='f'?f++:w++;}});const c=f+w;$('e_tipn').textContent=name;$('e_tips').innerHTML=c>0?`${reg}　${f}・${w}（共 ${c}件）`:`${reg}　無符合項目`;$('e_tip').style.display='block';}
 function updateInfo(){const el=$('e_ibar'),tot=fids().length;
-  if(S.date&&S.pref)el.textContent=`${S.date} の ${CODENAME[S.pref]} — 該当 ${visible().length}件`;
-  else if(S.date)el.textContent=`${S.date} — 該当 ${visible().length}件（マーカーが開催地）`;
-  else if(S.pref)el.textContent=`${CODENAME[S.pref]} — 該当 ${visible().length}件（マーカークリックで公式）`;
-  else el.textContent=`全国 該当 ${tot}件 — 日付クリックで当日表示 / 縣界クリックで拡大`;}
+  if(S.date&&S.pref)el.textContent=`${S.date} 的 ${CODENAME[S.pref]} — 符合 ${visible().length}件`;
+  else if(S.date)el.textContent=`${S.date} — 符合 ${visible().length}件（標記為舉辦地）`;
+  else if(S.pref)el.textContent=`${CODENAME[S.pref]} — 符合 ${visible().length}件（點擊標記前往官方）`;
+  else el.textContent=`全國 符合 ${tot}件 — 點擊日期顯示當日 / 點擊縣界放大`;}
 function renderList(){const body=$('e_elistbody'),h=$('e_elisth');let ids=(S.date||S.pref)?visible():fids();
-  let label='イベント一覧';if(S.date&&S.pref)label=`${S.date}・${CODENAME[S.pref]}`;else if(S.date)label=`${S.date} の開催`;else if(S.pref)label=`${CODENAME[S.pref]}`;
+  let label='活動列表';if(S.date&&S.pref)label=`${S.date}・${CODENAME[S.pref]}`;else if(S.date)label=`${S.date} 的活動`;else if(S.pref)label=`${CODENAME[S.pref]}`;
   h.textContent=`${label}（${ids.length}件）`;body.innerHTML='';
-  if(!ids.length){body.innerHTML='<div class="empty-l">該当なし</div>';return;}
-  ids.slice(0,200).forEach(id=>{const e=EV[id];const row=document.createElement('div');row.className='erow';const meta=[e.p];if(e.t==='w'&&e.sc&&e.sc!=='不明')meta.push('規模'+e.sc);meta.push(e.pd===true?'有料':e.pd===false?'無料':'');
-    row.innerHTML=`<span class="ebadge ${e.t}">${e.t==='f'?'祭り':'花火'}</span><span class="ename">${e.n}</span><span class="emeta">${meta.filter(Boolean).join(' · ')}</span>`+(e.u?`<a class="elink" href="${e.u}" target="_blank" onclick="event.stopPropagation()">詳細↗</a>`:'');
+  if(!ids.length){body.innerHTML='<div class="empty-l">無符合項目</div>';return;}
+  ids.slice(0,200).forEach(id=>{const e=EV[id];const row=document.createElement('div');row.className='erow';const meta=[e.p];if(e.t==='w'&&e.sc&&e.sc!=='不明')meta.push('規模'+e.sc);meta.push(e.pd===true?'付費':e.pd===false?'免費':'');
+    row.innerHTML=`<span class="ebadge ${e.t}">${e.t==='f'?'祭典':'煙火'}</span><span class="ename">${e.n}</span><span class="emeta">${meta.filter(Boolean).join(' · ')}</span>`+(e.u?`<a class="elink" href="${e.u}" target="_blank" onclick="event.stopPropagation()">詳情↗</a>`:'');
     row.addEventListener('click',()=>{if(e.pc){const p=pathEls[e.pc];if(p)selectPref(e.pc,p);}});body.appendChild(row);});
-  if(ids.length>200){const d=document.createElement('div');d.className='empty-l';d.textContent=`他 ${ids.length-200}件…`;body.appendChild(d);}}
+  if(ids.length>200){const d=document.createElement('div');d.className='empty-l';d.textContent=`其餘 ${ids.length-200} 項…`;body.appendChild(d);}}
 function panzoom(){const wrap=$('e_svgwrap'),svg=$('e_mapsvg');
   const toSVG=e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse());};
   wrap.addEventListener('wheel',e=>{e.preventDefault();cancelAnim();const p=toSVG(e),mx=p.x,my=p.y,dd=e.deltaY<0?1.18:1/1.18,nk=Math.max(0.9,Math.min(80,S.tk*dd));S.tx=mx-(mx-S.tx)*(nk/S.tk);S.ty=my-(my-S.ty)*(nk/S.tk);S.tk=nk;tf();renderMarkersSoon();updateInfo();},{passive:false});
@@ -966,10 +965,10 @@ function writeHash(){try{const p=new URLSearchParams();
 function refresh(){renderCal();renderMap();renderList();fcount();if(S.trip)tripRender();writeHash();}
 function tripPass(e){return pass(e)&&e.d0<=S.tto&&e.d1>=S.tfrom;}
 function tripEvCard(id){const e=EV[id];
-  const pp=e.pd===true?'<span class="pill paid">有料</span>':e.pd===false?'<span class="pill free">無料</span>':'';
+  const pp=e.pd===true?'<span class="pill paid">付費</span>':e.pd===false?'<span class="pill free">免費</span>':'';
   const sp=e.t==='w'&&e.sc&&e.sc!=='不明'?`<span class="pill">規模 ${e.sc}</span>`:'';
-  const dn=e.nd>1?'<span class="pill">連日開催</span>':'';
-  return `<div class="ev"><div class="ev-top"><span class="badge ${e.t}">${e.t==='f'?'祭り':'花火'}</span><span class="ev-name">${e.n}</span>${sp}${pp}${dn}</div>
+  const dn=e.nd>1?'<span class="pill">連續多日</span>':'';
+  return `<div class="ev"><div class="ev-top"><span class="badge ${e.t}">${e.t==='f'?'祭典':'煙火'}</span><span class="ev-name">${e.n}</span>${sp}${pp}${dn}</div>
     <div class="ev-meta">${e.p}・${e.v}</div>
     ${e.et?`<div class="ev-meta">${e.et}</div>`:''}
     ${e.ac?`<div class="ev-meta">${e.ac}</div>`:''}
@@ -977,16 +976,16 @@ function tripEvCard(id){const e=EV[id];
     <a class="lnk" href="${gmaps(e)}" target="_blank">地圖</a><a class="lnk" href="${weatherL(e)}" target="_blank">天氣</a></div></div>`;}
 function tripRender(){
   if(!S.trip)return;
-  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">出発日と帰着日を入力してください </span>';$('e_titin').innerHTML='';return;}
-  if(S.tfrom>S.tto){$('e_tsummary').innerHTML='<span style="color:#dc2626">帰着日は出発日より前にできません</span>';$('e_titin').innerHTML='';return;}
+  if(!S.tfrom||!S.tto){$('e_tsummary').innerHTML='<span style="color:#94a3b8">請輸入出發日與回程日 </span>';$('e_titin').innerHTML='';return;}
+  if(S.tfrom>S.tto){$('e_tsummary').innerHTML='<span style="color:#dc2626">回程日不能早於出發日</span>';$('e_titin').innerHTML='';return;}
   const ids=Object.keys(EV).filter(id=>tripPass(EV[id]));
   const set=new Set(ids),days={};
   let d=new Date(S.tfrom+'T00:00'),end=new Date(S.tto+'T00:00');
   while(d<=end){const ds=d.toISOString().slice(0,10);const dd=(DIDX[ds]||[]).filter(id=>set.has(id));if(dd.length)days[ds]=dd;d.setDate(d.getDate()+1);}
   const keys=Object.keys(days).sort();
-  $('e_tsummary').innerHTML=`${S.tfrom}〜${S.tto}の期間に <b>${ids.length}</b> 件のイベントが見つかりました（<b>${keys.length}</b> 日間）。`;
+  $('e_tsummary').innerHTML=`${S.tfrom}〜${S.tto} 期間內找到 <b>${ids.length}</b> 個活動（共 <b>${keys.length}</b> 天）。`;
   let h='';
-  if(!keys.length)h+='<div class="empty">この期間・条件ではイベントが見つかりませんでした<br>日付やエリアを変更してみてください</div>';
+  if(!keys.length)h+='<div class="empty">這個期間・條件下沒有找到活動<br>請試著更改日期或地區</div>';
   keys.forEach(ds=>{const dt=new Date(ds+'T00:00'),wd=dt.getDay(),wk=(wd===0||wd===6);const dd=days[ds];
     h+=`<div class="day"><div class="dayhd ${wk?'wknd':''}"><span class="dnum">${dt.getMonth()+1}/${dt.getDate()}</span><span class="dwk">(${WK[wd]})</span><span class="dcnt">${dd.length} 場</span></div>`;
     dd.sort((a,b)=>EV[a].t>EV[b].t?1:-1);dd.forEach(id=>h+=tripEvCard(id));h+='</div>';});
@@ -998,12 +997,12 @@ function init(){const rs=$('e_region');TRIP.regions.forEach(r=>{const o=document
   const qel=$('e_q');if(qel)qel.addEventListener('input',()=>{S.q=qel.value.trim().toLowerCase();refresh();});
   const clink=$('e_copylink');if(clink)clink.addEventListener('click',()=>{
     const url=location.href;
-    const done=()=>{const t=clink.textContent;clink.textContent='✓ コピーしました';clink.classList.add('done');setTimeout(()=>{clink.textContent=t;clink.classList.remove('done');},1600);};
-    const fallback=()=>{try{const ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();}catch(e){prompt('このリンクをコピーしてください:',url);}};
+    const done=()=>{const t=clink.textContent;clink.textContent='✓ 已複製';clink.classList.add('done');setTimeout(()=>{clink.textContent=t;clink.classList.remove('done');},1600);};
+    const fallback=()=>{try{const ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();}catch(e){prompt('請複製這個連結：',url);}};
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done).catch(fallback);}else fallback();
   });
   // 規模：多選下拉（checkbox 面板）
-  function syncScale(){const n=S.fscale.length;$('e_scale-btn').textContent=(n===0||n>=4)?'すべて':n<=2?S.fscale.join('・'):n+'件選択';}
+  function syncScale(){const n=S.fscale.length;$('e_scale-btn').textContent=(n===0||n>=4)?'全部':n<=2?S.fscale.join('・'):n+'項已選';}
   function posScalePop(){const p=$('e_scale-pop');if(!p.classList.contains('open'))return;const r=$('e_scale-btn').getBoundingClientRect();p.style.left=r.left+'px';p.style.top=(r.bottom+4)+'px';}
   $('e_scale-btn').onclick=ev=>{ev.stopPropagation();$('e_scale-pop').classList.toggle('open');posScalePop();};
   $('e_scale-pop').querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',()=>{const v=cb.value,i=S.fscale.indexOf(v);if(cb.checked){if(i<0)S.fscale.push(v);}else if(i>=0)S.fscale.splice(i,1);syncScale();refresh();}));
