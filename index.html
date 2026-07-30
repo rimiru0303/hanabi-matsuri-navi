@@ -734,7 +734,10 @@ function toggleTheme(){
    ハッシュを引き継げば言語を切り替えても失われない。 */
 function switchLang(){
   const p=location.pathname;
-  const file=p.split('/').pop();
+  // GitHub Pages 等はディレクトリ URL（末尾 /）で index.html を暗黙に返すため、
+  // アドレスバーにファイル名が出ない。split('/').pop() が空文字になり、
+  // 導出先も空になって「クリックしても何も起きない」バグになっていた。
+  const file=p.split('/').pop()||'index.html';
   const target=file.includes('.zh-tw.html')?file.replace('.zh-tw.html','.html'):file.replace('.html','.zh-tw.html');
   location.href=target+location.hash;
 }

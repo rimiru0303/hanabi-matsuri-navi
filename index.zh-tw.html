@@ -733,7 +733,9 @@ function toggleTheme(){
    （writeHash/applyHash），把 hash 一併帶過去，切換語言不會遺失。 */
 function switchLang(){
   const p=location.pathname;
-  const file=p.split('/').pop();
+  // GitHub Pages 等目錄網址（結尾 /）會隱式回傳 index.html，網址列不會顯示檔名。
+  // split('/').pop() 會拿到空字串，推導出的目標也是空的——這就是「點了沒反應」的原因。
+  const file=p.split('/').pop()||'index.html';
   const target=file.includes('.zh-tw.html')?file.replace('.zh-tw.html','.html'):file.replace('.html','.zh-tw.html');
   location.href=target+location.hash;
 }
