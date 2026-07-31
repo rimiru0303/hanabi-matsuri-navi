@@ -125,6 +125,7 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   border:1px solid #e8e5de;border-radius:12px;
   overflow:hidden;background:#faf9f6;
   position:relative;cursor:grab;
+  touch-action:none;
 }
 .svgwrap:active{cursor:grabbing}
 .mapsvg{width:100%;height:100%;display:block}
@@ -224,6 +225,8 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .dc.trange.sel{background:#fde8e0}
 .dc.trange.dim{opacity:.6;background:#eef6fd}
 .dc.past .dn{color:#786d5e;text-decoration:line-through}
+.dc.past{cursor:default}
+.dc.past:hover{background:none}
 .cal-note{font-size:15px;line-height:1.6;color:#8f5028;background:#fbf3ee;border:1px solid #f2ddd0;border-radius:8px;padding:4px 7px}
 .dn{font-size:12px;line-height:1.3;color:#1a1916}
 .dc.sel .dn{color:#b8431f;font-weight:700}
@@ -355,6 +358,7 @@ svg.chart{display:block;width:100%;overflow:visible}
   .mapcol{width:100%;position:static}
   .emain{flex-direction:column;height:auto}
   .cal{width:100%}
+  .tip{display:none!important}
 }
 .maphint{font-size:12px;color:#786d5e;margin-top:6px;text-align:center}
 
@@ -702,7 +706,7 @@ body.dark .reset-btn:hover{background:#373c47}
       <div class="cal">
         <div class="cal-nav"><button class="nb" id="e_prev">‹</button><span class="cal-ttl" id="e_calttl"></span><button class="nb" id="e_next">›</button></div>
         <div class="cal-note" id="e_calnote" hidden></div>
-        <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+        <div class="dow"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
         <div class="cgrid" id="e_cgrid"></div>
         <div class="leg"><span class="li"><span class="ls" style="background:#d85a30"></span>祭典</span><span class="li"><span class="ls" style="background:#378add"></span>煙火</span><span class="li"><span class="ls" style="background:#6d3ba8"></span>兩者皆有</span></div>
       </div>
@@ -865,9 +869,9 @@ function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月
     const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';if(ds<TODAY)cls+=' past';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
     const dn=document.createElement('div');dn.className='dn';dn.textContent=d;el.appendChild(dn);
     const dots=document.createElement('div');dots.className='dots';
-    if(info&&(!tripActive()||inTrip)){const dot=document.createElement('div');dot.className='dot';const[hf,hw]=info;dot.style.background=(hf&&hw)?'#6d3ba8':hf?'#d85a30':'#378add';dots.appendChild(dot);}
+    if(info&&(!tripActive()||inTrip)&&ds>=TODAY){const dot=document.createElement('div');dot.className='dot';const[hf,hw]=info;dot.style.background=(hf&&hw)?'#6d3ba8':hf?'#d85a30':'#378add';dots.appendChild(dot);}
     el.appendChild(dots);
-    el.addEventListener('click',()=>{S.date=(S.date===ds?null:ds);S.pref=null;renderCal();renderMap();renderList();});g.appendChild(el);}}
+    if(ds>=TODAY)el.addEventListener('click',()=>{S.date=(S.date===ds?null:ds);S.pref=null;renderCal();renderMap();renderList();});g.appendChild(el);}}
 function buildMap(){const svg=$('e_mapsvg');const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='e_mapg';svg.appendChild(g);const mug=document.createElementNS('http://www.w3.org/2000/svg','g');mug.id='e_munig';mug.style.display='none';svg.appendChild(mug);const pog=document.createElementNS('http://www.w3.org/2000/svg','g');pog.id='e_prefoutline';svg.appendChild(pog);const mg=document.createElementNS('http://www.w3.org/2000/svg','g');mg.id='e_markg';svg.appendChild(mg);
   // ベース剪影レイヤー：残った微小な隙間を境界色で埋める（N03ならほぼ不要だが保険）
   baseEls=[];baseByCode={};const BC=MAPC();PATHS.forEach(({id,d})=>{const b=document.createElementNS('http://www.w3.org/2000/svg','path');b.setAttribute('d',d);b.setAttribute('fill',BC.pstroke);b.setAttribute('stroke',BC.pstroke);b.setAttribute('stroke-width',mapSW(0.4));b.setAttribute('stroke-linejoin','round');b.style.pointerEvents='none';g.appendChild(b);baseEls.push(b);baseByCode[id]=b;});
@@ -1011,7 +1015,43 @@ function panzoom(){const wrap=$('e_svgwrap'),svg=$('e_mapsvg');
   wrap.addEventListener('mousemove',e=>{const tip=$('e_tip');if(tip.style.display!=='block')return;const r=wrap.getBoundingClientRect();let x=e.clientX-r.left+14,y=e.clientY-r.top+14;if(x+tip.offsetWidth>r.width-4)x=e.clientX-r.left-tip.offsetWidth-14;if(y+tip.offsetHeight>r.height-4)y=r.height-tip.offsetHeight-4;tip.style.left=Math.max(4,x)+'px';tip.style.top=Math.max(4,y)+'px';});
   ['mouseup','mouseleave'].forEach(ev=>wrap.addEventListener(ev,()=>S.drag=false));
   // 拖移過則攔截緊接著的 click（避免誤觸縣界選取或重置）
-  wrap.addEventListener('click',e=>{if(S.moved){e.stopPropagation();e.preventDefault();S.moved=false;}},true);}
+  wrap.addEventListener('click',e=>{if(S.moved){e.stopPropagation();e.preventDefault();S.moved=false;}},true);
+  // 手機手勢：單指拖曳、雙指掌放、雙擊縮放。svgwrap 已設 touch-action:none，
+  // 瀏覽器不會自己處理這些手勢（不會變成放大整個網頁），所以得自己實作 pan/zoom。
+  const touchDist=(t0,t1)=>Math.hypot(t1.clientX-t0.clientX,t1.clientY-t0.clientY);
+  const touchMid=(t0,t1)=>({clientX:(t0.clientX+t1.clientX)/2,clientY:(t0.clientY+t1.clientY)/2});
+  let tMode=null,tStartDist=0,tStartK=1,tMidSVG=null,lastTapTime=0,lastTapPt=null;
+  const startPan=t=>{const p=toSVG(t);tMode='pan';S.moved=false;S.dsx=p.x-S.tx;S.dsy=p.y-S.ty;S.psx=t.clientX;S.psy=t.clientY;};
+  wrap.addEventListener('touchstart',e=>{
+    if(e.target.classList.contains('mk'))return;
+    cancelAnim();
+    if(e.touches.length===1)startPan(e.touches[0]);
+    else if(e.touches.length===2){tMode='pinch';tStartDist=touchDist(e.touches[0],e.touches[1]);tStartK=S.tk;tMidSVG=toSVG(touchMid(e.touches[0],e.touches[1]));}
+  },{passive:true});
+  wrap.addEventListener('touchmove',e=>{
+    if(tMode==='pan'&&e.touches.length===1){
+      e.preventDefault();const t=e.touches[0];
+      if(!S.moved&&(Math.abs(t.clientX-S.psx)+Math.abs(t.clientY-S.psy))>4)S.moved=true;
+      const p=toSVG(t);S.tx=p.x-S.dsx;S.ty=p.y-S.dsy;tf();
+    }else if(tMode==='pinch'&&e.touches.length===2){
+      e.preventDefault();
+      const dist=touchDist(e.touches[0],e.touches[1]),nk=Math.max(0.9,Math.min(80,tStartK*(dist/tStartDist))),mx=tMidSVG.x,my=tMidSVG.y;
+      S.tx=mx-(mx-S.tx)*(nk/S.tk);S.ty=my-(my-S.ty)*(nk/S.tk);S.tk=nk;tf();renderMarkersSoon();updateInfo();
+    }
+  },{passive:false});
+  wrap.addEventListener('touchend',e=>{
+    if(tMode==='pan'&&!S.moved&&e.changedTouches.length===1){
+      const now=Date.now(),pt={x:S.psx,y:S.psy};
+      if(lastTapPt&&now-lastTapTime<350&&Math.hypot(pt.x-lastTapPt.x,pt.y-lastTapPt.y)<30){
+        const p=toSVG({clientX:pt.x,clientY:pt.y}),nk=Math.max(0.9,Math.min(80,S.tk*1.7));
+        S.tx=p.x-(p.x-S.tx)*(nk/S.tk);S.ty=p.y-(p.y-S.ty)*(nk/S.tk);S.tk=nk;tf();renderMarkersSoon();updateInfo();
+        lastTapTime=0;lastTapPt=null;
+      }else{lastTapTime=now;lastTapPt=pt;}
+    }
+    if(e.touches.length===0)tMode=null;
+    else if(e.touches.length===1)startPan(e.touches[0]);
+  },{passive:false});
+}
 function fcount(){}
 // 現在の絞り込み・選択状態を URL ハッシュに保存（共有・再現用）。履歴は汚さない。
 function writeHash(){try{const p=new URLSearchParams();
