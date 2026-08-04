@@ -163,7 +163,7 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .tripsw.on .sw{background:#2c6ea8}
 .tripsw.on .sw::after{transform:translateX(19px)}
 .tripdiv{width:1px;align-self:stretch;background:#e8e5de;margin:0 4px}
-.tripfld{display:inline-flex;align-items:center;gap:6px}
+.tripfld{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;row-gap:6px}
 .tripfld input[type=date]{
   font-size:15px;padding:5px 10px;
   border:1px solid #d0cdc4;border-radius:20px;color:#1a1916;
@@ -408,7 +408,7 @@ svg.chart{display:block;width:100%;overflow:visible}
 }
 .pill.paid{background:#fde8e0;color:#96420f}
 .pill.free{background:#e4f0fc;color:#1e68b0}
-.ev-meta{font-size:12px;color:#6f6c64;margin-bottom:3px;line-height:1.55}
+.ev-meta{font-size:12px;color:#6f6c64;margin-bottom:3px;line-height:1.5}
 .ev-meta .k{color:#786d5e;margin-right:3px}
 .ev-links{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .lnk{
@@ -493,7 +493,7 @@ body.dark .lang-toggle .lt-ico{filter:invert(1)}
 .lang-menu[hidden]{display:none}
 .lang-opt{
   appearance:none;border:none;background:none;text-align:left;
-  padding:8px 12px;border-radius:8px;font-size:14px;color:#1a1916;cursor:pointer;
+  padding:8px 12px;border-radius:8px;font-size:15px;color:#1a1916;cursor:pointer;
 }
 .lang-opt:hover{background:#f0ede8}
 .lang-opt.current{font-weight:700;color:#b8431f;cursor:default}
@@ -504,8 +504,8 @@ body.dark .lang-opt:hover{background:#343945}
 body.dark .lang-opt.current{color:#e8703f}
 @media(max-width:560px){
   .lang-menu-wrap{right:16px;bottom:62px}
-  .lang-toggle{width:34px;height:34px}
-  .lang-toggle .lt-ico{width:16px;height:16px}
+  .lang-toggle{width:30px;height:30px}
+  .lang-toggle .lt-ico{width:14px;height:14px}
 }
 
 /* ===================== 夜間模式（精修配色） ===================== */
