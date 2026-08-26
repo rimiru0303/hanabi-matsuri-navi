@@ -876,11 +876,7 @@ function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月
   // 「掲載が無い＝開催が無い」という誤解を防ぐため、過去日をグレー化し注記を出す。
   const TODAY=todayStr();
   const _mm=String(S.m).padStart(2,'0'),_first=`${S.y}-${_mm}-01`,_last=`${S.y}-${_mm}-${String(dim).padStart(2,'0')}`,_note=$('e_calnote');
-  if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 過去の月です。
-掲載期間を過ぎた開催情報は表示されていない場合があります。
-日付は日本時間（JST）基準です。':'※ グレーの日付は過去です。
-掲載期間を過ぎた開催情報は表示されない場合があります。
-日付は日本時間（JST）基準です。';_note.hidden=false;}else{_note.hidden=true;}}
+  if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 過去の月です。\n掲載期間を過ぎた開催情報は表示されていない場合があります。\n日付は日本時間（JST）基準です。':'※ グレーの日付は過去です。\n掲載期間を過ぎた開催情報は表示されない場合があります。\n日付は日本時間（JST）基準です。';_note.hidden=false;}else{_note.hidden=true;}}
   for(let i=0;i<sw;i++){const e=document.createElement('div');e.className='dc emp';g.appendChild(e);}
   for(let d=1;d<=dim;d++){const ds=`${S.y}-${String(S.m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,info=CAL[ds],dow=(sw+d-1)%7;
     const el=document.createElement('div');let cls='dc';if(S.date===ds)cls+=' sel';if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';if(!info)cls+=' dim';if(ds<TODAY)cls+=' past';const inTrip=tripActive()&&ds>=S.tfrom&&ds<=tripEnd();if(inTrip)cls+=' trange';el.className=cls;
