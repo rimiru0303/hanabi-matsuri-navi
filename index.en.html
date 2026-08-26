@@ -260,6 +260,11 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   position:sticky;top:0;background:#fff;z-index:2;
   letter-spacing:.04em;
 }
+/* 既定では終了済みを隠しているので、件数が総数より少ない理由を明示する。
+   併せて「今日」の基準が日本時間である事も書く。海外から見ると端末の
+   日付と 1 日ずれ得るため、黙って隠すと「なぜ出ないのか」が分からない。
+   字級は .elist-h の 12px を継承し、字重だけ落として注記に見せる。 */
+.elist-note{font-weight:400;letter-spacing:0;margin-left:8px;color:#786d5e}
 .erow{
   display:flex;align-items:flex-start;gap:10px;
   padding:9px 16px;border-bottom:1px solid #f7f5f0;
@@ -274,7 +279,7 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
 .ebadge.f{background:#b8431f}
 .ebadge.w{background:#2c6ea8}
 .ename{font-weight:600;flex:1;min-width:0;overflow:hidden;color:#1a1916}
-.eromaji{display:block;font-weight:400;font-size:11px;font-style:italic;color:#9c9484;margin-top:1px}
+.eromaji{display:block;font-weight:400;font-size:12px;font-style:italic;color:#786d5e;margin-top:1px}
 .emeta{font-size:12px;color:#786d5e;flex-shrink:0;white-space:nowrap;margin-top:1px}
 .elink{color:#2c6ea8;text-decoration:none;font-size:12px;flex-shrink:0}
 .elink:hover{text-decoration:underline}
@@ -399,7 +404,7 @@ svg.chart{display:block;width:100%;overflow:visible}
 .badge.f{background:#b8431f}
 .badge.w{background:#2c6ea8}
 .ev-name{font-size:15px;font-weight:700;flex:1;min-width:0;color:#1a1916}
-.ev-name .eromaji{font-size:12px;margin-top:2px}
+.ev-name .eromaji{margin-top:2px}
 /* 薄墨（注記の役割）だと自前の地 #f0ede8 に対し 4.34:1 で不足するため、
    このバッジだけは淡墨（6.48:1）を使う。バッジは注記より一段強い役割。 */
 .pill{
@@ -552,6 +557,7 @@ body.dark .nb:hover{background:#373c47}
 body.dark .fgrp .lbl,
 body.dark .cnt,
 body.dark .dow,
+body.dark .elist-note,
 body.dark .emeta,
 body.dark .ev-meta,
 body.dark .eromaji,
@@ -1019,7 +1025,8 @@ function updateInfo(){const el=$('e_ibar'),tot=fids().length;
   else el.textContent=`All Japan — ${tot} match(es) — click a date to filter / click a prefecture border to zoom`;}
 function renderList(){const body=$('e_elistbody'),h=$('e_elisth');let ids=(S.date||S.pref)?visible():fids();
   let label='Event list';if(S.date&&S.pref)label=`${S.date}・${PFNAME_EN[S.pref]||CODENAME[S.pref]}`;else if(S.date)label=`Events on ${S.date}`;else if(S.pref)label=`${PFNAME_EN[S.pref]||CODENAME[S.pref]}`;
-  h.textContent=`${label} (${ids.length})`;body.innerHTML='';
+  const _flt=!S.date&&!tripActive();
+  h.innerHTML=`${label} (${ids.length})`+(_flt?`<span class="elist-note">Finished events hidden (JST)</span>`:'');body.innerHTML='';
   if(!ids.length){body.innerHTML='<div class="empty-l">No matches</div>';return;}
   ids.slice(0,200).forEach(id=>{const e=EV[id];const row=document.createElement('div');row.className='erow';const meta=[e.p];if(e.t==='w'&&e.sc&&e.sc!=='不明')meta.push('Scale: '+(SCALE_EN[e.sc]||e.sc));meta.push(e.pd===true?'Paid':e.pd===false?'Free':'');
     row.innerHTML=`<span class="ebadge ${e.t}">${e.t==='f'?'Festival':'Fireworks'}</span><span class="ename">${e.n}${ROMAJI[id]?`<br><span class="eromaji">${ROMAJI[id]}</span>`:''}</span><span class="emeta">${meta.filter(Boolean).join(' · ')}</span>`+(e.u?`<a class="elink" href="${e.u}" target="_blank" onclick="event.stopPropagation()">Details↗</a>`:'');

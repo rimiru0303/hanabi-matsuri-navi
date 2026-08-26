@@ -260,6 +260,11 @@ body.dark .copylink.done{background:#26402f;border-color:#3f7a55;color:#9ed3b0}
   position:sticky;top:0;background:#fff;z-index:2;
   letter-spacing:.04em;
 }
+/* 既定では終了済みを隠しているので、件数が総数より少ない理由を明示する。
+   併せて「今日」の基準が日本時間である事も書く。海外から見ると端末の
+   日付と 1 日ずれ得るため、黙って隠すと「なぜ出ないのか」が分からない。
+   字級は .elist-h の 12px を継承し、字重だけ落として注記に見せる。 */
+.elist-note{font-weight:400;letter-spacing:0;margin-left:8px;color:#786d5e}
 .erow{
   display:flex;align-items:center;gap:10px;
   padding:9px 16px;border-bottom:1px solid #f7f5f0;
@@ -548,6 +553,7 @@ body.dark .nb:hover{background:#373c47}
 body.dark .fgrp .lbl,
 body.dark .cnt,
 body.dark .dow,
+body.dark .elist-note,
 body.dark .emeta,
 body.dark .ev-meta,
 body.dark .anote,
@@ -1007,7 +1013,8 @@ function updateInfo(){const el=$('e_ibar'),tot=fids().length;
   else el.textContent=`全国 該当 ${tot}件 — 日付クリックで当日表示 / 縣界クリックで拡大`;}
 function renderList(){const body=$('e_elistbody'),h=$('e_elisth');let ids=(S.date||S.pref)?visible():fids();
   let label='イベント一覧';if(S.date&&S.pref)label=`${S.date}・${CODENAME[S.pref]}`;else if(S.date)label=`${S.date} の開催`;else if(S.pref)label=`${CODENAME[S.pref]}`;
-  h.textContent=`${label}（${ids.length}件）`;body.innerHTML='';
+  const _flt=!S.date&&!tripActive();
+  h.innerHTML=`${label}（${ids.length}件）`+(_flt?`<span class="elist-note">※ 終了分は非表示（日本時間）</span>`:'');body.innerHTML='';
   if(!ids.length){body.innerHTML='<div class="empty-l">該当なし</div>';return;}
   ids.slice(0,200).forEach(id=>{const e=EV[id];const row=document.createElement('div');row.className='erow';const meta=[e.p];if(e.t==='w'&&e.sc&&e.sc!=='不明')meta.push('規模'+e.sc);meta.push(e.pd===true?'有料':e.pd===false?'無料':'');
     row.innerHTML=`<span class="ebadge ${e.t}">${e.t==='f'?'祭り':'花火'}</span><span class="ename">${e.n}</span><span class="emeta">${meta.filter(Boolean).join(' · ')}</span>`+(e.u?`<a class="elink" href="${e.u}" target="_blank" onclick="event.stopPropagation()">詳細↗</a>`:'');
