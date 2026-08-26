@@ -777,7 +777,13 @@ function lerp(c1,c2,t){const a=hexRgb(c1),b=hexRgb(c2);return`rgb(${Math.round(a
 function gmaps(e){return e.mu||`https://www.google.com/maps/search/?api=1&query=${e.la},${e.ln}`;}
 function weatherL(e){return`https://www.google.com/search?q=${encodeURIComponent(e.p+' 天気')}`;}
 function $(id){return document.getElementById(id);}
-function todayStr(){const t=new Date();return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;}
+// What counts as "today" must be Japan's date, not the viewer's. Everything
+// listed here happens in Japan, and there is an English edition aimed at
+// overseas visitors - from the Americas the local date can be a full day
+// behind JST, which would keep finished events on the list and mis-shade the
+// calendar. Shift the epoch by +9h and read the UTC parts to get the JST date
+// without depending on the browser's timezone database.
+function todayStr(){const t=new Date(Date.now()+9*3600*1000);return `${t.getUTCFullYear()}-${String(t.getUTCMonth()+1).padStart(2,'0')}-${String(t.getUTCDate()).padStart(2,'0')}`;}
 
 /* ===== 夜間模式切換 ===== */
 function toggleTheme(){
@@ -867,7 +873,7 @@ function renderCal(){CAL=datesWith();const MN=['1月','2月','3月','4月','5月
   const g=$('e_cgrid');g.innerHTML='';const d1=new Date(S.y,S.m-1,1),sw=d1.getDay(),dim=new Date(S.y,S.m,0).getDate();
   // 今日境界：来源は開催後の祭典を掲載から外すため、過去日付はデータが欠けうる。
   // 「掲載が無い＝開催が無い」という誤解を防ぐため、過去日をグレー化し注記を出す。
-  const _t=new Date(),TODAY=`${_t.getFullYear()}-${String(_t.getMonth()+1).padStart(2,'0')}-${String(_t.getDate()).padStart(2,'0')}`;
+  const TODAY=todayStr();
   const _mm=String(S.m).padStart(2,'0'),_first=`${S.y}-${_mm}-01`,_last=`${S.y}-${_mm}-${String(dim).padStart(2,'0')}`,_note=$('e_calnote');
   if(_note){if(_first<TODAY){_note.textContent=_last<TODAY?'※ 這是過去的月份。已過刊登期限的活動可能不會顯示。':'※ 灰色的日期是過去。已過刊登期限的活動可能不會顯示。';_note.hidden=false;}else{_note.hidden=true;}}
   for(let i=0;i<sw;i++){const e=document.createElement('div');e.className='dc emp';g.appendChild(e);}
